@@ -1,15 +1,14 @@
 <?php
 
 use app\models\UserGroup;
-use yii\bootstrap5\Html as Bootstrap5Html;
-use yii\helpers\Html;
+use yii\bootstrap5\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Преподаватели', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -20,9 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
     </h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('добавить группу', ['add-group', 'user_id' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -34,29 +33,59 @@ $this->params['breadcrumbs'][] = $this->title;
     $grupBtn = function ($userGroupArr, $model) {
         $str = '';
         foreach ($userGroupArr as $value) {
-            $str .= Bootstrap5Html::a($value, ['./teacher/editing-group', 'id' => $value, 'user_id' => $model->id], ['class' => 'btn btn-primary mx-2']);
+            $str .= Html::a($value, ['./teacher/editing-group', 'id' => $value, 'user_id' => $model->id], ['class' => 'btn btn-primary mx-2']);
         }
         return $str;
     }
         ?>
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'name',
-            'surname',
-            'patronimyc',
-            'login',
-            'password',
-            'email:email',
-            'phone',
+            [
+                'attribute' => 'id',
+                'value' => Html::encode($model->id),
+            ],
+            [
+                'attribute' => 'surname',
+                'value' => Html::encode($model->surname),
+            ],
+            [
+                'attribute' => 'name',
+                'value' => Html::encode($model->name),
+            ],
+            [
+                'attribute' => 'patronimyc',
+                'value' => Html::encode($model->patronimyc),
+            ],
+            [
+                'attribute' => 'login',
+                'value' => Html::encode($model->login),
+            ],
+            [
+                'attribute' => 'email',
+                'filter' => false,
+                'visible' => (bool) $model->email,
+                'value' => Html::encode($model->email),
+            ],
+            [
+                'attribute' => 'phone',
+                'filter' => false,
+                'visible' => (bool) $model->phone,
+                'value' => Html::encode($model->phone),
+            ],
             [
                 'label' => 'группа',
-                'value' => $grupBtn($userGroupArr, $model),
                 'format' => 'html',
+                'value' => $userGroupArr
+                    ? $grupBtn($userGroupArr, $model)
+                    : Html::a('добавить группу', ['add-group', 'user_id' => $model->id], ['class' => 'btn btn-outline-primary']),
             ],
-            'role_id',
-            'auth_key',
+            [
+                'attribute' => 'role_id',
+                'visible' => (bool) $roleTitle,
+                'value' => Html::encode($roleTitle),
+            ],
         ],
     ]) ?>
 

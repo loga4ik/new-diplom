@@ -42,18 +42,8 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
+            'title' => 'навание',
         ];
-    }
-
-    /**
-     * Gets query for [[GroupConnectors]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGroupConnectors()
-    {
-        return $this->hasMany(GroupConnector::class, ['group_id' => 'id']);
     }
 
     /**

@@ -7,14 +7,15 @@ use yii\bootstrap5\Html;
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
 
-$this->title = 'Create User';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->title = 'Добавить преподавателя';
+$this->params['breadcrumbs'][] = ['label' => 'Преподаватели', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create" id="createTeacher">
 
     <h1>
         <?= Html::encode($this->title) ?>
+        <br>
     </h1>
 
     <button v-on:click='isFileInputClickHandler' class="btn btn-outline-secondary">{{viewName[isFileInput+0]}}</button>

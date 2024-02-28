@@ -1,8 +1,9 @@
 <?php
 
 use app\models\User;
+use yii\bootstrap5\Html;
 use yii\bootstrap5\LinkPager;
-use yii\helpers\Html;
+// use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p> -->
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);      ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);                ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -37,22 +38,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'name',
+            // [
+            //     'attribute' => 'id',
+            //     'filter' => false,
+            // ],
             'surname',
-            'patronimyc',
-            'login',
-            //'password',
-            //'email:email',
-            //'phone',
-            //'group_id',
-            'role_id',
-            //'auth_key',
+            'name',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, User $model, $key, $index, $column) {
-                        return Url::toRoute([$action, 'id' => $model->id]);
-                    }
+                'attribute' => 'login',
+                'filter' => false,
+            ],
+            [
+                'label' => '',
+                'format' => 'html',
+                'value' => fn($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-primary'])
             ],
         ],
     ]); ?>

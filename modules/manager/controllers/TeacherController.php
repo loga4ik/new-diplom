@@ -64,15 +64,17 @@ class TeacherController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
         $userGroup = UserGroup::findAll(['user_id' => $id]);
         $userGroupArr = [];
-        foreach ($userGroup as $key => $value) {
+        foreach ($userGroup as $value) {
             $userGroupArr[] = $value->group_id;
         }
         ;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'userGroupArr' => $userGroupArr,
+            'roleTitle' => Role::getRoleTitle($model->role)
         ]);
     }
 
@@ -91,6 +93,12 @@ class TeacherController extends Controller
             $user->user_id = User::findOne(['login' => $model->login])->id;
             $user->save();
         };
+        $generateAttributes = function ($model) {
+            $model->login = Yii::$app->security->generateRandomString(6);
+            $model->password = Yii::$app->security->generateRandomString(6);
+            $model->auth_key = Yii::$app->security->generateRandomString();
+            $model->role_id = Role::getRoleId('teacher');
+        };
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
@@ -106,20 +114,14 @@ class TeacherController extends Controller
                         $model->name = $value[0];
                         $model->surname = $value[1];
                         $model->patronimyc = substr($value[2], 0, -1);
-                        $model->login = Yii::$app->security->generateRandomString(6);
-                        $model->password = Yii::$app->security->generateRandomString(6);
-                        $model->auth_key = Yii::$app->security->generateRandomString();
-                        $model->role_id = Role::getRoleId('teacher');
+                        $generateAttributes($model);
                         $model->save();
                         $model->group_id && $addGroup($model);
                     }
                     return $this->redirect('../');
 
                 } else {
-                    $model->login = Yii::$app->security->generateRandomString(6);
-                    $model->password = Yii::$app->security->generateRandomString(6);
-                    $model->auth_key = Yii::$app->security->generateRandomString();
-                    $model->role_id = Role::getRoleId('teacher');
+                    $generateAttributes($model);
                     if ($model->save()) {
                         $model->group_id && $addGroup($model);
                         return $this->redirect(['view', 'id' => $model->id]);
@@ -157,20 +159,24 @@ class TeacherController extends Controller
     public function actionEditingGroup($id, $user_id)
     {
         $model = UserGroup::findOne(['group_id' => $id, 'user_id' => $user_id,]);
+        $model->group_id = '';
+
+        $groupTitles = Group::getGroupTitle();
+        unset($groupTitles[$id]);
 
         if ($this->request->isPost && $model->load($this->request->post())) {
+            // VarDumper::dump($model->attributes, 10, true);
+            // die;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->user_id]);
+            }
 
-            $model->user_id = $user_id;
-
-            if (!$model->save())
-                return;
-
-            return $this->redirect(['view', 'id' => $model->user_id]);
         }
 
         return $this->render('editingGroup', [
             'model' => $model,
-            'groupTitle' => Group::getGroupTitle(),
+            'groupTitle' => $groupTitles,
+            'groupId' => $id,
         ]);
     }
 

@@ -14,6 +14,7 @@ use yii\widgets\Pjax;
 
 $this->title = 'Преподаватели';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="user-index">
 

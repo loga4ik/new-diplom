@@ -22,7 +22,6 @@ use yii\web\IdentityInterface;
 
  *
  * @property Group $group
- * @property GroupConnector[] $groupConnectors
  * @property Role $role
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
@@ -78,13 +77,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'surname' => 'Surname',
-            'patronimyc' => 'Patronimyc',
-            'password' => 'Password',
+            'name' => 'Имя',
+            'surname' => 'Фамилия',
+            'patronimyc' => 'Отчество',
+            'password' => 'Пароль',
+            'password_repeat' => 'Повтор пароля',
             'email' => 'Email',
-            'phone' => 'Phone',
-            'role_id' => 'Role ID',
+            'phone' => 'Телефон',
+            'login' => 'Логин',
+            'role_id' => 'Роль',
+            'fileInput' => '',
             'auth_key' => 'Auth Key',
         ];
     }
@@ -94,16 +96,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      *
      * @return \yii\db\ActiveQuery
      */
-
-    /**
-     * Gets query for [[GroupConnectors]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGroupConnectors()
-    {
-        return $this->hasMany(GroupConnector::class, ['teacher_id' => 'id']);
-    }
 
     /**
      * Gets query for [[Role]].

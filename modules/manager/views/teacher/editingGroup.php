@@ -1,5 +1,6 @@
 <?php
 
+use app\assets\VueAsset;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
 
@@ -8,14 +9,14 @@ use yii\bootstrap5\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="user-form">
+<div class="user-form" id="editGroup">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'group_id')->dropDownList($groupTitle, ['prompt' => 'выберите группу']) ?>
+    <?= 'текущая группа ' . $groupId ?>
+    <?= $form->field($model, 'group_id')->dropDownList($groupTitle, ['id' => 'editGroupInput', 'v-on:click' => 'isFileInputClickHandler', 'prompt' => 'выберите группу']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

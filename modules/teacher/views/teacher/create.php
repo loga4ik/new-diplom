@@ -1,6 +1,6 @@
 <?php
 
-use app\assets\AppAsset;
+// use app\assets\AppAsset;
 use app\assets\VueAsset;
 use yii\bootstrap5\Html;
 
