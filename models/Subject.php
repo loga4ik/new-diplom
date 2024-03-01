@@ -51,6 +51,6 @@ class Subject extends \yii\db\ActiveRecord
      */
     public function getTests()
     {
-        return $this->hasMany(Test::class, ['subject-id' => 'id']);
+        return $this->hasMany(Test::class, ['subject_id' => 'id']);
     }
 }

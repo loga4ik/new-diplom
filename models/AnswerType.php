@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "answer_type".
@@ -52,5 +53,13 @@ class AnswerType extends \yii\db\ActiveRecord
     public function getAnswers()
     {
         return $this->hasMany(Answer::class, ['type_id' => 'id']);
+    }
+    public static function getTypes()
+    {
+        return (new Query())
+            ->select('title')
+            ->from('answer_type')
+            ->indexBy('id')
+            ->column();
     }
 }

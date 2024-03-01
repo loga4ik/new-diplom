@@ -2,6 +2,7 @@
 
 namespace app\modules\teacher\controllers;
 
+use app\models\Role;
 use app\models\User;
 use app\models\UserGroup;
 use app\modules\teacher\models\StudentSeach;
@@ -42,7 +43,7 @@ class StudentController extends Controller
     {
         $searchModel = new StudentSeach();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        $groups = UserGroup::getStudentsGroups(Role::getRoleId('student'));
         if ($group_id) {
             $users_arr = [];
             foreach (UserGroup::findAll(['group_id' => $group_id]) as $value) {
@@ -54,6 +55,7 @@ class StudentController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            // 'groups' => $groups,
         ]);
     }
 

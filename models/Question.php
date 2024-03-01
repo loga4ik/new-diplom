@@ -87,4 +87,8 @@ class Question extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Test::class, ['id' => 'test_id']);
     }
+    public static function getQuestionsOfTest($test_id)
+    {
+        return $questionAttrs = self::findOne($test_id);
+    }
 }

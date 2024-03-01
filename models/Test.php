@@ -11,7 +11,7 @@ use Yii;
  * @property string $title
  * @property int $question_count
  * @property int $point_count
- * @property int $subject-id
+ * @property int $subject_id
  * @property int $is_active
  *
  * @property Question[] $questions
@@ -34,10 +34,10 @@ class Test extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'question_count', 'point_count', 'subject-id', 'is_active'], 'required'],
+            [['title', 'question_count', 'point_count', 'subject_id', 'is_active'], 'required'],
             [['title'], 'string'],
-            [['question_count', 'point_count', 'subject-id', 'is_active'], 'integer'],
-            [['subject-id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::class, 'targetAttribute' => ['subject-id' => 'id']],
+            [['question_count', 'point_count', 'subject_id', 'is_active'], 'integer'],
+            [['subject_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::class, 'targetAttribute' => ['subject_id' => 'id']],
         ];
     }
 
@@ -51,7 +51,7 @@ class Test extends \yii\db\ActiveRecord
             'title' => 'Title',
             'question_count' => 'Question Count',
             'point_count' => 'Point Count',
-            'subject-id' => 'Subject ID',
+            'subject_id' => 'Subject ID',
             'is_active' => 'Is Active',
         ];
     }
@@ -83,6 +83,6 @@ class Test extends \yii\db\ActiveRecord
      */
     public function getSubject()
     {
-        return $this->hasOne(Subject::class, ['id' => 'subject-id']);
+        return $this->hasOne(Subject::class, ['id' => 'subject_id']);
     }
 }

@@ -51,8 +51,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ];
         } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('teacher')) {
             $navLinks = [
-                ['label' => 'преподаватели', 'url' => ['/teacher']],
-                ['label' => 'добавление преподавателя', 'url' => ['/teacher/teacher/create']],
+                ['label' => 'студенты', 'url' => ['/teacher']],
+                ['label' => 'добавление студента', 'url' => ['/teacher/teacher/create']],
                 ['label' => 'группы', 'url' => ['/teacher/group']],
             ];
         }

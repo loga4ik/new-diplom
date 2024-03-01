@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "question_level".
@@ -52,5 +53,13 @@ class QuestionLevel extends \yii\db\ActiveRecord
     public function getQuestions()
     {
         return $this->hasMany(Question::class, ['level_id' => 'id']);
+    }
+    public static function getLevels()
+    {
+        return (new Query())
+            ->select('title')
+            ->from('question_level')
+            ->indexBy('id')
+            ->column();
     }
 }

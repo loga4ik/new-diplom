@@ -2,6 +2,7 @@
 
 namespace app\modules\teacher\models;
 
+use app\models\Role;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\User;
@@ -59,7 +60,7 @@ class StudentSeach extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'role_id' => $this->role_id,//3
+            'role_id' => Role::getRoleId('student'),//3
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

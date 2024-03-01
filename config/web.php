@@ -20,7 +20,7 @@ $config = [
         ],
         'teacher' => [
             'class' => 'app\modules\teacher\Module',
-            'defaultRoute' => 'teacher',
+            'defaultRoute' => 'student',
         ],
     ],
     'components' => [

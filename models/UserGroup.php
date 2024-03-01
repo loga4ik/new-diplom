@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "user_group".
@@ -67,5 +68,14 @@ class UserGroup extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+    public static function getStudentsGroups($role_id = null)
+    {
+        return (new Query)
+            ->select('group_id')
+            ->from('user_group')
+            ->where(['role_id' => $role_id])
+            ->indexBy('user_id')
+            ->column();
     }
 }
