@@ -98,6 +98,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 </li>
             </ul>
         </nav>
+        <!-- hello world -->
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
@@ -191,7 +192,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 <div class="container-fluid">
                     <div class="row">
                         <section class="col-lg-12 connectedSortable">
-                            <?# $content ?>
+                            <?= $content
+                            ?>
                         </section>
                     </div>
                 </div>
@@ -213,10 +215,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         </aside>
         <!-- /.control-sidebar -->
     </div>
-    <!-- <header id="header">
+    <header id="header">
         <h3>шаблон админ</h3>
 
-    </header> -->
+    </header>
 
     <main id="main" class="flex-shrink-0">
         <!--  role="main" -->

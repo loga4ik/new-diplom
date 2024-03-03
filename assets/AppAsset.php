@@ -25,7 +25,6 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         // 'https://unpkg.com/vue@3/dist/vue.global.js'
-        'js/dynamicForms.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

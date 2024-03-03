@@ -1,6 +1,5 @@
 <?php
 
-use app\assets\AppAsset;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\Html;
 use yii\helpers\VarDumper;
@@ -46,7 +45,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <row class="container-items">
-        <?php foreach ($modelsQuestion as $indexQuestion => $modelQuestion): ?>
+        <?php foreach ($modelsQuestion as $indexQuestion => $modelQuestion) : ?>
             <div class="question-item pt-4 pb-4 ps-5 pe-5 mb-2 mt-2">
                 <?php
                 if (!$modelQuestion->isNewRecord) {
@@ -63,47 +62,44 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
                 <? # $this->render('_form-answers', ['form' => $form, 'indexQuestion' => $indexQuestion,'modelsAnswer' => $modelsAnswer[$indexQuestion],]) 
-                    ?>
+                ?>
 
-                <? if (Yii::$app->controller->action->id == 'create'): ?>
-                    <button type="button" class="remove-question btn btn-danger btn-xs">Удалить вопрос</span></button>
+                <? if (Yii::$app->controller->action->id == 'create') : ?>
+                    <button type="button" class="remove-question btn btn-my-red btn-xs">Удалить вопрос</span></button>
                 <? endif; ?>
             </div>
         <?php endforeach; ?>
     </row>
     <div class="row mb-4">
-        <? if (Yii::$app->controller->action->id == 'create'): ?>
+        <? if (Yii::$app->controller->action->id == 'create') : ?>
             <div style="width: auto;">
-                <button type="button" class="add-question btn btn-primary btn-xs">Добавить вопрос</button>
+                <button type="button" class="add-question btn btn-my-green btn-xs">Добавить вопрос</button>
             </div>
         <? endif; ?>
     </div>
     <?php DynamicFormWidget::end(); ?>
 </div>
-
-<? $js = <<<JS
+<script>
+    $(".dynamicform_wrapper").on("beforeInsert", function(e, item) {
+        console.log("beforeInsert");
+    });
 
     $(".dynamicform_wrapper").on("afterInsert", function(e, item) {
-        $(item).find('input,textarea,select').each(function(index,element){
-            if($(element).attr('type') != 'checkbox'){
-                $(element).val('');
-            }
-            // if($(element).attr('type') == 'checkbox'){
-            //     $(element).removeAttr("checked");
-            //     // $(element).addClass('form-check-input');
-            //     // console.log($(element).prop('checked'));
-            // }
-
-            $(element).removeClass('is-valid');
-            $(element).removeClass('is-invalid');
-            let numOfQuestion = element.id.split('-')[1];
-            for( let i = 1; i<=11 ; i++){
-                if( element.id == 'answer-'+ numOfQuestion + '-' + i + '-title' ){
-                    let a_item = $(element).parents('.answer-item');
-                    a_item.remove();
-                }
-            }
-        });
+        console.log("afterInsert");
     });
-JS;
-$this->registerJs($js, \yii\web\View::POS_READY); ?>
+
+    $(".dynamicform_wrapper").on("beforeDelete", function(e, item) {
+        if (!confirm("Are you sure you want to delete this item?")) {
+            return false;
+        }
+        return true;
+    });
+
+    $(".dynamicform_wrapper").on("afterDelete", function(e) {
+        console.log("Deleted item!");
+    });
+
+    $(".dynamicform_wrapper").on("limitReached", function(e, item) {
+        alert("Limit reached");
+    });
+</script>
