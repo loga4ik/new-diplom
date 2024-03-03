@@ -64,14 +64,14 @@ use yii\widgets\ActiveForm;
                 <? # $this->render('_form-answers', ['form' => $form, 'indexQuestion' => $indexQuestion,'modelsAnswer' => $modelsAnswer[$indexQuestion],]) 
                 ?>
 
-                <? if (Yii::$app->request->get()[1]['id'] == 'create') : ?>
+                <? if (Yii::$app->controller->action->id == 'create') : ?>
                     <button type="button" class="remove-question btn btn-my-red btn-xs">Удалить вопрос</span></button>
                 <? endif; ?>
             </div>
         <?php endforeach; ?>
     </row>
     <div class="row mb-4">
-        <? if (Yii::$app->request->get()[1]['id'] == 'create') : ?>
+        <? if (Yii::$app->controller->action->id == 'create') : ?>
             <div style="width: auto;">
                 <button type="button" class="add-question btn btn-my-green btn-xs">Добавить вопрос</button>
             </div>

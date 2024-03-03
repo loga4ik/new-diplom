@@ -212,14 +212,109 @@ class CreateTestController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelTest = $this->findModel($id);
+        $modelsQuestion = $modelTest->questions;
+        $modelsAnswer = [];
+        $oldAnswers = [];
+        $levels = QuestionLevel::getLevels();
+        $types = AnswerType::getTypes();
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (!empty($modelsQuestion)) {
+            foreach ($modelsQuestion as $indexQuestion => $modelQuestion) {
+                $answers = $modelQuestion->answers;
+                $modelsAnswer[$indexQuestion] = $answers;
+                $oldAnswers = ArrayHelper::merge(ArrayHelper::index($answers, 'id'), $oldAnswers);
+            }
+        }
+
+        if ($modelTest->load(Yii::$app->request->post())) {
+            $modelsAnswer = [];
+            $oldQuestionIDs = ArrayHelper::map($modelsQuestion, 'id', 'id');
+            $modelsQuestion = Model::createMultiple(Question::class, $modelsQuestion);
+            Model::loadMultiple($modelsQuestion, Yii::$app->request->post());
+            $deletedQuestionIDs = array_diff($oldQuestionIDs, array_filter(ArrayHelper::map($modelsQuestion, 'id', 'id')));
+
+            $valid = $modelTest->validate();
+            $valid = Model::validateMultiple($modelsQuestion) && $valid;
+
+            $answersIDs = [];
+
+            if (isset($_POST['Answer'][0][0])) {
+                foreach ($_POST['Answer'] as $indexQuestion => $answers) {
+                    $answersIDs = ArrayHelper::merge($answersIDs, array_filter(ArrayHelper::getColumn($answers, 'id')));
+                    foreach ($answers as $indexAnswer => $answer) {
+                        $data['Answer'] = $answer;
+                        $modelAnswer = (isset($answer['id']) && isset($oldAnswers[$answer['id']])) ? $oldAnswers[$answer['id']] : new Answer;
+                        $modelAnswer->load($data);
+                        $modelsAnswer[$indexQuestion][$indexAnswer] = $modelAnswer;
+                        foreach ($modelsQuestion as $modelQuestion) {
+                            if ($modelQuestion->type_id == AnswerType::getTypeId('Ввод ответа от студента')) {
+                                $modelAnswer->scenario = $modelAnswer::SKIP_ANSWER;
+                            }
+                        }
+                        $valid = $modelAnswer->validate();
+                    }
+                }
+            }
+
+            $oldAnswersIDs = ArrayHelper::getColumn($oldAnswers, 'id');
+            $deletedAnswersIDs = array_diff($oldAnswersIDs, $answersIDs);
+
+            if ($valid) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $modelTest->save(false)) {
+
+                        if (!empty($deletedAnswersIDs)) {
+                            Answer::deleteAll(['id' => $deletedAnswersIDs]);
+                        }
+
+                        if (!empty($deletedQuestionIDs)) {
+                            Question::deleteAll(['id' => $deletedQuestionIDs]);
+                        }
+
+                        foreach ($modelsQuestion as $indexQuestion => $modelQuestion) {
+
+                            if ($flag === false) {
+                                break;
+                            }
+
+                            $modelQuestion->test_id = $modelTest->id;
+
+                            if (!($flag = $modelQuestion->save(false))) {
+                                break;
+                            }
+
+                            if (isset($modelsAnswer[$indexQuestion]) && is_array($modelsAnswer[$indexQuestion])) {
+                                foreach ($modelsAnswer[$indexQuestion] as $indexAnswer => $modelAnswer) {
+                                    $modelAnswer->question_id = $modelQuestion->id;
+
+                                    if (!($flag = $modelAnswer->save(false))) {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $modelTest->id]);
+                    } else {
+                        $transaction->rollBack();
+                    }
+                } catch (ErrorException $e) {
+                    $transaction->rollBack();
+                }
+            }
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'modelTest' => $modelTest,
+            'modelsQuestion' => (empty($modelsQuestion)) ? [new Question] : $modelsQuestion,
+            'modelsAnswer' => (empty($modelsAnswer)) ? [[new Answer]] : $modelsAnswer,
+            'levels' => $levels,
+            'types' => $types
         ]);
     }
 
