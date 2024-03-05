@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "subject".
@@ -52,5 +53,13 @@ class Subject extends \yii\db\ActiveRecord
     public function getTests()
     {
         return $this->hasMany(Test::class, ['subject_id' => 'id']);
+    }
+    public static function getAllSubject()
+    {
+        return (new Query())
+            ->select('title')
+            ->from('subject')
+            ->indexBy('id')
+            ->column();
     }
 }

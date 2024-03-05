@@ -8,9 +8,9 @@ use yii\data\ActiveDataProvider;
 use app\models\User;
 
 /**
- * StudentSeach represents the model behind the search form of `app\models\User`.
+ * StudentSearch represents the model behind the search form of `app\models\User`.
  */
-class StudentSeach extends User
+class StudentSearch extends User
 {
     /**
      * {@inheritdoc}
@@ -60,7 +60,7 @@ class StudentSeach extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'role_id' => Role::getRoleId('student'),//3
+            'role_id' => Role::getRoleId('student'), //3
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

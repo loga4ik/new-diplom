@@ -10,7 +10,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-// /** @var app\modules\manager\models\UserSeach $searchModel */
+// /** @var app\modules\manager\models\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Преподаватели';
@@ -27,7 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </p> -->
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);                ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);                
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -51,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => '',
                 'format' => 'html',
-                'value' => fn($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-primary'])
+                'value' => fn ($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-primary'])
             ],
         ],
     ]); ?>

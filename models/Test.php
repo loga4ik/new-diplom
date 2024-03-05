@@ -85,4 +85,28 @@ class Test extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Subject::class, ['id' => 'subject_id']);
     }
+    public static function getTestMaxPoints($id)
+    {
+        $questions_count = Test::findOne($id)->questions_count;
+
+        $mid_level_id = QuestionLevel::getLevelId('Средний');
+        $hard_level_id = QuestionLevel::getLevelId('Сложный');
+
+        $mid_questions = Question::find()
+            ->where(['test_id' => $id, 'level_id' => $mid_level_id])
+            ->count();
+        $hard_questions = Question::find()
+            ->where(['test_id' => $id, 'level_id' => $hard_level_id])
+            ->count();
+
+        if ($hard_questions >= $questions_count - 2) {
+            $max_points = $questions_count * 3 - 2;
+        } elseif ($hard_questions < $questions_count - 2 && $mid_questions >= $questions_count - $hard_questions) {
+            $max_points = $questions_count * 2 + $hard_questions;
+        } elseif ($hard_questions < $questions_count - 2 && $mid_questions < $questions_count - $hard_questions) {
+            $max_points = $hard_questions * 2 + $mid_questions + $questions_count;
+        }
+
+        return $max_points;
+    }
 }

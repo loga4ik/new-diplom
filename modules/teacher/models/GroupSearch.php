@@ -7,9 +7,9 @@ use yii\data\ActiveDataProvider;
 use app\models\Group;
 
 /**
- * GroupSeach represents the model behind the search form of `app\models\Group`.
+ * GroupSearch represents the model behind the search form of `app\models\Group`.
  */
-class GroupSeach extends Group
+class GroupSearch extends Group
 {
     /**
      * {@inheritdoc}

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\modules\teacher\models\StudentSeach $model */
+/** @var app\modules\teacher\models\StudentSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -28,15 +28,20 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'login') ?>
 
-    <?php // echo $form->field($model, 'password') ?>
+    <?php // echo $form->field($model, 'password') 
+    ?>
 
-    <?php // echo $form->field($model, 'email') ?>
+    <?php // echo $form->field($model, 'email') 
+    ?>
 
-    <?php // echo $form->field($model, 'phone') ?>
+    <?php // echo $form->field($model, 'phone') 
+    ?>
 
-    <?php // echo $form->field($model, 'role_id') ?>
+    <?php // echo $form->field($model, 'role_id') 
+    ?>
 
-    <?php // echo $form->field($model, 'auth_key') ?>
+    <?php // echo $form->field($model, 'auth_key') 
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

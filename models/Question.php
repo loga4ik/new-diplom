@@ -20,6 +20,7 @@ use Yii;
  */
 class Question extends \yii\db\ActiveRecord
 {
+    public $imageFile;
     /**
      * {@inheritdoc}
      */
@@ -34,7 +35,7 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['text', 'points_per_question', 'image', 'level_id', 'test_id'], 'required'],
+            [['text', 'level_id', 'test_id'], 'required'],
             [['text'], 'string'],
             [['points_per_question', 'level_id', 'test_id'], 'integer'],
             [['image'], 'string', 'max' => 255],

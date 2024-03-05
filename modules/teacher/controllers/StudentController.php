@@ -5,7 +5,7 @@ namespace app\modules\teacher\controllers;
 use app\models\Role;
 use app\models\User;
 use app\models\UserGroup;
-use app\modules\teacher\models\StudentSeach;
+use app\modules\teacher\models\StudentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,15 +41,15 @@ class StudentController extends Controller
      */
     public function actionIndex($group_id = null)
     {
-        $searchModel = new StudentSeach();
+        $searchModel = new StudentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        $groups = UserGroup::getStudentsGroups(Role::getRoleId('student'));
+        // $groups = UserGroup::getStudentsGroups(Role::getRoleId('student'));
         if ($group_id) {
             $users_arr = [];
             foreach (UserGroup::findAll(['group_id' => $group_id]) as $value) {
                 $users_arr[] = $value->user_id;
             }
-            $dataProvider->query->andWhere(['id' => $users_arr]);//, 'role' => 1
+            $dataProvider->query->andWhere(['id' => $users_arr]); //, 'role' => 1
         }
 
         return $this->render('index', [

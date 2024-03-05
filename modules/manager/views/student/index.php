@@ -8,7 +8,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var app\modules\manager\models\StudentSeach $searchModel */
+/** @var app\modules\manager\models\StudentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Users';
@@ -25,7 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -45,8 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
-                        return Url::toRoute([$action, 'id' => $model->id]);
-                    }
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                }
             ],
         ],
     ]); ?>

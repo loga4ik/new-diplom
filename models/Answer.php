@@ -19,6 +19,8 @@ use Yii;
  */
 class Answer extends \yii\db\ActiveRecord
 {
+    const SKIP_ANSWER = 'skip_answer';
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +35,7 @@ class Answer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'is_true', 'question_id', 'type_id'], 'required'],
+            [['title'], 'required', 'except' => self::SKIP_ANSWER],
             [['title'], 'string'],
             [['is_true', 'question_id', 'type_id'], 'integer'],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Question::class, 'targetAttribute' => ['question_id' => 'id']],
@@ -83,5 +85,9 @@ class Answer extends \yii\db\ActiveRecord
     public function getType()
     {
         return $this->hasOne(AnswerType::class, ['id' => 'type_id']);
+    }
+    public static function getLevels()
+    {
+        return static::find()->select('title')->indexBy('id')->column();
     }
 }

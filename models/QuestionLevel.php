@@ -62,4 +62,8 @@ class QuestionLevel extends \yii\db\ActiveRecord
             ->indexBy('id')
             ->column();
     }
+    public static function getLevelId($title)
+    {
+        return static::findOne(['title' => $title])->id;
+    }
 }

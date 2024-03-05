@@ -5,7 +5,7 @@ namespace app\modules\manager\controllers;
 use app\models\Group;
 use app\models\User;
 use app\models\UserGroup;
-use app\modules\manager\models\StudentSeach;
+use app\modules\manager\models\StudentSearch;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -42,7 +42,7 @@ class StudentController extends Controller
      */
     public function actionIndex($group_id = null)
     {
-        $searchModel = new StudentSeach();
+        $searchModel = new StudentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         if ($group_id) {
@@ -50,7 +50,7 @@ class StudentController extends Controller
             foreach (UserGroup::findAll(['group_id' => $group_id]) as $value) {
                 $users_arr[] = $value->user_id;
             }
-            $dataProvider->query->andWhere(['id' => $users_arr]);//, 'role' => 1
+            $dataProvider->query->andWhere(['id' => $users_arr]); //, 'role' => 1
         }
 
         return $this->render('index', [

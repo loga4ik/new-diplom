@@ -3,7 +3,7 @@
 namespace app\modules\manager\controllers;
 
 use app\models\UserGroup;
-use app\modules\manager\models\UserGroupSeach;
+use app\modules\manager\models\UserGroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,7 +38,7 @@ class UserGroupController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserGroupSeach();
+        $searchModel = new UserGroupSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [

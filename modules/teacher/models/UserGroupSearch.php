@@ -7,9 +7,9 @@ use yii\data\ActiveDataProvider;
 use app\models\UserGroup;
 
 /**
- * UserGroupSeach represents the model behind the search form of `app\models\UserGroup`.
+ * UserGroupSearch represents the model behind the search form of `app\models\UserGroup`.
  */
-class UserGroupSeach extends UserGroup
+class UserGroupSearch extends UserGroup
 {
     /**
      * {@inheritdoc}

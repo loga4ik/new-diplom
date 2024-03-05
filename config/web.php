@@ -9,6 +9,8 @@ $config = [
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
     // 'defaultRoute' => 'site/login',
+    'layout' => 'mainLayout',
+
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -61,8 +63,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
     ],
     'params' => $params,

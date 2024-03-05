@@ -8,7 +8,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var app\modules\teacher\models\GroupSeach $searchModel */
+/** @var app\modules\teacher\models\GroupSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Groups';
@@ -25,7 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);           ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);           
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -38,13 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'format' => 'html',
-                'value' => fn($model) => html::a($model->title, ['./student', 'group_id' => $model->id], ['class' => 'btn btn-primary'])
+                'value' => fn ($model) => html::a($model->title, ['./student', 'group_id' => $model->id], ['class' => 'btn btn-primary'])
             ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Group $model, $key, $index, $column) {
-                        return Url::toRoute([$action, 'id' => $model->id]);
-                    }
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                }
             ],
         ],
     ]); ?>

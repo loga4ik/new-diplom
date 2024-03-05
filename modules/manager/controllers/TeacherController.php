@@ -6,8 +6,8 @@ use app\models\Group;
 use app\models\Role;
 use app\models\User;
 use app\models\UserGroup;
-use app\modules\manager\models\TeacherSeach;
-// use app\modules\manager\models\TeacherSeach;
+use app\modules\manager\models\TeacherSearch;
+// use app\modules\manager\models\TeacherSearch;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -47,7 +47,7 @@ class TeacherController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TeacherSeach();
+        $searchModel = new TeacherSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -69,8 +69,7 @@ class TeacherController extends Controller
         $userGroupArr = [];
         foreach ($userGroup as $value) {
             $userGroupArr[] = $value->group_id;
-        }
-        ;
+        };
         return $this->render('view', [
             'model' => $model,
             'userGroupArr' => $userGroupArr,
@@ -119,7 +118,6 @@ class TeacherController extends Controller
                         $model->group_id && $addGroup($model);
                     }
                     return $this->redirect('../');
-
                 } else {
                     $generateAttributes($model);
                     if ($model->save()) {
@@ -170,7 +168,6 @@ class TeacherController extends Controller
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->user_id]);
             }
-
         }
 
         return $this->render('editingGroup', [

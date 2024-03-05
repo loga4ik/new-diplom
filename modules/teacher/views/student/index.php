@@ -8,7 +8,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var app\modules\teacher\models\StudentSeach $searchModel */
+/** @var app\modules\teacher\models\StudentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Users';
@@ -21,11 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
     </h1>
 
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('добавить студента', ['../teacher/teacher/create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -42,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => '',
                 'format' => 'html',
-                'value' => fn($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-primary'])
+                'value' => fn ($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-primary'])
             ],
         ],
     ]); ?>

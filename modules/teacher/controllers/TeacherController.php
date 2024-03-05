@@ -6,12 +6,13 @@ use app\models\Group;
 use app\models\Role;
 use app\models\User;
 use app\models\UserGroup;
-use app\modules\teacher\models\TeacherSeach;
+use app\modules\teacher\models\QuestionSearch;
+use app\modules\teacher\models\TeacherSearch;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\VarDumper;
+// use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 
 use function PHPUnit\Framework\isNull;
@@ -46,7 +47,7 @@ class TeacherController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TeacherSeach();
+        $searchModel = new TeacherSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -106,16 +107,16 @@ class TeacherController extends Controller
                         $model->group_id && $addGroup($model);
                     }
                     return $this->redirect('../');
-
-                } else {
-                    $model->login = Yii::$app->security->generateRandomString(6);
-                    $model->password = Yii::$app->security->generateRandomString(6);
-                    $model->auth_key = Yii::$app->security->generateRandomString();
-                    $model->role_id = Role::getRoleId('teacher');
-                    if ($model->save()) {
-                        $model->group_id && $addGroup($model);
-                        return $this->redirect(['view', 'id' => $model->id]);
-                    }
+                }
+                return $this->redirect('../');
+            } else {
+                $model->login = Yii::$app->security->generateRandomString(6);
+                $model->password = Yii::$app->security->generateRandomString(6);
+                $model->auth_key = Yii::$app->security->generateRandomString();
+                $model->role_id = Role::getRoleId('teacher');
+                if ($model->save()) {
+                    $model->group_id && $addGroup($model);
+                    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         } else {

@@ -62,4 +62,8 @@ class AnswerType extends \yii\db\ActiveRecord
             ->indexBy('id')
             ->column();
     }
+    public static function getTypeId($title)
+    {
+        return static::findOne(['title' => $title])->id;
+    }
 }

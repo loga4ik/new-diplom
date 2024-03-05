@@ -3,7 +3,7 @@
 namespace app\modules\teacher\controllers;
 
 use app\models\Group;
-use app\modules\teacher\models\GroupSeach;
+use app\modules\teacher\models\GroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,7 +38,7 @@ class GroupController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new GroupSeach();
+        $searchModel = new GroupSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
