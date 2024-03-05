@@ -98,6 +98,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 </li>
             </ul>
         </nav>
+<!-- hello world -->
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
