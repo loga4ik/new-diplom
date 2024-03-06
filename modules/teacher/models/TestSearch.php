@@ -9,7 +9,7 @@ use app\models\Test;
 /**
  * TestSerch represents the model behind the search form of `app\models\Test`.
  */
-class TestSerch extends Test
+class TestSearch extends Test
 {
     /**
      * {@inheritdoc}

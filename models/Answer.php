@@ -39,7 +39,7 @@ class Answer extends \yii\db\ActiveRecord
             [['title'], 'string'],
             [['is_true', 'question_id', 'type_id'], 'integer'],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Question::class, 'targetAttribute' => ['question_id' => 'id']],
-            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnswerType::class, 'targetAttribute' => ['type_id' => 'id']],
+            // [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnswerType::class, 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -77,15 +77,6 @@ class Answer extends \yii\db\ActiveRecord
         return $this->hasMany(StudentAnswer::class, ['ansuer_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Type]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getType()
-    {
-        return $this->hasOne(AnswerType::class, ['id' => 'type_id']);
-    }
     public static function getLevels()
     {
         return static::find()->select('title')->indexBy('id')->column();

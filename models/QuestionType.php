@@ -6,21 +6,21 @@ use Yii;
 use yii\db\Query;
 
 /**
- * This is the model class for table "answer_type".
+ * This is the model class for table "question_type".
  *
  * @property int $id
  * @property string $title
  *
- * @property Answer[] $answers
+ * @property Question[] $questions
  */
-class AnswerType extends \yii\db\ActiveRecord
+class QuestionType extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'answer_type';
+        return 'question_type';
     }
 
     /**
@@ -46,19 +46,19 @@ class AnswerType extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Answers]].
+     * Gets query for [[Questions]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAnswers()
+    public function getQuestions()
     {
-        return $this->hasMany(Answer::class, ['type_id' => 'id']);
+        return $this->hasMany(Question::class, ['type_id' => 'id']);
     }
     public static function getTypes()
     {
         return (new Query())
             ->select('title')
-            ->from('answer_type')
+            ->from('question_type')
             ->indexBy('id')
             ->column();
     }
