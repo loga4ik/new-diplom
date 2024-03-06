@@ -6,21 +6,23 @@ use app\models\Level;
 use app\models\Test;
 use app\models\Question;
 use app\models\Answer;
-use app\models\TestSerch;
-use app\models\AnswerType;
+use app\models\QuestionType;
 use yii\web\NotFoundHttpException;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\base\Model;
 use app\models\QuestionLevel;
 use app\models\Type;
+use app\modules\teacher\models\CreateTestSearch;
 use yii\base\ErrorException;
+use yii\helpers\VarDumper;
+use yii\web\Controller;
 use yii\web\UploadedFile;
 
 /**
  * TestController implements the CRUD actions for Test model.
  */
-class TestController
+class TestController extends Controller
 {
     /**
      * Lists all Test models.
@@ -29,7 +31,7 @@ class TestController
      */
     public function actionIndex()
     {
-        $searchModel = new TestSerch();
+        $searchModel = new CreateTestSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -65,14 +67,15 @@ class TestController
     public function actionCreate()
     {
         $levels = QuestionLevel::getLevels();
-        $types = AnswerType::getTypes();
+        $types = QuestionType::getTypes();
         $modelTest = new Test;
         $modelsQuestion = [new Question];
         $modelsAnswer = [[new Answer]];
 
 
+        // VarDumper::dump($modelTest, 10, true);
+        // die;
         if ($modelTest->load(Yii::$app->request->post())) {
-
             $modelsQuestion = Model::createMultiple(Question::class);
             Model::loadMultiple($modelsQuestion, Yii::$app->request->post());
 
@@ -88,7 +91,7 @@ class TestController
                         $modelAnswer->load($data);
                         $modelsAnswer[$indexQuestion][$indexAnswer] = $modelAnswer;
                         foreach ($modelsQuestion as $modelQuestion) {
-                            if ($modelsQuestion[$indexQuestion]->type_id == AnswerType::getTypeId('Ввод ответа от студента')) {
+                            if ($modelsQuestion[$indexQuestion]->type_id == QuestionType::getTypeId('Ввод ответа от студента')) {
                                 $modelAnswer->scenario = $modelAnswer::SKIP_ANSWER;
                                 $modelAnswer->true_false = 1;
                             }
@@ -100,6 +103,7 @@ class TestController
 
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
+
                 try {
 
                     if ($flag = $modelTest->save(false)) {
@@ -142,7 +146,7 @@ class TestController
                                 }
                             }
 
-                            if ($modelQuestion->type_id == AnswerType::getTypeId('Несколько правильных ответов')) {
+                            if ($modelQuestion->type_id == QuestionType::getTypeId('Несколько правильных ответов')) {
                                 if ($counter <= 1) {
                                     Yii::$app->session->setFlash('error', 'Необходимо указать несколько вариантов ответа в вопросе №' . $indexQuestion + 1);
                                     $flag = false;
@@ -192,7 +196,7 @@ class TestController
         $modelsAnswer = [];
         $oldAnswers = [];
         $levels = QuestionLevel::getLevels();
-        $types = AnswerType::getTypes();
+        $types = QuestionType::getTypes();
 
         if (!empty($modelsQuestion)) {
             foreach ($modelsQuestion as $indexQuestion => $modelQuestion) {
@@ -223,7 +227,7 @@ class TestController
                         $modelAnswer->load($data);
                         $modelsAnswer[$indexQuestion][$indexAnswer] = $modelAnswer;
                         foreach ($modelsQuestion as $modelQuestion) {
-                            if ($modelQuestion->type_id == AnswerType::getTypeId('Ввод ответа от студента')) {
+                            if ($modelQuestion->type_id == QuestionType::getTypeId('Ввод ответа от студента')) {
                                 $modelAnswer->scenario = $modelAnswer::SKIP_ANSWER;
                             }
                         }

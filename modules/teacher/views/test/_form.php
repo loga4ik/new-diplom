@@ -12,18 +12,20 @@ use yii\bootstrap5\Modal;
 
 <div class="test-form">
     <?php $form = ActiveForm::begin(
-        ['id' => 'dynamic-form',
-        ]); ?>
+        [
+            'id' => 'dynamic-form',
+        ]
+    ); ?>
 
     <div class="row">
         <div class="col-sm-6">
             <?= $form->field($modelTest, 'title')->textInput(['maxlength' => true]) ?>
         </div>
-        
+
     </div>
     <div class="row">
         <div class="col-8">
-                <?= $form->field($modelTest, 'questions_count')->textInput(['type' => 'number','style' => 'width: 20% !important;']) ?>
+            <?= $form->field($modelTest, 'question_count')->textInput(['type' => 'number', 'style' => 'width: 20% !important;']) ?>
         </div>
     </div>
     <?php DynamicFormWidget::begin([
@@ -38,60 +40,60 @@ use yii\bootstrap5\Modal;
         'formId' => 'dynamic-form',
         'formFields' => [
             'imageFile',
-            'title',
+            'text',
             'level_id',
             'type_id'
         ],
     ]); ?>
 
     <row class="container-items">
-        <?php foreach ($modelsQuestion as $indexQuestion => $modelQuestion): ?>
-            <div class="question-item pt-4 pb-4 ps-5 pe-5 mb-2 mt-2" >
-            <?php
-                if (! $modelQuestion->isNewRecord) {
+        <?php foreach ($modelsQuestion as $indexQuestion => $modelQuestion) : ?>
+            <div class="question-item pt-4 pb-4 ps-5 pe-5 mb-2 mt-2">
+                <?php
+                if (!$modelQuestion->isNewRecord) {
                     echo Html::activeHiddenInput($modelQuestion, "[{$indexQuestion}]id");
                 }
-            ?>
+                ?>
                 <div class="row">
-                 <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput()->label('Приложение к вопросу') ?> 
+                    <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput()->label('Приложение к вопросу') ?>
                     <div class="col-6">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]title")->label('Текст вопроса')->textarea(['maxlength' => true]) ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]text")->label('Текст вопроса')->textarea(['maxlength' => true]) ?>
                     </div>
                     <div class="col-3">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]level_id")->label('Сложность вопроса')->dropDownList($levels, ['prompt' => 'Сложность вопроса'])?> 
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]level_id")->label('Сложность вопроса')->dropDownList($levels, ['prompt' => 'Сложность вопроса']) ?>
                     </div>
                     <div class="col-3">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->label('Тип вопроса')->dropDownList($types, ['prompt' => 'Тип вопроса'])?> 
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->label('Тип вопроса')->dropDownList($types, ['prompt' => 'Тип вопроса']) ?>
                     </div>
                 </div>
-            <?= $this->render('_form-answers', [
-                'form' => $form,
-                'indexQuestion' => $indexQuestion,
-                'modelsAnswer' => $modelsAnswer[$indexQuestion],
-            ]) ?>
+                <? $this->render('_form-answers', [
+                    'form' => $form,
+                    'indexQuestion' => $indexQuestion,
+                    'modelsAnswer' => $modelsAnswer[$indexQuestion],
+                ]) ?>
 
-        <? if(Yii::$app->controller->action->id == 'create'): ?>
-            <button type="button" class="remove-question btn btn-my-red btn-xs">Удалить вопрос</span></button>
-        <?endif;?>
-        </div>
-<?php endforeach; ?>
+                <? if (Yii::$app->controller->action->id == 'create') : ?>
+                    <button type="button" class="remove-question btn btn-my-red btn-xs">Удалить вопрос</span></button>
+                <? endif; ?>
+            </div>
+        <?php endforeach; ?>
     </row>
     <div class="row mb-4">
-        <? if(Yii::$app->controller->action->id == 'create'): ?>
+        <? if (Yii::$app->controller->action->id == 'create') : ?>
             <div style="width: auto;">
-                <button type="button" class="add-question btn btn-my-green btn-xs" >Добавить вопрос</button>
+                <button type="button" class="add-question btn btn-my-green btn-xs">Добавить вопрос</button>
             </div>
-        <?endif;?>
+        <? endif; ?>
     </div>
     <?php DynamicFormWidget::end(); ?>
     <div class="form-group">
         <?= Html::submitButton(Yii::$app->controller->action->id == 'create' ? 'Создать' : 'Изменить', ['class' => 'btn btn-my-blue']) ?>
     </div>
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 </div>
 
 
-<?$js=<<< JS
+<? $js = <<< JS
 
     $(".dynamicform_wrapper").on("afterInsert", function(e, item) {
         $(item).find('input,textarea,select').each(function(index,element){
@@ -120,4 +122,4 @@ use yii\bootstrap5\Modal;
     
     
 JS;
-$this->registerJs($js, \yii\web\View::POS_READY);?>  
+$this->registerJs($js, \yii\web\View::POS_READY); ?>

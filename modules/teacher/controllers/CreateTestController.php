@@ -81,7 +81,7 @@ class CreateTestController extends Controller
     public function actionCreate()
     {
 
-        $levels = QuestionLevel::getLevels();
+        $levels = Answer::getLevels();
         $types = AnswerType::getTypes();
         $modelTest = new Test();
         $modelsQuestion = [new Question()];

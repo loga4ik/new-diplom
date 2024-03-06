@@ -9,7 +9,7 @@ $config = [
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
     // 'defaultRoute' => 'site/login',
-    'layout' => 'mainLayout',
+    // 'layout' => 'mainLayout',
 
     'aliases' => [
         '@bower' => '@vendor/bower-asset',

@@ -12,7 +12,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-// use yii\helpers\VarDumper;
+use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 
 use function PHPUnit\Framework\isNull;
