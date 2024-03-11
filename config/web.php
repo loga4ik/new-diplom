@@ -9,7 +9,7 @@ $config = [
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
     // 'defaultRoute' => 'site/login',
-    // 'layout' => 'mainLayout',
+    'layout' => 'mainLayout',
 
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -23,6 +23,9 @@ $config = [
         'teacher' => [
             'class' => 'app\modules\teacher\Module',
             'defaultRoute' => 'student',
+        ],
+        'student' => [
+            'class' => 'app\modules\student\Module',
         ],
     ],
     'components' => [

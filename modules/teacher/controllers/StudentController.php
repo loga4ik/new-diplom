@@ -3,6 +3,7 @@
 namespace app\modules\teacher\controllers;
 
 use app\models\Role;
+use app\models\StudentTest;
 use app\models\User;
 use app\models\UserGroup;
 use app\modules\teacher\models\StudentSearch;
@@ -55,6 +56,7 @@ class StudentController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'arrOfMarks' => StudentTest::getAllUserIdMark(),
             // 'groups' => $groups,
         ]);
     }

@@ -11,7 +11,9 @@ use yii\bootstrap5\NavBar;
 use yii\helpers\Html;
 
 if (Yii::$app->user->isGuest) {
-    $navLinks = [''];
+    $navLinks = [
+        // ['label' => 'войти', 'url' => ['/site/login']]
+    ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('manager')) {
     $navLinks = [
         ['label' => 'преподаватели', 'url' => ['/manager']],
@@ -24,6 +26,12 @@ if (Yii::$app->user->isGuest) {
         ['label' => 'добавление студента', 'url' => ['/teacher/teacher/create']],
         ['label' => 'группы', 'url' => ['/teacher/group']],
         ['label' => 'тесты', 'url' => ['/teacher/create-test']],
+    ];
+} elseif (Yii::$app->user->identity->role_id == Role::getRoleId('student')) {
+    $navLinks = [
+        ['label' => 'личный кабинет', 'url' => ['/student']],
+        // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
+        // ['label' => 'группы', 'url' => ['/manager/group']],
     ];
 }
 
@@ -117,8 +125,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="info">
                         <div class="d-block" style="color: #C7CAD2FF;">
-                            login:
-                            <?= Yii::$app->user->identity->login
+                            role:
+                            <?= Yii::$app->user->identity->login ?? 'необходимо войти'
                             ?>
                         </div>
                     </div>
@@ -128,66 +136,28 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                        <li class="nav-header">EXAMPLES:</li>
-
                         <?php
                         $getNavLinks = function ($navLinks) {
                             $string = '';
-                            foreach ($navLinks as $key => $value) {
-                                $string .=  "<li class='nav-item'>
-                                <a class='nav-link' href=" . $value['url'][0] . "><p>" . $value['label'] . "</p></a>
-                                </li>";
+                            if (!is_null($navLinks)) {
+                                # code...
+                                foreach ($navLinks as $value) {
+                                    $string .=  "<li class='nav-item'>
+                                    <a class='nav-link' href=" . $value['url'][0] . "><p>" . $value['label'] . "</p></a>
+                                    </li>";
+                                }
                             }
                             return $string;
                         };
                         ?>
                         <?= $getNavLinks($navLinks) ?>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-envelope"></i>
-                                <p>
-                                    Mailbox
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/mailbox/mailbox.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inbox</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/mailbox/compose.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Compose</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/mailbox/read-mail.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Read</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-
-            <!-- /.content-header -->
-
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -198,9 +168,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     </div>
                 </div>
             </section>
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
         <!-- <footer class="main-footer">
             <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
             All rights reserved.
@@ -209,11 +177,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             </div>
         </footer> -->
 
-        <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
         </aside>
-        <!-- /.control-sidebar -->
     </div>
     <header id="header">
         <h3>шаблон админ</h3>
@@ -221,7 +186,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     </header>
 
     <main id="main" class="flex-shrink-0">
-        <!--  role="main" -->
     </main>
 
     <?php $this->registerJs("$.widget.bridge('uibutton', $.ui.button)") ?>

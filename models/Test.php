@@ -109,4 +109,12 @@ class Test extends \yii\db\ActiveRecord
 
         return $max_points;
     }
+    public static function getTestTitle($id)
+    {
+        return self::findOne(['id' => $id])->title;
+    }
+    public static function getTestSubject($id)
+    {
+        return Subject::findOne(['test_id', self::findOne(['id' => $id])->subject_id])->title;
+    }
 }

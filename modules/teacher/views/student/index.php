@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\VarDumper;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
@@ -25,7 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  
+    <?php
+    $getAvarageMark = function ($user_id, $arrOfMarks) {
+        $marks = [];
+        $averageMark = 0;
+        foreach ($arrOfMarks as $value) {
+            if ($value['user_id'] == $user_id) {
+                $marks[] = $value['mark'];
+            }
+        }
+        $averageMark = round(array_sum($marks) / count($marks), 2);
+        return $averageMark;
+    };
     ?>
 
     <?= GridView::widget([
@@ -39,6 +51,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'login',
                 'filter' => false,
+            ],
+            [
+                'label' => 'средний балл',
+                'visible' => (bool)$arrOfMarks,
+                'value' => fn ($model) => $getAvarageMark($model->id, $arrOfMarks)
             ],
             [
                 'label' => '',
