@@ -114,4 +114,22 @@ class StudentTest extends \yii\db\ActiveRecord
         // $res = array_unique($res);
         // return $res;
     }
+    public static function getTestResults($test_id)
+    {
+        return (new Query())
+            ->select('mark')
+            ->where(['test_id' => $test_id])
+            ->from('student_test')
+            ->indexBy('id')
+            ->column();
+    }
+    public static function getStudentsResults($user_id)
+    {
+        return (new Query())
+            ->select('mark')
+            ->where(['user_id' => $user_id])
+            ->from('student_test')
+            ->indexBy('id')
+            ->column();
+    }
 }

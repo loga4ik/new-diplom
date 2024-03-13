@@ -180,10 +180,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>
-    <header id="header">
-        <h3>шаблон админ</h3>
-
-    </header>
 
     <main id="main" class="flex-shrink-0">
     </main>
