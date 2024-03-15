@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 /** @var app\modules\teacher\models\StudentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Users';
+$this->title = 'Список студентов';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -43,13 +43,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'summary' => false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'surname',
-            'name',
+            [
+                'attribute' => 'surname',
+                'enableSorting' => false,
+                'value' => fn ($model) => $model->surname,
+            ],
+            [
+                'attribute' => 'name',
+                'enableSorting' => false,
+                'value' => fn ($model) => $model->name,
+            ],
             [
                 'attribute' => 'login',
+                'enableSorting' => false,
                 'filter' => false,
             ],
             [

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "group_test".
@@ -67,5 +68,14 @@ class GroupTest extends \yii\db\ActiveRecord
     public function getTest()
     {
         return $this->hasOne(Test::class, ['id' => 'test_id']);
+    }
+    public static function getArrOfPassedTestUsers($test_id)
+    {
+        $testingGroup = (new Query())
+            ->select('group_id')
+            ->where(['test_id' => $test_id])
+            ->from('group_test')
+            ->indexBy('id')
+            ->column();
     }
 }

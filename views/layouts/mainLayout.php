@@ -12,24 +12,24 @@ use yii\helpers\Html;
 
 if (Yii::$app->user->isGuest) {
     $navLinks = [
-        // ['label' => 'войти', 'url' => ['/site/login']]
+        ['label' => 'войти', 'url' => ['/site/login']]
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('manager')) {
     $navLinks = [
-        ['label' => 'преподаватели', 'url' => ['/manager']],
-        ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
-        ['label' => 'группы', 'url' => ['/manager/group']],
+        ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>преподаватели</p>', 'url' => ['/manager']],
+        ['label' => '<i class="nav-icon fi fi-rr-user-add"></i> <p>добавление преподавателя</p>', 'url' => ['/manager/teacher/create']],
+        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/manager/group']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('teacher')) {
     $navLinks = [
-        ['label' => 'студенты', 'url' => ['/teacher']],
-        ['label' => 'добавление студента', 'url' => ['/teacher/teacher/create']],
-        ['label' => 'группы', 'url' => ['/teacher/group']],
-        ['label' => 'тесты', 'url' => ['/teacher/create-test']],
+        ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>студенты</p>', 'url' => ['/teacher']],
+        ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/teacher/create']],
+        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/teacher/group']],
+        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/create-test']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('student')) {
     $navLinks = [
-        ['label' => 'личный кабинет', 'url' => ['/student']],
+        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>личный кабинет</p>', 'url' => ['/student']],
         // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
         // ['label' => 'группы', 'url' => ['/manager/group']],
     ];
@@ -61,80 +61,72 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="adminlte/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="/web/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light h-2">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <?= Html::a('каталог', ['/'], ['class' => 'nav-link']) ?>
-                    <!-- <a href="index3.html" class="nav-link">Home</a> -->
-                </li>
             </ul>
-
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Navbar Search -->
-                <li class="nav-item">
-                    <?php
-                    NavBar::begin([
-                        'options' => ['class' => 'sticky-top']
-                    ]);
-                    echo Nav::widget([
-                        'options' => ['class' => 'navbar-nav'],
-                        'items' => [
-                            // ...$navLinks,
-                            Yii::$app->user->isGuest
-                                ? ['label' => 'Login', 'url' => ['/site/login']]
-                                : '<li class="nav-item">'
-                                . Html::beginForm(['/site/logout'])
-                                . Html::submitButton(
-                                    'Logout (' . Role::getRoleTitle(Yii::$app->user->identity->role_id) . ')',
-                                    ['class' => 'nav-link btn btn-link logout']
-                                )
-                                . Html::endForm()
-                                . '</li>'
-                        ]
-                    ]);
-                    NavBar::end();
-                    ?>
-                </li>
+                <?=
+                Yii::$app->user->isGuest
+                    ? Html::a(
+                        'Войти',
+                        '/site/login',
+                        ['class' => 'nav-link btn btn-link logout']
+                    )
+                    : '<li class="nav-item">'
+                    . Html::beginForm(['/site/logout'])
+                    . Html::submitButton(
+                        'Logout (' . Role::getRoleTitle(Yii::$app->user->identity->role_id) . ')',
+                        ['class' => 'nav-link btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+                ?>
             </ul>
         </nav>
-        <!-- hello world -->
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index3.html" class="brand-link">
+                <img src="/web/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">
+                    <?=
+                    Yii::$app->name;
+                    ?>
+                </span>
+            </a>
 
+            <!-- Sidebar -->
             <div class="sidebar">
-                <a href="<?= Yii::$app->homeUrl ?>" class="brand-link">
-                    <!-- <img src="adminlte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-                    <span class="brand-text font-weight-light">
-                        <?= Yii::$app->name ?>
-                    </span>
-                </a>
-
-                <!-- Sidebar -->
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <!-- <div class="image">
+                        <img src="adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div> -->
                     <div class="info">
-                        <div class="d-block" style="color: #C7CAD2FF;">
-                            role:
+                        <span class="d-block" style="color: #C7CAD2FF;">
+                            роль:
                             <?= Yii::$app->user->identity->login ?? 'необходимо войти'
                             ?>
-                        </div>
+                        </span>
                     </div>
                 </div>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
 
                         <?php
                         $getNavLinks = function ($navLinks) {
@@ -143,7 +135,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                                 # code...
                                 foreach ($navLinks as $value) {
                                     $string .=  "<li class='nav-item'>
-                                    <a class='nav-link' href=" . $value['url'][0] . "><p>" . $value['label'] . "</p></a>
+                                    <a class='nav-link' href=" . $value['url'][0] . ">" . $value['label'] . "</a>
                                     </li>";
                                 }
                             }
@@ -151,24 +143,40 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                         };
                         ?>
                         <?= $getNavLinks($navLinks) ?>
-
                     </ul>
                 </nav>
+                <!-- /.sidebar-menu -->
             </div>
+            <!-- /.sidebar -->
         </aside>
 
+        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+
+            <!-- /.content-header -->
+
+            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <!-- /.row -->
+                    <!-- Main row -->
                     <div class="row">
+                        <!-- Left col -->
                         <section class="col-lg-12 connectedSortable">
-                            <?= $content
-                            ?>
+                            <?= $content ?>
                         </section>
+                        <!-- /.Left col -->
+                        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+
+                        <!-- right col -->
                     </div>
-                </div>
+                    <!-- /.row (main row) -->
+                </div><!-- /.container-fluid -->
             </section>
+            <!-- /.content -->
         </div>
+        <!-- /.content-wrapper -->
         <!-- <footer class="main-footer">
             <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
             All rights reserved.
@@ -177,11 +185,15 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             </div>
         </footer> -->
 
+        <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
         </aside>
+        <!-- /.control-sidebar -->
     </div>
 
     <main id="main" class="flex-shrink-0">
+        <!--  role="main" -->
     </main>
 
     <?php $this->registerJs("$.widget.bridge('uibutton', $.ui.button)") ?>

@@ -118,8 +118,8 @@ class StudentTest extends \yii\db\ActiveRecord
     {
         return (new Query())
             ->select('mark')
-            ->where(['test_id' => $test_id])
             ->from('student_test')
+            ->where(['test_id' => $test_id])
             ->indexBy('id')
             ->column();
     }
@@ -127,8 +127,8 @@ class StudentTest extends \yii\db\ActiveRecord
     {
         return (new Query())
             ->select('mark')
-            ->where(['user_id' => $user_id])
             ->from('student_test')
+            ->where(['user_id' => $user_id])
             ->indexBy('id')
             ->column();
     }
