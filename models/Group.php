@@ -55,12 +55,17 @@ class Group extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::class, ['group_id' => 'id']);
     }
-    public static function getGroupTitle()
+    public static function getAllGroupTitle()
     {
         return (new Query())
             ->select('title')
             ->from('group')
             ->indexBy('id')
             ->column();
+    }
+
+    public static function getGroupTitle($group_id)
+    {
+        return self::findOne(['id' => $group_id])->title;
     }
 }

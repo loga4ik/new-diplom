@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Test;
+use dosamigos\chartjs\ChartJs;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -37,6 +38,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'question_count',
             'point_count',
             'subject_id',
+            [
+                'label' => 'results',
+                'format' => 'html',
+                'value' => fn ($model) => 'asd'
+            ],
             //'is_active',
             [
                 'class' => ActionColumn::className(),

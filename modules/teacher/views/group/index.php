@@ -34,11 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'title',
+            // [
+            //     'attribute' => 'id',
+            //     'format' => 'html',
+            //     'filter' => false,
+            //     'enableSorting' => false,
+            //     'value' => fn ($model) => $model->id
+            // ],
             [
                 'attribute' => 'title',
                 'format' => 'html',
+                // 'filter' => false,
+                'enableSorting' => false,
                 'value' => fn ($model) => html::a($model->title, ['./student', 'group_id' => $model->id], ['class' => 'btn btn-primary'])
             ],
             [

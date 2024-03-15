@@ -64,6 +64,10 @@ class TeacherController extends Controller
      */
     public function actionView($id)
     {
+        if ($_GET['login'] && $_GET['pass']) {
+            // VarDumper::dump($_GET, 10, true);
+            Yii::$app->session->setFlash('success', 'логин:' . $_GET['login'] . 'пароль:' . $_GET['pass']);
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -77,15 +81,22 @@ class TeacherController extends Controller
     public function actionCreate()
     {
         $model = new User();
-
+        $newData = '';
         $addGroup = function ($model) {
             $user = new UserGroup;
             $user->group_id = $model->group_id;
             $user->user_id = User::findOne(['login' => $model->login])->id;
             $user->save();
         };
+        function createNewData($newData, $model)
+        {
+            $newData .= $model->name . " " . $model->surname . " " . $model->patronimyc . " login:" . $model->login . " password:" . $model->password . "\n";
+            return $newData;
+        }
 
         if ($this->request->isPost) {
+            // VarDumper::dump($this->request->post(), 10, true);
+            // die;
             if ($model->load($this->request->post())) {
 
                 if (!$model->name) {
@@ -101,24 +112,49 @@ class TeacherController extends Controller
                         $model->patronimyc = substr($value[2], 0, -1);
                         $model->login = Yii::$app->security->generateRandomString(6);
                         $model->password = Yii::$app->security->generateRandomString(6);
+                        $newData = createNewData($newData, $model);
+                        $model->password = Yii::$app->security->generatePasswordHash($model->password);
                         $model->auth_key = Yii::$app->security->generateRandomString();
                         $model->role_id = Role::getRoleId('teacher');
                         $model->save();
                         $model->group_id && $addGroup($model);
                     }
-                    return $this->redirect('../');
-                }
-                return $this->redirect('../');
-            } else {
-                $model->login = Yii::$app->security->generateRandomString(6);
-                $model->password = Yii::$app->security->generateRandomString(6);
-                $model->auth_key = Yii::$app->security->generateRandomString();
-                $model->role_id = Role::getRoleId('teacher');
-                if ($model->save()) {
-                    $model->group_id && $addGroup($model);
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    $file = '../web/groupListFile/groupList.txt';
+                    file_put_contents('../web/groupListFile/groupList.txt', $newData);
+                    $content = file_get_contents('../web/groupListFile/groupList.txt');
+
+
+                    if (file_exists($file)) {
+                        header('Content-Description: File Transfer');
+                        header('Content-Type: application/octet-stream');
+                        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+                        header('Content-Transfer-Encoding: binary');
+                        header('Expires: 0');
+                        header('Cache-Control: must-revalidate');
+                        header('Pragma: public');
+                        header('Content-Length: ' . filesize($file));
+                        ob_clean();
+                        flush();
+                        readfile($file);
+                        VarDumper::dump($content, 10, true);
+                        die;
+                        return $this->redirect('../');
+                    } else {
+                        echo 'Файл не существует.';
+                    }
+                } else {
+                    $tempPass = Yii::$app->security->generateRandomString(6);
+                    $model->login = Yii::$app->security->generateRandomString(6);
+                    $model->password = Yii::$app->security->generatePasswordHash($tempPass);
+                    $model->auth_key = Yii::$app->security->generateRandomString();
+                    $model->role_id = Role::getRoleId('teacher');
+                    if ($model->save()) {
+                        $model->group_id && $addGroup($model);
+                        return $this->redirect(['view', 'id' => $model->id, 'login' => $model->login, 'pass' => $tempPass]);
+                    }
                 }
             }
+            return $this->redirect('../');
         } else {
             $model->loadDefaultValues();
         }
@@ -144,7 +180,7 @@ class TeacherController extends Controller
 
         return $this->render('addGroup', [
             'model' => $model,
-            'groupTitle' => Group::getGroupTitle(),
+            'groupTitle' => Group::getAllGroupTitle(),
         ]);
     }
 
