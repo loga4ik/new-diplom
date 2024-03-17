@@ -86,7 +86,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'phone' => 'Телефон',
             'login' => 'Логин',
             'role_id' => 'Роль',
-            'fileInput' => '',
+            'fileInput' => 'Список студентов',
+            'group_id' => 'группа',
             'auth_key' => 'Auth Key',
         ];
     }

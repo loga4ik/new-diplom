@@ -18,14 +18,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php
-    $getArrOfMarks = function ($model) {
+    $studentTest = StudentTest::getStudentsResults($model->id);
+    $getArrOfMarks = function ($studentTest) {
         $arrOfMarks = [
             "2" => 0,
             "3" => 0,
             "4" => 0,
             "5" => 0,
         ];
-        foreach (StudentTest::getStudentsResults($model->id) as $value) {
+        foreach ($studentTest as $value) {
             $arrOfMarks[$value] += 1;
         };
         return $arrOfMarks;
@@ -33,29 +34,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
     <?=
-    // VarDumper::dump([...$getArrOfMarks($model)], 10, true);
-    ChartJs::widget([
-        'type' => 'doughnut',
-        'options' => [
-            'height' => 200,
-            'width' => 600,
-            // 'scales' => [
-            //     'x' => ['max' => 150],
-            //     'y' => ['max' => 150],
-            // ]
-        ],
-        'data' => [
-            'labels' => ["2", "3", "4", "5"],
-            'datasets' => [
-                [
-                    'label' => '# of Votes',
-                    'data' => [...$getArrOfMarks($model)],
-                    // 'borderColor' => ['#F95C68FF'],
-                    'backgroundColor' => ['#F95C68FF', '#F07427FF', '#7CC7DFFF', '#50C878FF'],
+    $studentTest ?
+        // VarDumper::dump([...$getArrOfMarks($model)], 10, true);
+        ChartJs::widget([
+            'type' => 'doughnut',
+            'options' => [
+                'height' => 200,
+                'width' => 600,
+                // 'scales' => [
+                //     'x' => ['max' => 150],
+                //     'y' => ['max' => 150],
+                // ]
+            ],
+            'data' => [
+                'labels' => ["2", "3", "4", "5"],
+                'datasets' => [
+                    [
+                        'label' => '# of Votes',
+                        'data' => [...$getArrOfMarks($studentTest)],
+                        // 'borderColor' => ['#F95C68FF'],
+                        'backgroundColor' => ['#F95C68FF', '#F07427FF', '#7CC7DFFF', '#50C878FF'],
+                    ]
                 ]
             ]
-        ]
-    ]);
+        ]) : ''
     ?>
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

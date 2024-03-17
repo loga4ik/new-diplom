@@ -10,7 +10,7 @@ use app\models\QuestionType;
 use yii\web\NotFoundHttpException;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\base\Model;
+use app\models\Model;
 use app\models\QuestionLevel;
 use app\models\Type;
 use app\modules\teacher\models\CreateTestSearch;

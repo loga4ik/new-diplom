@@ -1,7 +1,7 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
@@ -12,26 +12,33 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <? # $form->field($model, 'name')->textInput(['type' => 'date'])        
+    ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'surname')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'patronimyc')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'login')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'group_id')->dropDownList($groupArr, ['prompt' => 'выберите группу']) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <? # $form->field($model, 'email')->textInput(['maxlength' => true])        
+    ?>
 
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    <? # $form->field($model, 'phone')->textInput(['maxlength' => true])        
+    ?>
 
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+    <? # $form->field($model, 'group_id')->textInput()        
+    ?>
 
-    <?= $form->field($model, 'role_id')->textInput() ?>
+    <? # $form->field($model, 'role_id')->textInput()        
+    ?>
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
+    <? # $form->field($model, 'auth_key')->textInput(['maxlength' => true])        
+    ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Отправить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

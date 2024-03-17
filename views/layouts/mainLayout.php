@@ -23,7 +23,7 @@ if (Yii::$app->user->isGuest) {
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('teacher')) {
     $navLinks = [
         ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>студенты</p>', 'url' => ['/teacher']],
-        ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/teacher/create']],
+        ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/student/create']],
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/teacher/group']],
         ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/create-test']],
     ];
@@ -116,7 +116,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     <div class="info">
                         <span class="d-block" style="color: #C7CAD2FF;">
                             роль:
-                            <?= Yii::$app->user->identity->login ?? 'необходимо войти'
+                            <?= !Yii::$app->user->isGuest ? Role::getRoleTitle(Yii::$app->user->identity->role_id) : 'необходимо войти'
                             ?>
                         </span>
                     </div>

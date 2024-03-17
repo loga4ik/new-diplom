@@ -4,7 +4,7 @@ namespace app\modules\teacher\controllers;
 
 use app\base\Model;
 use app\models\Answer;
-use app\models\AnswerType;
+use app\models\QuestionType;
 use app\models\Question;
 use app\models\QuestionLevel;
 use app\models\Subject;
@@ -82,7 +82,7 @@ class CreateTestController extends Controller
     {
 
         $levels = Answer::getLevels();
-        $types = AnswerType::getTypes();
+        $types = QuestionType::getTypes();
         $modelTest = new Test();
         $modelsQuestion = [new Question()];
         $modelsAnswer = [[new Answer]];
@@ -111,7 +111,7 @@ class CreateTestController extends Controller
                         $modelAnswer->load($data);
                         $modelsAnswer[$indexQuestion][$indexAnswer] = $modelAnswer;
                         foreach ($modelsQuestion as $modelQuestion) {
-                            if ($modelsQuestion[$indexQuestion]->type_id == AnswerType::getTypeId('Ввод ответа от студента')) {
+                            if ($modelsQuestion[$indexQuestion]->type_id == QuestionType::getTypeId('Ввод ответа от студента')) {
                                 $modelAnswer->scenario = $modelAnswer::SKIP_ANSWER;
                                 $modelAnswer->true_false = 1;
                             }
@@ -165,7 +165,7 @@ class CreateTestController extends Controller
                                 }
                             }
 
-                            if ($modelQuestion->type_id == AnswerType::getTypeId('Несколько правильных ответов')) {
+                            if ($modelQuestion->type_id == QuestionType::getTypeId('Несколько правильных ответов')) {
                                 if ($counter <= 1) {
                                     Yii::$app->session->setFlash('error', 'Необходимо указать несколько вариантов ответа в вопросе №' . $indexQuestion + 1);
                                     $flag = false;
@@ -217,7 +217,7 @@ class CreateTestController extends Controller
         $modelsAnswer = [];
         $oldAnswers = [];
         $levels = QuestionLevel::getLevels();
-        $types = AnswerType::getTypes();
+        $types = QuestionType::getTypes();
 
         if (!empty($modelsQuestion)) {
             foreach ($modelsQuestion as $indexQuestion => $modelQuestion) {
@@ -248,7 +248,7 @@ class CreateTestController extends Controller
                         $modelAnswer->load($data);
                         $modelsAnswer[$indexQuestion][$indexAnswer] = $modelAnswer;
                         foreach ($modelsQuestion as $modelQuestion) {
-                            if ($modelQuestion->type_id == AnswerType::getTypeId('Ввод ответа от студента')) {
+                            if ($modelQuestion->type_id == QuestionType::getTypeId('Ввод ответа от студента')) {
                                 $modelAnswer->scenario = $modelAnswer::SKIP_ANSWER;
                             }
                         }

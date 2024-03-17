@@ -2,15 +2,18 @@
 
 namespace app\modules\teacher\controllers;
 
+use app\models\Group;
 use app\models\Role;
 use app\models\StudentTest;
 use app\models\User;
 use app\models\UserGroup;
 use app\modules\teacher\models\StudentSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\VarDumper;
+use yii\web\UploadedFile;
 
 /**
  * StudentController implements the CRUD actions for User model.
@@ -82,17 +85,94 @@ class StudentController extends Controller
     public function actionCreate()
     {
         $model = new User();
+        $newData = '';
+        $addGroup = function ($model, $group) {
+            $user = new UserGroup;
+            $user->group_id = $group;
+            $user->user_id = User::findOne(['login' => $model->login])->id;
+            $user->save();
+        };
+        function createNewData($newData, $model)
+        {
+            $newData .= $model->name . " " . $model->surname . " " . $model->patronimyc . " login:" . $model->login . " password:" . $model->password . "\n";
+            return $newData;
+        }
+        // function createNewUserGroup($user_id, $group)
+        // {
+        //     $model = new UserGroup();
+        //     $model->user_id = $user_id;
+        //     $model->group_id = $group;
+        //     $model->save();
+        // }
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            // VarDumper::dump($this->request->post(), 10, true);
+            // die;
+            if ($model->load($this->request->post())) {
+                $group = $model->group_id;
+                if (!$model->name) {
+                    $model->fileInput = file_get_contents(UploadedFile::getInstance($model, 'fileInput')->tempName);
+
+                    $user = explode("\n", $model->fileInput);
+                    foreach ($user as $value) {
+
+                        $model = new User();
+                        $value = explode(" ", $value);
+                        $model->name = $value[0];
+                        $model->surname = $value[1];
+                        $model->patronimyc = substr($value[2], 0, -1);
+                        // $model->group_id = $group;
+                        $model->login = Yii::$app->security->generateRandomString(6);
+                        $model->password = Yii::$app->security->generateRandomString(6);
+                        $newData = createNewData($newData, $model);
+                        $model->password = Yii::$app->security->generatePasswordHash($model->password);
+                        $model->auth_key = Yii::$app->security->generateRandomString();
+                        $model->role_id = Role::getRoleId('teacher');
+                        $model->save();
+                        $group && $addGroup($model, $group);
+                    }
+
+                    $file = '../web/groupListFile/groupList.txt';
+                    file_put_contents('../web/groupListFile/groupList.txt', $newData);
+                    // $content = file_get_contents('../web/groupListFile/groupList.txt');
+
+
+                    if (file_exists($file)) {
+                        header('Content-Description: File Transfer');
+                        header('Content-Type: application/octet-stream');
+                        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+                        header('Content-Transfer-Encoding: binary');
+                        header('Expires: 0');
+                        header('Cache-Control: must-revalidate');
+                        header('Pragma: public');
+                        header('Content-Length: ' . filesize($file));
+                        ob_clean();
+                        flush();
+                        readfile($file);
+                        return $this->redirect('../');
+                    } else {
+                        echo 'Файл не существует.';
+                    }
+                } else {
+                    $tempPass = Yii::$app->security->generateRandomString(6);
+                    $model->login = Yii::$app->security->generateRandomString(6);
+                    $model->password = Yii::$app->security->generatePasswordHash($tempPass);
+                    $model->auth_key = Yii::$app->security->generateRandomString();
+                    $model->role_id = Role::getRoleId('teacher');
+                    if ($model->save()) {
+                        $model->group_id && $addGroup($model, $group);
+                        return $this->redirect(['view', 'id' => $model->id, 'login' => $model->login, 'pass' => $tempPass]);
+                    }
+                }
             }
+            return $this->redirect('../');
         } else {
             $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
+            'groupArr' => Group::getAllGroupTitle()
         ]);
     }
 
