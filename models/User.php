@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 use yii\web\IdentityInterface;
 
 /**
@@ -130,5 +131,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public static function getIsStudent()
     {
         return Yii::$app->user->identity->role_id == Role::getRoleId('student');
+    }
+    public static function getUserGroup()
+    {
+        // return UserGroup::findOne(['user_id' => Yii::$app->user->id])->group_id;
+        return (new Query())
+            ->select('group_id')
+            ->from('user_group')
+            ->where(['user_id' => Yii::$app->user->id])
+            ->column();
     }
 }

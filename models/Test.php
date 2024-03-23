@@ -85,6 +85,7 @@ class Test extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Subject::class, ['id' => 'subject_id']);
     }
+
     public static function getTestMaxPoints($id)
     {
         $questions_count = Test::findOne($id)->questions_count;

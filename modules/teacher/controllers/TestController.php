@@ -12,6 +12,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use app\models\Model;
 use app\models\QuestionLevel;
+use app\models\Subject;
 use app\models\Type;
 use app\modules\teacher\models\CreateTestSearch;
 use yii\base\ErrorException;
@@ -73,8 +74,9 @@ class TestController extends Controller
         $modelsAnswer = [[new Answer]];
 
 
-        // VarDumper::dump($modelTest, 10, true);
+        // VarDumper::dump($modelTest->attributes, 10, true);
         // die;
+
         if ($modelTest->load(Yii::$app->request->post())) {
             $modelsQuestion = Model::createMultiple(Question::class);
             Model::loadMultiple($modelsQuestion, Yii::$app->request->post());
@@ -155,7 +157,6 @@ class TestController extends Controller
                         }
                     }
 
-
                     if ($flag) {
                         $modelTest->max_points = Test::getTestMaxPoints($modelTest->id);
                         $modelTest->save(false);
@@ -179,6 +180,7 @@ class TestController extends Controller
             'modelsAnswer' => (empty($modelsAnswer)) ? [[new Answer]] : $modelsAnswer,
             'levels' => $levels,
             'types' => $types,
+            'subjects' => Subject::getAllSubject(),
         ]);
     }
 

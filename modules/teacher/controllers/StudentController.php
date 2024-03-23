@@ -92,6 +92,7 @@ class StudentController extends Controller
             $user->user_id = User::findOne(['login' => $model->login])->id;
             $user->save();
         };
+        
         function createNewData($newData, $model)
         {
             $newData .= $model->name . " " . $model->surname . " " . $model->patronimyc . " login:" . $model->login . " password:" . $model->password . "\n";
@@ -104,7 +105,6 @@ class StudentController extends Controller
         //     $model->group_id = $group;
         //     $model->save();
         // }
-
         if ($this->request->isPost) {
             // VarDumper::dump($this->request->post(), 10, true);
             // die;
@@ -134,8 +134,6 @@ class StudentController extends Controller
 
                     $file = '../web/groupListFile/groupList.txt';
                     file_put_contents('../web/groupListFile/groupList.txt', $newData);
-                    // $content = file_get_contents('../web/groupListFile/groupList.txt');
-
 
                     if (file_exists($file)) {
                         header('Content-Description: File Transfer');
@@ -183,6 +181,7 @@ class StudentController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
+
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);

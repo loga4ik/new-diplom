@@ -13,14 +13,17 @@ use Yii;
  * @property string $image
  * @property int $level_id
  * @property int $test_id
+ * @property int $type_id
  *
  * @property Answer[] $answers
  * @property QuestionLevel $level
  * @property Test $test
+ * @property QuestionType $type
  */
 class Question extends \yii\db\ActiveRecord
 {
-    public $imageFile;
+
+
     /**
      * {@inheritdoc}
      */
@@ -28,19 +31,20 @@ class Question extends \yii\db\ActiveRecord
     {
         return 'question';
     }
-
+    public $imageFile;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['text', 'level_id', 'test_id'], 'required'],
+            [['text', 'points_per_question', 'level_id', 'test_id', 'type_id'], 'required'],
             [['text'], 'string'],
-            [['points_per_question', 'level_id', 'test_id'], 'integer'],
-            [['image'], 'string', 'max' => 255],
+            [['points_per_question', 'level_id', 'test_id', 'type_id'], 'integer'],
             [['level_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuestionLevel::class, 'targetAttribute' => ['level_id' => 'id']],
             [['test_id'], 'exist', 'skipOnError' => true, 'targetClass' => Test::class, 'targetAttribute' => ['test_id' => 'id']],
+            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuestionType::class, 'targetAttribute' => ['type_id' => 'id']],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -56,6 +60,7 @@ class Question extends \yii\db\ActiveRecord
             'image' => 'Image',
             'level_id' => 'Level ID',
             'test_id' => 'Test ID',
+            'type_id' => 'Type ID',
         ];
     }
 
@@ -88,8 +93,18 @@ class Question extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Test::class, ['id' => 'test_id']);
     }
+
+    /**
+     * Gets query for [[Type]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getType()
+    {
+        return $this->hasOne(QuestionType::class, ['id' => 'type_id']);
+    }
     public static function getQuestionsOfTest($test_id)
     {
-        return $questionAttrs = self::findOne($test_id);
+        return self::findOne($test_id);
     }
 }

@@ -25,7 +25,7 @@ if (Yii::$app->user->isGuest) {
         ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>студенты</p>', 'url' => ['/teacher']],
         ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/student/create']],
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/teacher/group']],
-        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/create-test']],
+        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/test/create']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('student')) {
     $navLinks = [
@@ -196,10 +196,22 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <!--  role="main" -->
     </main>
 
-    <?php $this->registerJs("$.widget.bridge('uibutton', $.ui.button)") ?>
+    <? # $this->registerJs("$.widget.bridge('uibutton', $.ui.button)") 
+    ?>
 
     <?php $this->endBody() ?>
 </body>
 
 </html>
 <?php $this->endPage() ?>
+
+
+<li class="nav-item">
+    <a class="nav-link text-white" href="../../web/material-dashboard-master/rtl.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+        </div>
+
+        <span class="nav-link-text ms-1">RTL</span>
+    </a>
+</li>

@@ -10,7 +10,6 @@ $config = [
     'language' => 'ru-RU',
     // 'defaultRoute' => 'site/login',
     'layout' => 'mainLayout',
-
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',

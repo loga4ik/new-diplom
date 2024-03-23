@@ -53,7 +53,7 @@ class Admin2Asset extends AssetBundle
     "adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js",
     "adminlte/dist/js/adminlte.js",
     "adminlte/dist/js/demo.js",
-    "adminlte/dist/js/pages/dashboard.js",
+    // "adminlte/dist/js/pages/dashboard.js",
 
   ];
   public $depends = [

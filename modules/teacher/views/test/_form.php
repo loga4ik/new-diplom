@@ -4,6 +4,7 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\bootstrap5\Modal;
+use yii\helpers\VarDumper;
 
 /** @var yii\web\View $this */
 /** @var app\models\Test $model */
@@ -20,6 +21,7 @@ use yii\bootstrap5\Modal;
     <div class="row">
         <div class="col-sm-6">
             <?= $form->field($modelTest, 'title')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($modelTest, 'subject_id')->dropDownList($subjects) ?>
         </div>
 
     </div>
@@ -54,6 +56,7 @@ use yii\bootstrap5\Modal;
                     echo Html::activeHiddenInput($modelQuestion, "[{$indexQuestion}]id");
                 }
                 ?>
+
                 <div class="row">
                     <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput()->label('Приложение к вопросу') ?>
                     <div class="col-6">
@@ -66,11 +69,8 @@ use yii\bootstrap5\Modal;
                         <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->label('Тип вопроса')->dropDownList($types, ['prompt' => 'Тип вопроса']) ?>
                     </div>
                 </div>
-                <? $this->render('_form-answers', [
-                    'form' => $form,
-                    'indexQuestion' => $indexQuestion,
-                    'modelsAnswer' => $modelsAnswer[$indexQuestion],
-                ]) ?>
+                <?= $this->render('_form-answers', ['form' => $form, 'indexQuestion' => $indexQuestion, 'modelsAnswer' => $modelsAnswer[$indexQuestion],])
+                ?>
 
                 <? if (Yii::$app->controller->action->id == 'create') : ?>
                     <button type="button" class="remove-question btn btn-my-red btn-xs">Удалить вопрос</span></button>
@@ -85,7 +85,8 @@ use yii\bootstrap5\Modal;
             </div>
         <? endif; ?>
     </div>
-    <?php DynamicFormWidget::end(); ?>
+
+    <? DynamicFormWidget::end() ?>
     <div class="form-group">
         <?= Html::submitButton(Yii::$app->controller->action->id == 'create' ? 'Создать' : 'Изменить', ['class' => 'btn btn-my-blue']) ?>
     </div>
