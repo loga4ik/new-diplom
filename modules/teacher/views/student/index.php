@@ -20,8 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1>
         <?= Html::encode($this->title) ?>
     </h1>
-<?=
-VarDumper::dump(Yii::$app->user->identity->userGroup,10,true)?>
     <p>
         <?= Html::a('добавить студента', ['../teacher/student/create'], ['class' => 'btn btn-success']) ?>
     </p>

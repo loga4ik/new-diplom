@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\Query;
+use yii\helpers\VarDumper;
 use yii\web\IdentityInterface;
 
 /**
@@ -140,5 +141,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             ->from('user_group')
             ->where(['user_id' => Yii::$app->user->id])
             ->column();
+    }
+
+    public static function getAllTeacher()
+    {
+        $arr = [];
+        foreach ((self::find()
+            ->select(['name', 'surname', 'patronimyc', 'id'])
+            ->where(['role_id' => Role::getRoleId('teacher')])
+            ->indexBy('id')
+            ->all()) as $key => $value) {
+            $arr[$key] = $value->name . ' ' . $value->surname . ' ' . $value->patronimyc . ' ';
+        }
+        return $arr;
     }
 }

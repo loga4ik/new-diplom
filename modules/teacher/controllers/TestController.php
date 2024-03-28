@@ -14,8 +14,9 @@ use app\models\Model;
 use app\models\QuestionLevel;
 use app\models\Subject;
 use app\models\Type;
-use app\modules\teacher\models\CreateTestSearch;
+use app\modules\teacher\models\TestSearch;
 use yii\base\ErrorException;
+use yii\filters\VerbFilter;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\UploadedFile;
@@ -25,6 +26,20 @@ use yii\web\UploadedFile;
  */
 class TestController extends Controller
 {
+    public function behaviors()
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
+    }
     /**
      * Lists all Test models.
      *
@@ -32,7 +47,7 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CreateTestSearch();
+        $searchModel = new TestSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -81,6 +96,9 @@ class TestController extends Controller
             $modelsQuestion = Model::createMultiple(Question::class);
             Model::loadMultiple($modelsQuestion, Yii::$app->request->post());
 
+            $modelTest->is_active = 0;
+            // $modelTest->point_count = 0;
+
             $valid = $modelTest->validate();
             $valid = Model::validateMultiple($modelsQuestion) && $valid;
 
@@ -95,14 +113,16 @@ class TestController extends Controller
                         foreach ($modelsQuestion as $modelQuestion) {
                             if ($modelsQuestion[$indexQuestion]->type_id == QuestionType::getTypeId('Ввод ответа от студента')) {
                                 $modelAnswer->scenario = $modelAnswer::SKIP_ANSWER;
-                                $modelAnswer->true_false = 1;
+                                $modelAnswer->is_true = 1;
                             }
                         }
+                        VarDumper::dump($modelsQuestion[0]->attributes, 10, true);
+                        // VarDumper::dump($modelAnswer[0]->validate(), 10, true);
+                        die;
                         $valid = $modelAnswer->validate();
                     }
                 }
             }
-
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
 
@@ -118,11 +138,11 @@ class TestController extends Controller
 
 
                             if ($modelQuestion->level_id == QuestionLevel::getLevelId('Сложный')) {
-                                $modelQuestion->points = 3;
+                                $modelQuestion->points_per_question = 3;
                             } else if ($modelQuestion->level_id == QuestionLevel::getLevelId('Средний')) {
-                                $modelQuestion->points = 2;
+                                $modelQuestion->points_per_question = 2;
                             } else {
-                                $modelQuestion->points = 1;
+                                $modelQuestion->points_per_question = 1;
                             }
 
                             if ($modelQuestion->imageFile = UploadedFile::getInstance($modelQuestion, "[{$indexQuestion}]imageFile")) {
@@ -138,7 +158,7 @@ class TestController extends Controller
                             if (isset($modelsAnswer[$indexQuestion]) && is_array($modelsAnswer[$indexQuestion])) {
                                 foreach ($modelsAnswer[$indexQuestion] as $indexAnswer => $modelAnswer) {
                                     $modelAnswer->question_id = $modelQuestion->id;
-                                    if ($modelAnswer->true_false == 1) {
+                                    if ($modelAnswer->is_true == 1) {
                                         $counter++;
                                     }
 
@@ -158,7 +178,7 @@ class TestController extends Controller
                     }
 
                     if ($flag) {
-                        $modelTest->max_points = Test::getTestMaxPoints($modelTest->id);
+                        $modelTest->point_count = Test::getTestMaxPoints($modelTest->id);
                         $modelTest->save(false);
                         $transaction->commit();
                         return $this->redirect(['view', 'id' => $modelTest->id]);
@@ -294,6 +314,7 @@ class TestController extends Controller
             'modelTest' => $modelTest,
             'modelsQuestion' => (empty($modelsQuestion)) ? [new Question] : $modelsQuestion,
             'modelsAnswer' => (empty($modelsAnswer)) ? [[new Answer]] : $modelsAnswer,
+            'subjects' => Subject::getAllSubject(),
             'levels' => $levels,
             'types' => $types
         ]);

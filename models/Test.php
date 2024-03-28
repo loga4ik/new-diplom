@@ -34,7 +34,7 @@ class Test extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'question_count', 'point_count', 'subject_id', 'is_active'], 'required'],
+            [['title', 'question_count', 'subject_id', 'is_active'], 'required'],
             [['title'], 'string'],
             [['question_count', 'point_count', 'subject_id', 'is_active'], 'integer'],
             [['subject_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::class, 'targetAttribute' => ['subject_id' => 'id']],
@@ -88,7 +88,7 @@ class Test extends \yii\db\ActiveRecord
 
     public static function getTestMaxPoints($id)
     {
-        $questions_count = Test::findOne($id)->questions_count;
+        $question_count = Test::findOne($id)->question_count;
 
         $mid_level_id = QuestionLevel::getLevelId('Средний');
         $hard_level_id = QuestionLevel::getLevelId('Сложный');
@@ -100,12 +100,12 @@ class Test extends \yii\db\ActiveRecord
             ->where(['test_id' => $id, 'level_id' => $hard_level_id])
             ->count();
 
-        if ($hard_questions >= $questions_count - 2) {
-            $max_points = $questions_count * 3 - 2;
-        } elseif ($hard_questions < $questions_count - 2 && $mid_questions >= $questions_count - $hard_questions) {
-            $max_points = $questions_count * 2 + $hard_questions;
-        } elseif ($hard_questions < $questions_count - 2 && $mid_questions < $questions_count - $hard_questions) {
-            $max_points = $hard_questions * 2 + $mid_questions + $questions_count;
+        if ($hard_questions >= $question_count - 2) {
+            $max_points = $question_count * 3 - 2;
+        } elseif ($hard_questions < $question_count - 2 && $mid_questions >= $question_count - $hard_questions) {
+            $max_points = $question_count * 2 + $hard_questions;
+        } elseif ($hard_questions < $question_count - 2 && $mid_questions < $question_count - $hard_questions) {
+            $max_points = $hard_questions * 2 + $mid_questions + $question_count;
         }
 
         return $max_points;

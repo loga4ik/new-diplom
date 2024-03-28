@@ -19,6 +19,7 @@ if (Yii::$app->user->isGuest) {
         ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>преподаватели</p>', 'url' => ['/manager']],
         ['label' => '<i class="nav-icon fi fi-rr-user-add"></i> <p>добавление преподавателя</p>', 'url' => ['/manager/teacher/create']],
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/manager/group']],
+        ['label' => '<i class="fi fi-rr-book-alt"></i> &nbsp; <p>предметы</p>', 'url' => ['/manager/subject']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('teacher')) {
     $navLinks = [
@@ -204,14 +205,3 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 </html>
 <?php $this->endPage() ?>
-
-
-<li class="nav-item">
-    <a class="nav-link text-white" href="../../web/material-dashboard-master/rtl.html">
-        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
-        </div>
-
-        <span class="nav-link-text ms-1">RTL</span>
-    </a>
-</li>

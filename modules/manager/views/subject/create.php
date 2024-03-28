@@ -1,15 +1,15 @@
-<?php
+ы<?php
 
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var app\models\UserGroup $model */
+/** @var app\models\Subject $model */
 
-$this->title = 'Create User Group';
-$this->params['breadcrumbs'][] = ['label' => 'User Groups', 'url' => ['index']];
+$this->title = 'Create Subject';
+$this->params['breadcrumbs'][] = ['label' => 'Subjects', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-group-create">
+<div class="subject-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

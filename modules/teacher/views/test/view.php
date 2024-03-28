@@ -5,6 +5,7 @@ use app\models\Level;
 use yii\bootstrap5\Html;
 use yii\widgets\DetailView;
 use app\models\Question;
+use app\models\QuestionLevel;
 use app\models\Test;
 use yii\helpers\VarDumper;
 
@@ -31,51 +32,54 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-   
- 
-  
-   
-<?
-$list = [];
-foreach($model->questions as $question){
-    if($question->level_id == Level::getLevelId('Лёгкий')){
-        $level = 'question-easy';
-    }elseif($question->level_id == Level::getLevelId('Средний')){
-        $level = 'question-mid';
-    }else{
-        $level = 'question-hard';
-    }
-    array_push(
-        $list, 
-        "<ul class='test-list ' >".
-        "<li class='list-group-item list-test-question  {$level}' style='font-weight:bold'>". 
-        $question->title.
-        "</li>");
-    foreach($question->answers as $answer){
-        if( $answer -> true_false == 1){
-            array_push(
-                $list, 
-                "<li class='list-group-item list-test-item-correct'>". 
-                $answer->title. 
-                "</li>");
-        }else{
-            array_push(
-                $list, 
-                "<li class='list-group-item list-test-item-incorrect '>".
-                $answer->title.
-                "</li>");
+
+
+
+
+    <?
+    $list = [];
+    foreach ($model->questions as $question) {
+        if ($question->level_id == QuestionLevel::getLevelId('Лёгкий')) {
+            $level = 'question-easy';
+        } elseif ($question->level_id == QuestionLevel::getLevelId('Средний')) {
+            $level = 'question-mid';
+        } else {
+            $level = 'question-hard';
         }
+        array_push(
+            $list,
+            "<ul class='test-list ' >" .
+                "<li class='list-group-item list-test-question  {$level}' style='font-weight:bold'>" .
+                $question->text .
+                "</li>"
+        );
+        foreach ($question->answers as $answer) {
+            if ($answer->is_true == 1) {
+                array_push(
+                    $list,
+                    "<li class='list-group-item list-test-item-correct'>" .
+                        $answer->title .
+                        "</li>"
+                );
+            } else {
+                array_push(
+                    $list,
+                    "<li class='list-group-item list-test-item-incorrect '>" .
+                        $answer->title .
+                        "</li>"
+                );
+            }
+        }
+        array_push(
+            $list,
+            "</ul>"
+        );
     }
-    array_push(
-        $list, 
-        "</ul>");
+    foreach ($list as $item) {
+        echo $item;
+    }
 
-}
-foreach($list as $item){
-    echo $item;
-}
+    ?>
 
-?>
-    
 
 </div>

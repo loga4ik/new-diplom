@@ -21,6 +21,4 @@ $this->params['breadcrumbs'][] = $this->title;
         'subjects' => $subjects,
     ]) ?>
 
-
-
 </div>

@@ -7,7 +7,6 @@ use app\models\Role;
 use app\models\User;
 use app\models\UserGroup;
 use app\modules\manager\models\TeacherSearch;
-// use app\modules\manager\models\TeacherSearch;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -151,7 +150,7 @@ class TeacherController extends Controller
 
         return $this->render('addGroup', [
             'model' => $model,
-            'groupTitle' => Group::getGroupTitle(),
+            'groupTitle' => Group::getAllGroupTitle(),
         ]);
     }
     public function actionEditingGroup($id, $user_id)
@@ -159,7 +158,7 @@ class TeacherController extends Controller
         $model = UserGroup::findOne(['group_id' => $id, 'user_id' => $user_id,]);
         $model->group_id = '';
 
-        $groupTitles = Group::getGroupTitle();
+        $groupTitles = Group::getAllGroupTitle();
         unset($groupTitles[$id]);
 
         if ($this->request->isPost && $model->load($this->request->post())) {

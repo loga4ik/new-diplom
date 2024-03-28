@@ -14,13 +14,10 @@ $this->title = 'Изменение теста';
 
     <?= $this->render('_form', [
         'modelTest' => $modelTest,
-
         'modelsQuestion' => $modelsQuestion,
- 
         'modelsAnswer' => $modelsAnswer,
-
         'levels' => $levels,
-
+        'subjects' => $subjects,
         'types' => $types
     ]) ?>
 

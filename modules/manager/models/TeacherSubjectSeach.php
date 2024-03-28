@@ -1,15 +1,15 @@
 <?php
 
-namespace app\modules\teacher\models;
+namespace app\modules\manager\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Test;
+use app\models\TeacherSubject;
 
 /**
- * CreateTestSearch represents the model behind the search form of `app\models\Test`.
+ * TeacherSubjectSeach represents the model behind the search form of `app\models\TeacherSubject`.
  */
-class CreateTestSearch extends Test
+class TeacherSubjectSeach extends TeacherSubject
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,7 @@ class CreateTestSearch extends Test
     public function rules()
     {
         return [
-            [['id', 'question_count', 'point_count', 'subject_id', 'is_active'], 'integer'],
-            [['title'], 'safe'],
+            [['id', 'user_id', 'subject_id'], 'integer'],
         ];
     }
 
@@ -40,7 +39,7 @@ class CreateTestSearch extends Test
      */
     public function search($params)
     {
-        $query = Test::find();
+        $query = TeacherSubject::find();
 
         // add conditions that should always apply here
 
@@ -59,13 +58,9 @@ class CreateTestSearch extends Test
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'question_count' => $this->question_count,
-            'point_count' => $this->point_count,
+            'user_id' => $this->user_id,
             'subject_id' => $this->subject_id,
-            'is_active' => $this->is_active,
         ]);
-
-        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

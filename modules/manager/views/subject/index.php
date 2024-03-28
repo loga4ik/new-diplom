@@ -1,7 +1,6 @@
 <?php
 
-use app\models\Test;
-use dosamigos\chartjs\ChartJs;
+use app\models\Subject;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -9,18 +8,21 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var app\modules\teacher\models\CreateTestSearch $searchModel */
+/** @var app\modules\manager\models\SubjectSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Tests';
+$this->title = 'Subjects';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="test-index">
+<div class="subject-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Test', ['create', ['id' => 'create']], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Subject', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+    <p>
+        <?= Html::a('предметы и преподаватели', ['./teacher-subject'], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -34,19 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'title:ntext',
-            'question_count',
-            'point_count',
-            'subject_id',
-            [
-                'label' => 'results',
-                'format' => 'html',
-                'value' => fn ($model) => 'asd'
-            ],
-            //'is_active',
+            'title',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Test $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Subject $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }
             ],

@@ -2,9 +2,8 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
+
 use wbraganca\dynamicform\DynamicFormWidget;
-use yii\bootstrap5\Modal;
-use yii\helpers\VarDumper;
 
 /** @var yii\web\View $this */
 /** @var app\models\Test $model */
@@ -12,11 +11,7 @@ use yii\helpers\VarDumper;
 ?>
 
 <div class="test-form">
-    <?php $form = ActiveForm::begin(
-        [
-            'id' => 'dynamic-form',
-        ]
-    ); ?>
+    <?php $form = ActiveForm::begin(['id' => 'dynamic-form',]); ?>
 
     <div class="row">
         <div class="col-sm-6">
@@ -58,18 +53,18 @@ use yii\helpers\VarDumper;
                 ?>
 
                 <div class="row">
-                    <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput()->label('Приложение к вопросу') ?>
+                    <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput(['class' => 'form-control'])->label('Приложение к вопросу') ?>
                     <div class="col-6">
                         <?= $form->field($modelQuestion, "[{$indexQuestion}]text")->label('Текст вопроса')->textarea(['maxlength' => true]) ?>
                     </div>
                     <div class="col-3">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]level_id")->label('Сложность вопроса')->dropDownList($levels, ['prompt' => 'Сложность вопроса']) ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]level_id")->dropDownList($levels, ['prompt' => 'Сложность вопроса'])->label('Сложность вопроса') ?>
                     </div>
                     <div class="col-3">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->label('Тип вопроса')->dropDownList($types, ['prompt' => 'Тип вопроса']) ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->dropDownList($types, ['prompt' => 'Тип вопроса'])->label('Тип вопроса') ?>
                     </div>
                 </div>
-                <?= $this->render('_form-answers', ['form' => $form, 'indexQuestion' => $indexQuestion, 'modelsAnswer' => $modelsAnswer[$indexQuestion],])
+                <?= $this->render('_form-answers', ['form' => $form, 'indexQuestion' => $indexQuestion, 'modelsAnswer' => $modelsAnswer[$indexQuestion]])
                 ?>
 
                 <? if (Yii::$app->controller->action->id == 'create') : ?>
@@ -101,11 +96,6 @@ use yii\helpers\VarDumper;
             if($(element).attr('type') != 'checkbox'){
                 $(element).val('');
             }
-            // if($(element).attr('type') == 'checkbox'){
-            //     $(element).removeAttr("checked");
-            //     // $(element).addClass('form-check-input');
-            //     // console.log($(element).prop('checked'));
-            // }
 
             $(element).removeClass('is-valid');
             $(element).removeClass('is-invalid');

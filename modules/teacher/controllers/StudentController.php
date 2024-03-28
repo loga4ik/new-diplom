@@ -92,7 +92,7 @@ class StudentController extends Controller
             $user->user_id = User::findOne(['login' => $model->login])->id;
             $user->save();
         };
-        
+
         function createNewData($newData, $model)
         {
             $newData .= $model->name . " " . $model->surname . " " . $model->patronimyc . " login:" . $model->login . " password:" . $model->password . "\n";
@@ -125,15 +125,24 @@ class StudentController extends Controller
                         $model->login = Yii::$app->security->generateRandomString(6);
                         $model->password = Yii::$app->security->generateRandomString(6);
                         $newData = createNewData($newData, $model);
+                        // VarDumper::dump($newData, 10, true);
+                        // die;
                         $model->password = Yii::$app->security->generatePasswordHash($model->password);
                         $model->auth_key = Yii::$app->security->generateRandomString();
                         $model->role_id = Role::getRoleId('teacher');
+                        // VarDumper::dump($model->attributes, 10, true);
+                        // die;
                         $model->save();
                         $group && $addGroup($model, $group);
                     }
 
                     $file = '../web/groupListFile/groupList.txt';
-                    file_put_contents('../web/groupListFile/groupList.txt', $newData);
+
+                    ob_start();
+                    // Записать данные в файл
+                    file_put_contents($file, $newData);
+                    // Получить данные из буфера и очистить его
+                    ob_get_clean();
 
                     if (file_exists($file)) {
                         header('Content-Description: File Transfer');
@@ -147,6 +156,7 @@ class StudentController extends Controller
                         ob_clean();
                         flush();
                         readfile($file);
+                        ob_end_flush();
                         return $this->redirect('../');
                     } else {
                         echo 'Файл не существует.';
@@ -192,6 +202,7 @@ class StudentController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'groupArr' => Group::getAllGroupTitle()
         ]);
     }
 

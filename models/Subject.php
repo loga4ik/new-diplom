@@ -62,4 +62,13 @@ class Subject extends \yii\db\ActiveRecord
             ->indexBy('id')
             ->column();
     }
+    public static function getUsersSubjects()
+    {
+        return (new Query())
+            ->select('title')
+            ->where([''])
+            ->from('subject')
+            ->indexBy('id')
+            ->column();
+    }
 }

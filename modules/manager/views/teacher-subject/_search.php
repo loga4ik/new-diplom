@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\modules\teacher\models\CreateTestSearch $model */
+/** @var app\modules\manager\models\TeacherSubjectSeach $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="test-search">
+<div class="teacher-subject-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -20,15 +20,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'title') ?>
-
-    <?= $form->field($model, 'question_count') ?>
-
-    <?= $form->field($model, 'point_count') ?>
+    <?= $form->field($model, 'user_id') ?>
 
     <?= $form->field($model, 'subject_id') ?>
-
-    <?php // echo $form->field($model, 'is_active') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
