@@ -48,10 +48,10 @@ class Test extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'question_count' => 'Question Count',
-            'point_count' => 'Point Count',
-            'subject_id' => 'Subject ID',
+            'title' => 'Название',
+            'question_count' => 'Количество вопросов',
+            'point_count' => 'Количество баллов',
+            'subject_id' => 'Предмет',
             'is_active' => 'Is Active',
         ];
     }

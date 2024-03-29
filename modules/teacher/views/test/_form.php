@@ -16,7 +16,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
     <div class="row">
         <div class="col-sm-6">
             <?= $form->field($modelTest, 'title')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($modelTest, 'subject_id')->dropDownList($subjects) ?>
+            <?= $form->field($modelTest, 'subject_id')->dropDownList($subjects, ['class' => 'form-control']) ?>
         </div>
 
     </div>
@@ -53,15 +53,15 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ?>
 
                 <div class="row">
-                    <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput(['class' => 'form-control'])->label('Приложение к вопросу') ?>
+                    <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput(['class' => 'form-control']) ?>
                     <div class="col-6">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]text")->label('Текст вопроса')->textarea(['maxlength' => true]) ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]text")->textarea(['maxlength' => true, 'class' => 'form-control']) ?>
                     </div>
                     <div class="col-3">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]level_id")->dropDownList($levels, ['prompt' => 'Сложность вопроса'])->label('Сложность вопроса') ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]level_id")->dropDownList($levels, ['prompt' => 'Сложность вопроса', 'class' => 'form-control']) ?>
                     </div>
                     <div class="col-3">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->dropDownList($types, ['prompt' => 'Тип вопроса'])->label('Тип вопроса') ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->dropDownList($types, ['prompt' => 'Тип вопроса', 'class' => 'form-control']) ?>
                     </div>
                 </div>
                 <?= $this->render('_form-answers', ['form' => $form, 'indexQuestion' => $indexQuestion, 'modelsAnswer' => $modelsAnswer[$indexQuestion]])

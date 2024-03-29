@@ -45,9 +45,34 @@ class StudentController extends Controller
      */
     public function actionIndex($group_id = null)
     {
+        function getGroupsArr()
+        {
+            $groupNames = Group::getAllGroupTitle();
+            $groups = UserGroup::getStudentsGroups();
+            foreach ($groups as $key => $value) {
+                $groups[$key] = $groupNames[$value];
+            }
+            // VarDumper::dump($groups, 10, true);
+            // die;
+            return $groups;
+        }
+        // function getGroupsObj()
+        // {
+        //     $groupNames = Group::getAllGroupTitle();
+        //     $groups = UserGroup::getStudentsGroups();
+        //     $groupsObj = [];
+        //     foreach ($groups as $key => $value) {
+        //         $groupsObj[] = [
+        //             'id' => $key,
+        //             'title' => $groupNames[$value],
+        //         ];
+        //     }
+        //     // VarDumper::dump($groups, 10, true);
+        //     // die;
+        //     return $groups;
+        // }
         $searchModel = new StudentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        // $groups = UserGroup::getStudentsGroups(Role::getRoleId('student'));
         if ($group_id) {
             $users_arr = [];
             foreach (UserGroup::findAll(['group_id' => $group_id]) as $value) {
@@ -60,7 +85,8 @@ class StudentController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'arrOfMarks' => StudentTest::getAllUserIdMark(),
-            // 'groups' => $groups,
+            'groups' => getGroupsArr(),
+            // 'groupsObj' => getGroupsObj(),
         ]);
     }
 

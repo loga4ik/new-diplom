@@ -1,10 +1,12 @@
 <?php
 
 use app\models\User;
+use app\models\UserGroup;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\widgets\Pjax;
 
@@ -59,6 +61,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'login',
                 'enableSorting' => false,
                 'filter' => false,
+            ],
+            [
+                'label' => 'group_id',
+                // 'enableSorting' => false,
+                // 'filter' => fn ($model) => $form->field($model, 'group_id')->dropDownList($groupArr, ['prompt' => 'выберите группу']),
+                'value' => fn ($model) => $groups[$model->id],
             ],
             [
                 'label' => 'средний балл',
