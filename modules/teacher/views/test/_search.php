@@ -20,8 +20,8 @@ use yii\bootstrap5\ActiveForm;
     <?= $form->field($model, 'title') ?>
 
     <div class="form-group mb-3">
-        <?= Html::submitButton('Искать', ['class' => 'btn btn-my-blue']) ?>
-        <?= Html::a('Сбросить',['/teacher/test'], ['class' => 'btn btn-my-grey']) ?>
+        <?= Html::submitButton('Искать', ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Сбросить', ['/teacher/test'], ['class' => 'btn btn-danger']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -115,6 +115,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
     public function validatePassword($password)
     {
+        // VarDumper::dump($model, 10, true);
+        // die;
         return Yii::$app->security->validatePassword($password, $this->password);
     }
     public static function getIsAdmin()
@@ -154,5 +156,29 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             $arr[$key] = $value->name . ' ' . $value->surname . ' ' . $value->patronimyc . ' ';
         }
         return $arr;
+    }
+    public static function getAllStudents($group_id)
+    {
+        $newData = '';
+
+        function createNewData($newData, $model)
+        {
+            $newData .= $model->name . " " . $model->surname . " " . $model->patronimyc . " login:" . $model->login . " password:" . $model->password  . "\n";
+            return $newData;
+        }
+        $user = UserGroup::getGroupStudents($group_id);
+        foreach ($user as $value) {
+            // if ($value->role) {
+            //     # code...
+            // }
+            $model = User::findOne(['id' => $value]);
+            if ($model->role_id == Role::getRoleId('student')) {
+                $newData = createNewData($newData, $model);
+            }
+            // VarDumper::dump($model->attributes, 10, true);
+            // die;
+        }
+
+        return $newData;
     }
 }

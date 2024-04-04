@@ -22,9 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-my-green']) ?>
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a($model->is_active ? 'закрыть тест' : 'открыть тест', ['chenge-active-test', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-my-red',
+            'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Вы действительно хотите удалить тест?',
                 'method' => 'post',
@@ -78,7 +79,8 @@ $this->params['breadcrumbs'][] = $this->title;
     foreach ($list as $item) {
         echo $item;
     }
-
+    // VarDumper::dump($list, 10, true);
+    // die;
     ?>
 
 

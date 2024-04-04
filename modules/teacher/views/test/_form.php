@@ -67,21 +67,21 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 <?= $this->render('_form-answers', ['form' => $form, 'indexQuestion' => $indexQuestion, 'modelsAnswer' => $modelsAnswer[$indexQuestion]])
                 ?>
 
-                <? if (Yii::$app->controller->action->id == 'create') : ?>
+                <?php if (Yii::$app->controller->action->id == 'create') : ?>
                     <button type="button" class="remove-question btn btn-my-red btn-xs">Удалить вопрос</span></button>
-                <? endif; ?>
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
     </row>
     <div class="row mb-4">
-        <? if (Yii::$app->controller->action->id == 'create') : ?>
+        <?php if (Yii::$app->controller->action->id == 'create') : ?>
             <div style="width: auto;">
                 <button type="button" class="add-question btn btn-my-green btn-xs">Добавить вопрос</button>
             </div>
-        <? endif; ?>
+        <?php endif; ?>
     </div>
 
-    <? DynamicFormWidget::end() ?>
+    <?php DynamicFormWidget::end() ?>
     <div class="form-group">
         <?= Html::submitButton(Yii::$app->controller->action->id == 'create' ? 'Создать' : 'Изменить', ['class' => 'btn btn-my-blue']) ?>
     </div>
@@ -89,7 +89,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 </div>
 
 
-<? $js = <<< JS
+<?php $js = <<< JS
 
     $(".dynamicform_wrapper").on("afterInsert", function(e, item) {
         $(item).find('input,textarea,select').each(function(index,element){

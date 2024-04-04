@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class=" d-flex align-items-center justify-content-between">
         <h1 class=" "><?= Html::encode($this->title) ?></h1>
-        <?= Html::a('Добавить тест', ['create'], ['class' => 'btn btn-my-green ']) ?>
+        <?= Html::a('Добавить тест', ['create'], ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>

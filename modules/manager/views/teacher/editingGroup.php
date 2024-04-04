@@ -1,6 +1,7 @@
 <?php
 
 use app\assets\VueAsset;
+use app\models\Group;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
 
@@ -12,12 +13,20 @@ use yii\bootstrap5\ActiveForm;
 <div class="user-form" id="editGroup">
 
     <?php $form = ActiveForm::begin(); ?>
-    <?= 'текущая группа ' . $groupId ?>
-    <?= $form->field($model, 'group_id')->dropDownList($groupTitle, ['id' => 'editGroupInput', 'v-on:click' => 'isFileInputClickHandler', 'prompt' => 'выберите группу']) ?>
+    <?= 'текущая группа ' . Group::getGroupTitle($groupId) ?>
+    <?= $form->field($model, 'group_id')->dropDownList($groupTitle, ['id' => 'editGroupInput', 'v-on:click' => 'isFileInputClickHandler', 'class' => 'form-control w-25', 'style' => 'min-width: 200px', 'prompt' => 'выберите группу']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('сохранить', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Удалить', ['../user-group/delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?>
     </div>
+
 
     <?php ActiveForm::end(); ?>
 

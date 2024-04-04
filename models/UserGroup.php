@@ -79,4 +79,13 @@ class UserGroup extends \yii\db\ActiveRecord
             ->indexBy('user_id')
             ->column();
     }
+    public static function getGroupStudents($group_id)
+    {
+        return (new Query)
+            ->select('user_id')
+            ->from('user_group')
+            ->where(['group_id' => $group_id])
+            ->indexBy('id')
+            ->column();
+    }
 }

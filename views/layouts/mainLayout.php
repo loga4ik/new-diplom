@@ -26,9 +26,15 @@ if (Yii::$app->user->isGuest) {
         ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>студенты</p>', 'url' => ['/teacher']],
         ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/student/create']],
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/teacher/group']],
-        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/test/create']],
+        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/test']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('student')) {
+    $navLinks = [
+        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>личный кабинет</p>', 'url' => ['/student']],
+        // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
+        // ['label' => 'группы', 'url' => ['/manager/group']],
+    ];
+} elseif (Yii::$app->user->identity->role_id == Role::getRoleId('admin')) {
     $navLinks = [
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>личный кабинет</p>', 'url' => ['/student']],
         // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
@@ -85,7 +91,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
-                        'Logout (' . Role::getRoleTitle(Yii::$app->user->identity->role_id) . ')',
+                        'Выйти (' . Role::getRoleTitle(Yii::$app->user->identity->role_id) . ')',
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()

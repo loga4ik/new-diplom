@@ -65,6 +65,7 @@ class TestController extends Controller
     public function actionView($id)
     {
         $questions = Question::getQuestionsOfTest($id);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'questions' => $questions
@@ -116,9 +117,9 @@ class TestController extends Controller
                                 $modelAnswer->is_true = 1;
                             }
                         }
-                        VarDumper::dump($modelsQuestion[0]->attributes, 10, true);
+                        // VarDumper::dump($modelsQuestion[0]->attributes, 10, true);
                         // VarDumper::dump($modelAnswer[0]->validate(), 10, true);
-                        die;
+                        // die;
                         $valid = $modelAnswer->validate();
                     }
                 }
@@ -333,6 +334,15 @@ class TestController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionChengeActiveTest($id)
+    {
+        $model = $this->findModel($id);
+        $model->is_active = +!$model->is_active;
+        if ($model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
     }
 
     /**

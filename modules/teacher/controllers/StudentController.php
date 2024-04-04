@@ -56,21 +56,22 @@ class StudentController extends Controller
             // die;
             return $groups;
         }
-        // function getGroupsObj()
-        // {
-        //     $groupNames = Group::getAllGroupTitle();
-        //     $groups = UserGroup::getStudentsGroups();
-        //     $groupsObj = [];
-        //     foreach ($groups as $key => $value) {
-        //         $groupsObj[] = [
-        //             'id' => $key,
-        //             'title' => $groupNames[$value],
-        //         ];
-        //     }
-        //     // VarDumper::dump($groups, 10, true);
-        //     // die;
-        //     return $groups;
-        // }
+
+        function getGroupsObj()
+        {
+            $groupNames = Group::getAllGroupTitle();
+            $groups = UserGroup::getStudentsGroups();
+            $groupsObj = [];
+            foreach ($groups as $key => $value) {
+                $groupsObj[] = [
+                    'id' => $key,
+                    'title' => $groupNames[$value],
+                ];
+            }
+            // VarDumper::dump($groups, 10, true);
+            // die;
+            return $groupsObj;
+        }
         $searchModel = new StudentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         if ($group_id) {
@@ -80,14 +81,49 @@ class StudentController extends Controller
             }
             $dataProvider->query->andWhere(['id' => $users_arr]); //, 'role' => 1
         }
-
+        // VarDumper::dump(getGroupsObj(), 10, true);
+        // die;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'group_id' => $group_id,
             'arrOfMarks' => StudentTest::getAllUserIdMark(),
             'groups' => getGroupsArr(),
-            // 'groupsObj' => getGroupsObj(),
+            'groupsObj' => getGroupsObj(),
         ]);
+    }
+
+    public function actionDownloadList($id)
+    {
+        // $this->findModel($id);
+        $newData = User::getAllStudents($id);
+        // VarDumper::dump($newData, 10, true, 10, true);
+        // die;
+        $file = '../web/groupListFile/groupList.txt';
+        ob_start();
+        // Записать данные в файл
+        file_put_contents($file, $newData);
+        // Получить данные из буфера и очистить его
+        ob_get_clean();
+
+        if (file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            ob_clean();
+            flush();
+            readfile($file);
+            ob_end_flush();
+            return $this->redirect('../');
+        } else {
+            echo 'Файл не существует.';
+        }
+        return $this->redirect(['index']);
     }
 
     /**
@@ -147,15 +183,11 @@ class StudentController extends Controller
                         $model->name = $value[0];
                         $model->surname = $value[1];
                         $model->patronimyc = substr($value[2], 0, -1);
-                        // $model->group_id = $group;
                         $model->login = Yii::$app->security->generateRandomString(6);
                         $model->password = Yii::$app->security->generateRandomString(6);
                         $newData = createNewData($newData, $model);
-                        // VarDumper::dump($newData, 10, true);
-                        // die;
-                        $model->password = Yii::$app->security->generatePasswordHash($model->password);
                         $model->auth_key = Yii::$app->security->generateRandomString();
-                        $model->role_id = Role::getRoleId('teacher');
+                        $model->role_id = Role::getRoleId('student');
                         // VarDumper::dump($model->attributes, 10, true);
                         // die;
                         $model->save();
