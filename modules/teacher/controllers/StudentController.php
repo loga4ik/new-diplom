@@ -15,6 +15,8 @@ use yii\filters\VerbFilter;
 use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 
+use function PHPUnit\Framework\fileExists;
+
 /**
  * StudentController implements the CRUD actions for User model.
  */
@@ -92,13 +94,55 @@ class StudentController extends Controller
             'groupsObj' => getGroupsObj(),
         ]);
     }
+    private function downloadFile($group)
+    {
+        $json = '../web/groupListFile/' . $group . '.json';
+        $txt = '../web/groupListFile/' . $group . '.txt';
+        $userJson = file_get_contents($json);
+        $userList = '';
+        foreach (json_decode($userJson, true) as $key => $user) {
+            $userList .=
+                'имя: ' . $user['name'] .
+                ', фамилия: ' . $user['surname'] .
+                ', отчество: '  . $user['patronimyc'] .
+                ', логин: ' . $user['login'] .
+                ', пароль' . $user['password']  . "\n";
+        }
+        $fp = fopen($txt, "w+");
+
+        fwrite($fp, $userList);
+
+        if (file_exists($txt)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($txt) . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($txt));
+            ob_clean();
+            flush();
+            readfile($txt);
+            ob_end_flush();
+            fclose($fp);
+            unlink($txt);
+            return $this->redirect('../');
+        } else {
+            echo 'Файл не существует.';
+            fclose($fp);
+        }
+    }
 
     public function actionDownloadList($id)
     {
         // $this->findModel($id);
+        $this->downloadFile($id);
+        // VarDumper
+        die;
+
         $newData = User::getAllStudents($id);
         // VarDumper::dump($newData, 10, true, 10, true);
-        // die;
         $file = '../web/groupListFile/groupList.txt';
         ob_start();
         // Записать данные в файл
@@ -147,7 +191,7 @@ class StudentController extends Controller
     public function actionCreate()
     {
         $model = new User();
-        $newData = '';
+        $newData = [];
         $addGroup = function ($model, $group) {
             $user = new UserGroup;
             $user->group_id = $group;
@@ -157,8 +201,53 @@ class StudentController extends Controller
 
         function createNewData($newData, $model)
         {
-            $newData .= $model->name . " " . $model->surname . " " . $model->patronimyc . " login:" . $model->login . " password:" . $model->password . "\n";
+            $newData = [
+                'name' => $model->name,
+                'surname' => $model->surname,
+                'patronimyc' => $model->patronimyc,
+                'login' => $model->login,
+                'password' => $model->password,
+            ];
             return $newData;
+        }
+        function updateData($newData, $oldData)
+        {
+            $oldData = json_decode($oldData, true);
+            // VarDumper::dump($oldData, 10, true);
+            foreach ($newData as $key => $newUser) {
+                // VarDumper::dump($newUser['login'], 10, true);
+                foreach ($oldData as $oldUser) {
+                    if ($newUser['name'] == $oldUser['name'] && $newUser['surname'] == $oldUser['surname'] && $newUser['patronimyc'] == $oldUser['patronimyc']) {
+                        unset($newData[$key]);
+                    }
+                }
+            }
+            // VarDumper::dump($newData, 10, true);
+
+            // VarDumper::dump(json_decode($oldData, true), 10, true);
+            // die;
+            return $newData;
+        }
+        function fileHandler($file, $newData)
+        {
+            if (!file_exists($file)) {
+                $fp = fopen($file, "w+");
+                fwrite($fp, json_encode($newData));
+                fclose($fp);
+                // VarDumper::dump(json_encode($newData), 10, true);
+                // die;
+            } else {
+                $oldData = file_get_contents($file);
+                // VarDumper::dump($oldData, 10, true);
+                // die;
+                $newData = updateData($newData, $oldData);
+
+                // VarDumper::dump([...$newData, ...json_decode($oldData, true)], 10, true);
+                // die;
+                $fp = fopen($file, "w+");
+                fwrite($fp, json_encode([...$newData, ...json_decode($oldData, true)]));
+                fclose($fp);
+            }
         }
         // function createNewUserGroup($user_id, $group)
         // {
@@ -172,6 +261,7 @@ class StudentController extends Controller
             // die;
             if ($model->load($this->request->post())) {
                 $group = $model->group_id;
+                $file = '../web/groupListFile/' . $group . '.json';
                 if (!$model->name) {
                     $model->fileInput = file_get_contents(UploadedFile::getInstance($model, 'fileInput')->tempName);
 
@@ -185,7 +275,7 @@ class StudentController extends Controller
                         $model->patronimyc = substr($value[2], 0, -1);
                         $model->login = Yii::$app->security->generateRandomString(6);
                         $model->password = Yii::$app->security->generateRandomString(6);
-                        $newData = createNewData($newData, $model);
+                        array_push($newData, createNewData($newData, $model));
                         $model->auth_key = Yii::$app->security->generateRandomString();
                         $model->role_id = Role::getRoleId('student');
                         // VarDumper::dump($model->attributes, 10, true);
@@ -194,37 +284,37 @@ class StudentController extends Controller
                         $group && $addGroup($model, $group);
                     }
 
-                    $file = '../web/groupListFile/groupList.txt';
+                    // VarDumper::dump(file_exists($file), 10, true);
+                    // die;
 
-                    ob_start();
-                    // Записать данные в файл
-                    file_put_contents($file, $newData);
-                    // Получить данные из буфера и очистить его
-                    ob_get_clean();
+                    fileHandler($file, $newData);
 
                     if (file_exists($file)) {
-                        header('Content-Description: File Transfer');
-                        header('Content-Type: application/octet-stream');
-                        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
-                        header('Content-Transfer-Encoding: binary');
-                        header('Expires: 0');
-                        header('Cache-Control: must-revalidate');
-                        header('Pragma: public');
-                        header('Content-Length: ' . filesize($file));
-                        ob_clean();
-                        flush();
-                        readfile($file);
-                        ob_end_flush();
-                        return $this->redirect('../');
-                    } else {
-                        echo 'Файл не существует.';
+                        $this->downloadFile($group);
+                        //     header('Content-Description: File Transfer');
+                        //     header('Content-Type: application/octet-stream');
+                        //     header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+                        //     header('Content-Transfer-Encoding: binary');
+                        //     header('Expires: 0');
+                        //     header('Cache-Control: must-revalidate');
+                        //     header('Pragma: public');
+                        //     header('Content-Length: ' . filesize($file));
+                        //     ob_clean();
+                        //     flush();
+                        //     readfile($file);
+                        //     ob_end_flush();
+                        //     return $this->redirect('../');
+                        // } else {
+                        //     echo 'Файл не существует.';
                     }
                 } else {
                     $tempPass = Yii::$app->security->generateRandomString(6);
                     $model->login = Yii::$app->security->generateRandomString(6);
                     $model->password = Yii::$app->security->generatePasswordHash($tempPass);
                     $model->auth_key = Yii::$app->security->generateRandomString();
-                    $model->role_id = Role::getRoleId('teacher');
+                    $model->role_id = Role::getRoleId('student');
+                    array_push($newData, createNewData($newData, $model));
+                    fileHandler($file, $newData);
                     if ($model->save()) {
                         $model->group_id && $addGroup($model, $group);
                         return $this->redirect(['view', 'id' => $model->id, 'login' => $model->login, 'pass' => $tempPass]);
