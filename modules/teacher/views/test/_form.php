@@ -2,8 +2,8 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
+
 use wbraganca\dynamicform\DynamicFormWidget;
-use yii\bootstrap5\Modal;
 
 /** @var yii\web\View $this */
 /** @var app\models\Test $model */
@@ -11,15 +11,12 @@ use yii\bootstrap5\Modal;
 ?>
 
 <div class="test-form">
-    <?php $form = ActiveForm::begin(
-        [
-            'id' => 'dynamic-form',
-        ]
-    ); ?>
+    <?php $form = ActiveForm::begin(['id' => 'dynamic-form',]); ?>
 
     <div class="row">
         <div class="col-sm-6">
             <?= $form->field($modelTest, 'title')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($modelTest, 'subject_id')->dropDownList($subjects, ['prompt' => 'Предмет', 'class' => 'form-control']) ?>
         </div>
 
     </div>
@@ -54,38 +51,37 @@ use yii\bootstrap5\Modal;
                     echo Html::activeHiddenInput($modelQuestion, "[{$indexQuestion}]id");
                 }
                 ?>
+
                 <div class="row">
-                    <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput()->label('Приложение к вопросу') ?>
+                    <?= $form->field($modelQuestion, "[{$indexQuestion}]imageFile")->fileInput(['class' => 'form-control']) ?>
                     <div class="col-6">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]text")->label('Текст вопроса')->textarea(['maxlength' => true]) ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]text")->textarea(['maxlength' => true, 'class' => 'form-control']) ?>
                     </div>
                     <div class="col-3">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]level_id")->label('Сложность вопроса')->dropDownList($levels, ['prompt' => 'Сложность вопроса']) ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]level_id")->dropDownList($levels, ['prompt' => 'Сложность вопроса', 'class' => 'form-control']) ?>
                     </div>
                     <div class="col-3">
-                        <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->label('Тип вопроса')->dropDownList($types, ['prompt' => 'Тип вопроса']) ?>
+                        <?= $form->field($modelQuestion, "[{$indexQuestion}]type_id")->dropDownList($types, ['prompt' => 'Тип вопроса', 'class' => 'form-control']) ?>
                     </div>
                 </div>
-                <? $this->render('_form-answers', [
-                    'form' => $form,
-                    'indexQuestion' => $indexQuestion,
-                    'modelsAnswer' => $modelsAnswer[$indexQuestion],
-                ]) ?>
+                <?= $this->render('_form-answers', ['form' => $form, 'indexQuestion' => $indexQuestion, 'modelsAnswer' => $modelsAnswer[$indexQuestion]])
+                ?>
 
-                <? if (Yii::$app->controller->action->id == 'create') : ?>
+                <?php if (Yii::$app->controller->action->id == 'create') : ?>
                     <button type="button" class="remove-question btn btn-my-red btn-xs">Удалить вопрос</span></button>
-                <? endif; ?>
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
     </row>
     <div class="row mb-4">
-        <? if (Yii::$app->controller->action->id == 'create') : ?>
+        <?php if (Yii::$app->controller->action->id == 'create') : ?>
             <div style="width: auto;">
                 <button type="button" class="add-question btn btn-my-green btn-xs">Добавить вопрос</button>
             </div>
-        <? endif; ?>
+        <?php endif; ?>
     </div>
-    <?php DynamicFormWidget::end(); ?>
+
+    <?php DynamicFormWidget::end() ?>
     <div class="form-group">
         <?= Html::submitButton(Yii::$app->controller->action->id == 'create' ? 'Создать' : 'Изменить', ['class' => 'btn btn-my-blue']) ?>
     </div>
@@ -93,18 +89,13 @@ use yii\bootstrap5\Modal;
 </div>
 
 
-<? $js = <<< JS
+<?php $js = <<< JS
 
     $(".dynamicform_wrapper").on("afterInsert", function(e, item) {
         $(item).find('input,textarea,select').each(function(index,element){
             if($(element).attr('type') != 'checkbox'){
                 $(element).val('');
             }
-            // if($(element).attr('type') == 'checkbox'){
-            //     $(element).removeAttr("checked");
-            //     // $(element).addClass('form-check-input');
-            //     // console.log($(element).prop('checked'));
-            // }
 
             $(element).removeClass('is-valid');
             $(element).removeClass('is-invalid');

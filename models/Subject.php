@@ -41,7 +41,7 @@ class Subject extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
+            'title' => 'Название',
         ];
     }
 
@@ -61,5 +61,18 @@ class Subject extends \yii\db\ActiveRecord
             ->from('subject')
             ->indexBy('id')
             ->column();
+    }
+    public static function getUsersSubjects()
+    {
+        return (new Query())
+            ->select('title')
+            ->where([''])
+            ->from('subject')
+            ->indexBy('id')
+            ->column();
+    }
+    public static function getSubjectTitle($id)
+    {
+        return self::findOne(['id' => $id])->title;
     }
 }

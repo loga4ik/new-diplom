@@ -11,11 +11,9 @@ use Yii;
  * @property string $title
  * @property int $is_true
  * @property int $question_id
- * @property int $type_id
  *
  * @property Question $question
  * @property StudentAnswer[] $studentAnswers
- * @property AnswerType $type
  */
 class Answer extends \yii\db\ActiveRecord
 {
@@ -36,10 +34,10 @@ class Answer extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required', 'except' => self::SKIP_ANSWER],
+            [['title', 'is_true'], 'required'],
             [['title'], 'string'],
-            [['is_true', 'question_id', 'type_id'], 'integer'],
+            [['is_true', 'question_id'], 'integer'],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Question::class, 'targetAttribute' => ['question_id' => 'id']],
-            // [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnswerType::class, 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -53,7 +51,6 @@ class Answer extends \yii\db\ActiveRecord
             'title' => 'Title',
             'is_true' => 'Is True',
             'question_id' => 'Question ID',
-            'type_id' => 'Type ID',
         ];
     }
 
@@ -76,9 +73,12 @@ class Answer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(StudentAnswer::class, ['ansuer_id' => 'id']);
     }
-
-    public static function getLevels()
+    // public static function getLevels()
+    // {
+    //     return static::find()->select('title')->indexBy('id')->column();
+    // }
+    public static function getAnswersOfQuestion($question_id)
     {
-        return static::find()->select('title')->indexBy('id')->column();
+        return static::find()->where(['question_id' => $question_id])->asArray()->all();
     }
 }

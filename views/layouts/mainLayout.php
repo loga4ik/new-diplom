@@ -5,6 +5,8 @@
 
 use app\assets\Admin2Asset;
 use app\models\Role;
+use app\models\Test;
+use app\models\User;
 use yii\bootstrap5\Html as Bootstrap5Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
@@ -19,15 +21,24 @@ if (Yii::$app->user->isGuest) {
         ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>преподаватели</p>', 'url' => ['/manager']],
         ['label' => '<i class="nav-icon fi fi-rr-user-add"></i> <p>добавление преподавателя</p>', 'url' => ['/manager/teacher/create']],
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/manager/group']],
+        ['label' => '<i class="fi fi-rr-book-alt"></i> &nbsp; <p>предметы</p>', 'url' => ['/manager/subject']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('teacher')) {
     $navLinks = [
         ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>студенты</p>', 'url' => ['/teacher']],
-        ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/teacher/create']],
+        ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/student/create']],
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/teacher/group']],
-        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/create-test']],
+        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/test']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('student')) {
+    $navLinks = [
+        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>личный кабинет</p>', 'url' => ['/student']],
+        Test::getFindActiveTest() ?
+            ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>Решить активный тест</p>', 'url' => ['/student/test']] : [],
+        // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
+        // ['label' => 'группы', 'url' => ['/manager/group']],
+    ];
+} elseif (Yii::$app->user->identity->role_id == Role::getRoleId('admin')) {
     $navLinks = [
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>личный кабинет</p>', 'url' => ['/student']],
         // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
@@ -35,6 +46,21 @@ if (Yii::$app->user->isGuest) {
     ];
 }
 
+$getNavLinks = function ($navLinks) {
+    $string = '';
+    if (!is_null($navLinks)) {
+        # code...
+        foreach ($navLinks as $value) {
+            if (!$value) {
+                break;
+            }
+            $string .=  "<li class='nav-item'>
+            <a class='nav-link' href=" . $value['url'][0] . ">" . $value['label'] . "</a>
+            </li>";
+        }
+    }
+    return $string;
+};
 Admin2Asset::register($this);
 
 $this->registerCsrfMetaTags();
@@ -84,7 +110,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
-                        'Logout (' . Role::getRoleTitle(Yii::$app->user->identity->role_id) . ')',
+                        'Выйти (' . User::findOne(['login' => Yii::$app->user->identity->login])->name . ')',
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()
@@ -115,8 +141,15 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     </div> -->
                     <div class="info">
                         <span class="d-block" style="color: #C7CAD2FF;">
+                            <?php $roleArr = [
+                                'admin' => 'администратор',
+                                'manager' => 'менеджер',
+                                'teacher' => 'преподаватель',
+                                'student' => 'студент',
+
+                            ] ?>
                             роль:
-                            <?= Yii::$app->user->identity->login ?? 'необходимо войти'
+                            <?= !Yii::$app->user->isGuest ? $roleArr[Role::getRoleTitle(Yii::$app->user->identity->role_id)] : 'необходимо войти'
                             ?>
                         </span>
                     </div>
@@ -128,20 +161,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
 
-                        <?php
-                        $getNavLinks = function ($navLinks) {
-                            $string = '';
-                            if (!is_null($navLinks)) {
-                                # code...
-                                foreach ($navLinks as $value) {
-                                    $string .=  "<li class='nav-item'>
-                                    <a class='nav-link' href=" . $value['url'][0] . ">" . $value['label'] . "</a>
-                                    </li>";
-                                }
-                            }
-                            return $string;
-                        };
-                        ?>
                         <?= $getNavLinks($navLinks) ?>
                     </ul>
                 </nav>
@@ -196,7 +215,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <!--  role="main" -->
     </main>
 
-    <?php $this->registerJs("$.widget.bridge('uibutton', $.ui.button)") ?>
+    <? # $this->registerJs("$.widget.bridge('uibutton', $.ui.button)") 
+    ?>
 
     <?php $this->endBody() ?>
 </body>

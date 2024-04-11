@@ -7,7 +7,6 @@ use app\models\Role;
 use app\models\User;
 use app\models\UserGroup;
 use app\modules\manager\models\TeacherSearch;
-// use app\modules\manager\models\TeacherSearch;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -85,23 +84,16 @@ class TeacherController extends Controller
     public function actionCreate()
     {
         $model = new User();
+        $newData = '';
 
-        $addGroup = function ($model) {
-            $user = new UserGroup;
-            $user->group_id = $model->group_id;
-            $user->user_id = User::findOne(['login' => $model->login])->id;
-            $user->save();
-        };
-        $generateAttributes = function ($model) {
-            $model->login = Yii::$app->security->generateRandomString(6);
-            $model->password = Yii::$app->security->generateRandomString(6);
-            $model->auth_key = Yii::$app->security->generateRandomString();
-            $model->role_id = Role::getRoleId('teacher');
-        };
-
+        function createNewData($newData, $model)
+        {
+            $newData .= $model->name . " " . $model->surname . " " . $model->patronimyc . " login:" . $model->login . " password:" . $model->password . "\n";
+            return $newData;
+        }
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-
+                $group = $model->group_id;
                 if (!$model->name) {
                     $model->fileInput = file_get_contents(UploadedFile::getInstance($model, 'fileInput')->tempName);
 
@@ -113,25 +105,59 @@ class TeacherController extends Controller
                         $model->name = $value[0];
                         $model->surname = $value[1];
                         $model->patronimyc = substr($value[2], 0, -1);
-                        $generateAttributes($model);
+                        $model->login = Yii::$app->security->generateRandomString(6);
+                        $model->password = Yii::$app->security->generateRandomString(6);
+                        $newData = createNewData($newData, $model);
+                        $model->password = Yii::$app->security->generatePasswordHash($model->password);
+                        $model->auth_key = Yii::$app->security->generateRandomString();
+                        $model->role_id = Role::getRoleId('teacher');
                         $model->save();
-                        $model->group_id && $addGroup($model);
                     }
-                    return $this->redirect('../');
+
+                    $file = '../web/groupListFile/groupList.txt';
+
+                    ob_start();
+                    // Записать данные в файл
+                    file_put_contents($file, $newData);
+                    // Получить данные из буфера и очистить его
+                    ob_get_clean();
+
+                    if (file_exists($file)) {
+                        header('Content-Description: File Transfer');
+                        header('Content-Type: application/octet-stream');
+                        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+                        header('Content-Transfer-Encoding: binary');
+                        header('Expires: 0');
+                        header('Cache-Control: must-revalidate');
+                        header('Pragma: public');
+                        header('Content-Length: ' . filesize($file));
+                        ob_clean();
+                        flush();
+                        readfile($file);
+                        ob_end_flush();
+                        return $this->redirect('../index');
+                    } else {
+                        echo 'Файл не существует.';
+                    }
                 } else {
-                    $generateAttributes($model);
+                    $tempPass = Yii::$app->security->generateRandomString(6);
+                    $model->login = Yii::$app->security->generateRandomString(6);
+                    $model->password = Yii::$app->security->generatePasswordHash($tempPass);
+                    $model->auth_key = Yii::$app->security->generateRandomString();
+                    $model->role_id = Role::getRoleId('teacher');
                     if ($model->save()) {
-                        $model->group_id && $addGroup($model);
-                        return $this->redirect(['view', 'id' => $model->id]);
+                        return $this->redirect(['view', 'id' => $model->id, 'login' => $model->login, 'pass' => $tempPass]);
                     }
                 }
             }
+            return $this->redirect('../index');
         } else {
             $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
+            'groupArr' => Group::getAllGroupTitle()
         ]);
     }
 
@@ -151,7 +177,7 @@ class TeacherController extends Controller
 
         return $this->render('addGroup', [
             'model' => $model,
-            'groupTitle' => Group::getGroupTitle(),
+            'groupTitle' => Group::getAllGroupTitle(),
         ]);
     }
     public function actionEditingGroup($id, $user_id)
@@ -159,7 +185,7 @@ class TeacherController extends Controller
         $model = UserGroup::findOne(['group_id' => $id, 'user_id' => $user_id,]);
         $model->group_id = '';
 
-        $groupTitles = Group::getGroupTitle();
+        $groupTitles = Group::getAllGroupTitle();
         unset($groupTitles[$id]);
 
         if ($this->request->isPost && $model->load($this->request->post())) {

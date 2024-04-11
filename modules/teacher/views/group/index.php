@@ -2,6 +2,7 @@
 
 use app\models\Group;
 use yii\bootstrap5\Html;
+use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
@@ -11,7 +12,7 @@ use yii\widgets\Pjax;
 /** @var app\modules\teacher\models\GroupSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Groups';
+$this->title = 'Группы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="group-index">
@@ -21,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </h1>
 
     <p>
-        <?= Html::a('Create Group', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать группу', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -31,6 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager' => [
+            'class' => LinkPager::class
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -46,13 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 // 'filter' => false,
                 'enableSorting' => false,
-                'value' => fn ($model) => html::a($model->title, ['./student', 'group_id' => $model->id], ['class' => 'btn btn-primary'])
+                'value' => fn ($model) => Html::a($model->title, ['../teacher/student', 'group_id' => $model->id], ['class' => 'btn btn-primary'])
             ],
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Group $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                'label' => '',
+                'enableSorting' => false,
+                'format' => 'html',
+                'value' => fn ($model) => Html::a('Сменить название', ['update', 'id' => $model->id], ['class' => 'btn btn-primary'])
             ],
         ],
     ]); ?>

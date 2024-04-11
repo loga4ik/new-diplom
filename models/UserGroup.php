@@ -69,13 +69,23 @@ class UserGroup extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
-    public static function getStudentsGroups($role_id = null)
+    public static function getStudentsGroups()
     {
+        // $role_id = null
         return (new Query)
             ->select('group_id')
             ->from('user_group')
-            ->where(['role_id' => $role_id])
+            // ->where(['role_id' => $role_id])
             ->indexBy('user_id')
+            ->column();
+    }
+    public static function getGroupStudents($group_id)
+    {
+        return (new Query)
+            ->select('user_id')
+            ->from('user_group')
+            ->where(['group_id' => $group_id])
+            ->indexBy('id')
             ->column();
     }
 }

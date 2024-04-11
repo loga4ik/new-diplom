@@ -40,7 +40,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
     <h4 class="col-8">Ответы</h4>
     <div class="col-4">
-        <button type="button" class="mb-3 add-answer btn btn-my-green btn-xs " style="width: auto;"><span class="glyphicon glyphicon-plus"></span></button>
+        <button type="button" class="mb-3 p-1 add-answer btn btn-success btn-xs " style="width: auto;"><i class="fi fi-rr-plus" style="height: 15px; width: 15px; display:block"></i></button>
     </div>
 </div>
 <div class="container-answers">
@@ -62,7 +62,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 </div>
 
                 <div class="col-4  ">
-                    <button type="button" class="mb-3 remove-answer btn btn-my-red btn-xs"><span class="glyphicon glyphicon-minus"></span></button>
+                    <button type="button" class="mb-3 p-1 remove-answer btn btn-danger btn-xs"><i class="fi fi-rr-cross" style="height: 15px; width: 15px; display:block"></i></button>
                 </div>
 
             </div>

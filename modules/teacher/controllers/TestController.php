@@ -6,15 +6,19 @@ use app\models\Level;
 use app\models\Test;
 use app\models\Question;
 use app\models\Answer;
+use app\models\Group;
+use app\models\GroupTest;
 use app\models\QuestionType;
 use yii\web\NotFoundHttpException;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\base\Model;
+use app\models\Model;
 use app\models\QuestionLevel;
+use app\models\Subject;
 use app\models\Type;
-use app\modules\teacher\models\CreateTestSearch;
+use app\modules\teacher\models\TestSearch;
 use yii\base\ErrorException;
+use yii\filters\VerbFilter;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\UploadedFile;
@@ -24,6 +28,20 @@ use yii\web\UploadedFile;
  */
 class TestController extends Controller
 {
+    public function behaviors()
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
+    }
     /**
      * Lists all Test models.
      *
@@ -31,7 +49,7 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CreateTestSearch();
+        $searchModel = new TestSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -49,6 +67,7 @@ class TestController extends Controller
     public function actionView($id)
     {
         $questions = Question::getQuestionsOfTest($id);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'questions' => $questions
@@ -73,11 +92,15 @@ class TestController extends Controller
         $modelsAnswer = [[new Answer]];
 
 
-        // VarDumper::dump($modelTest, 10, true);
+        // VarDumper::dump($modelTest->attributes, 10, true);
         // die;
+
         if ($modelTest->load(Yii::$app->request->post())) {
             $modelsQuestion = Model::createMultiple(Question::class);
             Model::loadMultiple($modelsQuestion, Yii::$app->request->post());
+
+            $modelTest->is_active = 0;
+            // $modelTest->point_count = 0;
 
             $valid = $modelTest->validate();
             $valid = Model::validateMultiple($modelsQuestion) && $valid;
@@ -93,14 +116,16 @@ class TestController extends Controller
                         foreach ($modelsQuestion as $modelQuestion) {
                             if ($modelsQuestion[$indexQuestion]->type_id == QuestionType::getTypeId('Ввод ответа от студента')) {
                                 $modelAnswer->scenario = $modelAnswer::SKIP_ANSWER;
-                                $modelAnswer->true_false = 1;
+                                $modelAnswer->is_true = 1;
                             }
                         }
+                        // VarDumper::dump($modelsQuestion[0]->attributes, 10, true);
+                        // VarDumper::dump($modelAnswer[0]->validate(), 10, true);
+                        // die;
                         $valid = $modelAnswer->validate();
                     }
                 }
             }
-
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
 
@@ -116,11 +141,11 @@ class TestController extends Controller
 
 
                             if ($modelQuestion->level_id == QuestionLevel::getLevelId('Сложный')) {
-                                $modelQuestion->points = 3;
+                                $modelQuestion->points_per_question = 3;
                             } else if ($modelQuestion->level_id == QuestionLevel::getLevelId('Средний')) {
-                                $modelQuestion->points = 2;
+                                $modelQuestion->points_per_question = 2;
                             } else {
-                                $modelQuestion->points = 1;
+                                $modelQuestion->points_per_question = 1;
                             }
 
                             if ($modelQuestion->imageFile = UploadedFile::getInstance($modelQuestion, "[{$indexQuestion}]imageFile")) {
@@ -136,7 +161,7 @@ class TestController extends Controller
                             if (isset($modelsAnswer[$indexQuestion]) && is_array($modelsAnswer[$indexQuestion])) {
                                 foreach ($modelsAnswer[$indexQuestion] as $indexAnswer => $modelAnswer) {
                                     $modelAnswer->question_id = $modelQuestion->id;
-                                    if ($modelAnswer->true_false == 1) {
+                                    if ($modelAnswer->is_true == 1) {
                                         $counter++;
                                     }
 
@@ -155,9 +180,8 @@ class TestController extends Controller
                         }
                     }
 
-
                     if ($flag) {
-                        $modelTest->max_points = Test::getTestMaxPoints($modelTest->id);
+                        $modelTest->point_count = Test::getTestMaxPoints($modelTest->id);
                         $modelTest->save(false);
                         $transaction->commit();
                         return $this->redirect(['view', 'id' => $modelTest->id]);
@@ -179,6 +203,7 @@ class TestController extends Controller
             'modelsAnswer' => (empty($modelsAnswer)) ? [[new Answer]] : $modelsAnswer,
             'levels' => $levels,
             'types' => $types,
+            'subjects' => Subject::getAllSubject(),
         ]);
     }
 
@@ -292,6 +317,7 @@ class TestController extends Controller
             'modelTest' => $modelTest,
             'modelsQuestion' => (empty($modelsQuestion)) ? [new Question] : $modelsQuestion,
             'modelsAnswer' => (empty($modelsAnswer)) ? [[new Answer]] : $modelsAnswer,
+            'subjects' => Subject::getAllSubject(),
             'levels' => $levels,
             'types' => $types
         ]);
@@ -312,6 +338,46 @@ class TestController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionChengeActiveTest($test_id)
+    {
+        $model = new GroupTest();
+        $testModel = Test::findOne(['id' => $test_id]);
+        if (!$testModel->is_active) {
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post())) {
+                    $testModel->is_active = +!$testModel->is_active;
+                    $model->test_id = $test_id;
+                    // VarDumper::dump($testModel->save(), 10, true);
+                    // die;
+                    if ($model->save() && $testModel->save()) {
+                        return $this->redirect('../../teacher/test');
+                    }
+                }
+            } else {
+                $model->loadDefaultValues();
+            }
+
+            return $this->render('group-test-create', [
+                'model' => $model,
+                'groupArr' => Group::getAllGroupTitle(),
+            ]);
+        } else {
+            $testModel->is_active = +!$testModel->is_active;
+            if ($testModel->save()) {
+                return $this->redirect('../../teacher/test');
+            }
+        }
+    }
+    // public function actionIndex()
+    // {
+    //     $searchModel = new TeacherSearch();
+    //     $dataProvider = $searchModel->search($this->request->queryParams);
+
+    //     return $this->render('index', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
     /**
      * Finds the Test model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

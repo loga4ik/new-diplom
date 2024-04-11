@@ -3,10 +3,12 @@
 namespace app\modules\teacher\controllers;
 
 use app\models\Group;
+use app\models\User;
 use app\modules\teacher\models\GroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 
 /**
  * GroupController implements the CRUD actions for Group model.
@@ -116,6 +118,7 @@ class GroupController extends Controller
         return $this->redirect(['index']);
     }
 
+    
     /**
      * Finds the Group model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

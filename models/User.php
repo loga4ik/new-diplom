@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
+use yii\helpers\VarDumper;
 use yii\web\IdentityInterface;
 
 /**
@@ -86,7 +88,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'phone' => 'Телефон',
             'login' => 'Логин',
             'role_id' => 'Роль',
-            'fileInput' => '',
+            'fileInput' => 'Список студентов',
+            'group_id' => 'группа',
             'auth_key' => 'Auth Key',
         ];
     }
@@ -129,5 +132,48 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public static function getIsStudent()
     {
         return Yii::$app->user->identity->role_id == Role::getRoleId('student');
+    }
+    public static function getUserGroup()
+    {
+        return (new Query())
+            ->select('group_id')
+            ->from('user_group')
+            ->where(['user_id' => Yii::$app->user->id])
+            ->column();
+    }
+
+    public static function getAllTeacher()
+    {
+        $arr = [];
+        foreach ((self::find()
+            ->select(['name', 'surname', 'patronimyc', 'id'])
+            ->where(['role_id' => Role::getRoleId('teacher')])
+            ->indexBy('id')
+            ->all()) as $key => $value) {
+            $arr[$key] = $value->name . ' ' . $value->surname . ' ' . $value->patronimyc . ' ';
+        }
+        return $arr;
+    }
+    public static function getAllStudents($group_id)
+    {
+        $newData = '';
+        function createNewData($newData, $model)
+        {
+            $newData .= $model->name . " " . $model->surname . " " . $model->patronimyc . " login:" . $model->login . " password:" . $model->password  . "\n";
+            return $newData;
+        }
+        $user = UserGroup::getGroupStudents($group_id);
+        foreach ($user as $value) {
+            $model = User::findOne(['id' => $value]);
+            if ($model->role_id == Role::getRoleId('student')) {
+                $newData = createNewData($newData, $model);
+            }
+        }
+        return $newData;
+    }
+    public static function getUserName($id)
+    {
+        $user =  self::findOne(['id' => $id]);
+        return $user->surname . ' ' . $user->name . ' '  . $user->patronimyc;
     }
 }

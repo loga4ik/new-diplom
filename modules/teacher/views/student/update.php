@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use yii\bootstrap5\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'groupArr' => $groupArr,
     ]) ?>
 
 </div>

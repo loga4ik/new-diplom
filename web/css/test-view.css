@@ -1,0 +1,102 @@
+.test-list {
+  padding-left: 0px;
+  background-color: white;
+  border-radius: 4px;
+  margin-top: 50px;
+  z-index: 10;
+  position: relative;
+  box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.test-list li {
+  padding: 10px;
+}
+.list-test-question {
+  font-size: 20px;
+  color: #e7e6e6 !important;
+  background-color: #404850 !important;
+}
+.list-test-item-correct {
+  color: black !important;
+  background-color: #bbe6d2 !important;
+}
+.list-test-item-incorrect {
+  color: black !important;
+  background-color: #f4f6f9ed !important;
+}
+
+.list-group-item:first-child {
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  /* z-index: 1; */
+}
+.list-group-item:last-child {
+  border-bottom-left-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+.question-mid::before {
+  content: "Средний";
+  position: absolute;
+  padding: 6px 9px 11px 9px;
+  top: -30px;
+  left: -1px;
+  font-size: 12px;
+  border-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background-color: #404850;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  font-weight: normal;
+  border: 1px solid #404850;
+  border-bottom: none;
+  /* box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2); */
+  z-index: 0;
+  /* overflow: hidden; */
+}
+
+.question-easy::before {
+  content: "Лёгкий";
+  position: absolute;
+  padding: 6px 9px 11px 9px;
+  top: -30px;
+  left: -1px;
+  font-size: 12px;
+  border-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background-color: #404850;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  font-weight: normal;
+  border: 1px solid #404850;
+  border-bottom: none;
+  /* box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2); */
+  z-index: 0;
+  /* overflow: hidden; */
+}
+.question-hard::before {
+  content: "Сложный";
+  position: absolute;
+  padding: 6px 9px 11px 9px;
+  top: -30px;
+  left: -1px;
+  font-size: 12px;
+  border-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background-color: #404850;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  font-weight: normal;
+  border: 1px solid #404850;
+  border-bottom: none;
+  /* box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2); */
+  z-index: 0;
+  /* overflow: hidden; */
+}

@@ -32,6 +32,7 @@ class Admin2Asset extends AssetBundle
     "adminlte/plugins/daterangepicker/daterangepicker.css",
     "adminlte/plugins/summernote/summernote-bs4.min.css",
     "/css/layout.css",
+    'css/test-view.css',
     "https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
   ];
 
@@ -53,7 +54,7 @@ class Admin2Asset extends AssetBundle
     "adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js",
     "adminlte/dist/js/adminlte.js",
     "adminlte/dist/js/demo.js",
-    "adminlte/dist/js/pages/dashboard.js",
+    // "adminlte/dist/js/pages/dashboard.js",
 
   ];
   public $depends = [
