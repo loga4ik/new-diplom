@@ -16,7 +16,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
     <div class="row">
         <div class="col-sm-6">
             <?= $form->field($modelTest, 'title')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($modelTest, 'subject_id')->dropDownList($subjects, ['class' => 'form-control']) ?>
+            <?= $form->field($modelTest, 'subject_id')->dropDownList($subjects, ['prompt' => 'Предмет', 'class' => 'form-control']) ?>
         </div>
 
     </div>

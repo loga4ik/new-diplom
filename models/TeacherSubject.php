@@ -44,8 +44,8 @@ class TeacherSubject extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'subject_id' => 'Subject ID',
+            'user_id' => 'Преподаватель',
+            'subject_id' => 'Предмет',
         ];
     }
 

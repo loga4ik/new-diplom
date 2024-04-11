@@ -6,6 +6,8 @@ use app\models\Level;
 use app\models\Test;
 use app\models\Question;
 use app\models\Answer;
+use app\models\Group;
+use app\models\GroupTest;
 use app\models\QuestionType;
 use yii\web\NotFoundHttpException;
 use Yii;
@@ -336,15 +338,46 @@ class TestController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionChengeActiveTest($id)
+    public function actionChengeActiveTest($test_id)
     {
-        $model = $this->findModel($id);
-        $model->is_active = +!$model->is_active;
-        if ($model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model = new GroupTest();
+        $testModel = Test::findOne(['id' => $test_id]);
+        if (!$testModel->is_active) {
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post())) {
+                    $testModel->is_active = +!$testModel->is_active;
+                    $model->test_id = $test_id;
+                    // VarDumper::dump($testModel->save(), 10, true);
+                    // die;
+                    if ($model->save() && $testModel->save()) {
+                        return $this->redirect('../../teacher/test');
+                    }
+                }
+            } else {
+                $model->loadDefaultValues();
+            }
+
+            return $this->render('group-test-create', [
+                'model' => $model,
+                'groupArr' => Group::getAllGroupTitle(),
+            ]);
+        } else {
+            $testModel->is_active = +!$testModel->is_active;
+            if ($testModel->save()) {
+                return $this->redirect('../../teacher/test');
+            }
         }
     }
+    // public function actionIndex()
+    // {
+    //     $searchModel = new TeacherSearch();
+    //     $dataProvider = $searchModel->search($this->request->queryParams);
 
+    //     return $this->render('index', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
     /**
      * Finds the Test model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

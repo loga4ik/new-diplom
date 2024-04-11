@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a($model->is_active ? 'закрыть тест' : 'открыть тест', ['chenge-active-test', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a($model->is_active ? 'закрыть тест' : 'открыть тест', ['chenge-active-test', 'test_id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [

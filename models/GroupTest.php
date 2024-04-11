@@ -78,4 +78,30 @@ class GroupTest extends \yii\db\ActiveRecord
             ->indexBy('id')
             ->column();
     }
+    public static function changeGroupTest($group_test_id)
+    {
+        $test = static::findOne($group_test_id);
+        $students = StudentTest::find()->where(['group_test_id' => $group_test_id]);
+        $student_count = $students->count();
+        $all_points = 0;
+        $students_column = StudentTest::find()
+            ->where(['group_test_id' => $group_test_id])
+            ->all();
+        foreach ($students_column as $student) {
+            $all_points += $student->points;
+        }
+        $test->avg_points = $all_points / $student_count;
+        $current_student = StudentTest::findOne(['group_test_id' => $group_test_id, 'user_id' => Yii::$app->user->identity->id]);
+        $mark = $current_student->mark;
+        if ($mark == 5) {
+            $test->val_5++;
+        } elseif ($mark == 4) {
+            $test->val_4++;
+        } elseif ($mark == 3) {
+            $test->val_3++;
+        } elseif ($mark == 2) {
+            $test->fails++;
+        }
+        return $test->save();
+    }
 }
