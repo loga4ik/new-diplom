@@ -154,6 +154,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         }
         return $arr;
     }
+    
     public static function getAllStudents($group_id)
     {
         $newData = '';
@@ -171,9 +172,21 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         }
         return $newData;
     }
+    
     public static function getUserName($id)
     {
         $user =  self::findOne(['id' => $id]);
         return $user->surname . ' ' . $user->name . ' '  . $user->patronimyc;
     }
+    public function getUserGroups()
+    {
+        return $this->hasMany(UserGroup::class, ['user_id' => 'id']);
+    }
+    // public function getCurrentGroupById()
+    // {
+    //     $all_groups = $this->userGroups;
+    //     $current_group = Group::getCurrentGroup($all_groups[0]['group_id']);
+    //     return $current_group;
+
+    // }
 }

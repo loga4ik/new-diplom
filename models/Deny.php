@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "deny".
  *
  * @property int $id
- * @property int $true_false
+ * @property int $is_true
  * @property int $group_test_id
  * @property int $user_id
  *
@@ -31,8 +31,8 @@ class Deny extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['true_false', 'group_test_id', 'user_id'], 'required'],
-            [['true_false', 'group_test_id', 'user_id'], 'integer'],
+            [['is_true', 'group_test_id', 'user_id'], 'required'],
+            [['is_true', 'group_test_id', 'user_id'], 'integer'],
             [['group_test_id'], 'exist', 'skipOnError' => true, 'targetClass' => GroupTest::class, 'targetAttribute' => ['group_test_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -45,7 +45,7 @@ class Deny extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'true_false' => 'True False',
+            'is_true' => 'Is True',
             'group_test_id' => 'Group Test ID',
             'user_id' => 'User ID',
         ];
@@ -70,7 +70,6 @@ class Deny extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
-
     public static function denyTest($id)
     {
         $deny = Deny::findOne($id);

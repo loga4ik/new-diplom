@@ -34,9 +34,9 @@ use yii\helpers\VarDumper;
 
 <div class="question-field">
     <?php
-    VarDumper::dump($modelStudentAnswer->attributes, 10, true);
-    VarDumper::dump($answers, 10, true);
-    die;
+    // VarDumper::dump($modelStudentAnswer->attributes, 10, true);
+    // VarDumper::dump($answers, 10, true);
+    // die;
     ?>
     <h3><?= $question->text ?></h3>
     <div class="mt-3">

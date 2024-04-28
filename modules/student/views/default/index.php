@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $arrayTestAttributes = [];
         foreach (StudentTest::getPassedTests() as $value) {
             $arrayTestAttributes[Test::getTestSubject($value['test_id'])][] = [
-                'try' => $value['try'],
+                'attempt' => $value['attempt'],
                 'mark' => $value['mark'],
                 'test_title' => Test::getTestTitle($value['test_id']),
             ];
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $createItem = function ($arr) {
         $str = '';
         foreach ($arr as $key => $value) {
-            $str .= '<p class="dropdown-item">тест: ' . $value['test_title'] . '   оценка: ' . $value['mark'] . '   попытка: ' . $value['try'] . '</p>';
+            $str .= '<p class="dropdown-item">тест: ' . $value['test_title'] . '   оценка: ' . $value['mark'] . '   попытка: ' . $value['attempt'] . '</p>';
         }
         return $str;
     };

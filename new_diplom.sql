@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 11, 2024 at 02:39 PM
+-- Generation Time: Apr 14, 2024 at 04:53 AM
 -- Server version: 5.7.39-log
 -- PHP Version: 8.1.9
 
@@ -259,11 +259,12 @@ INSERT INTO `role` (`id`, `title`) VALUES
 
 CREATE TABLE `student_answer` (
   `student_test_id` int(11) NOT NULL,
-  `ansuer_id` int(11) NOT NULL,
+  `answer_id` int(11) NOT NULL,
   `text` text,
   `question_id` int(11) NOT NULL,
   `answer_title` text NOT NULL,
-  `cheked` tinyint(1) NOT NULL
+  `cheked` tinyint(1) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -912,7 +913,10 @@ INSERT INTO `user` (`id`, `name`, `surname`, `patronimyc`, `login`, `password`, 
 (679, 'zxasd', 'zxdc', 'zxsa', 'Stpeuv', '$2y$13$0Evr6LMqQLVHFoD.fmeBE.e2Cj2LvMy2U7G/XdD8PGFnt74ivsOXi', NULL, NULL, 3, 'XS02zSYympVJZdQcnNCRspJNWsLOM4tC'),
 (680, 'zd', 'zxcd', 'zvxc', 'bL05k1', '$2y$13$DUQyFvfavodA1RU8.R8JJ.TobXd9ndUVc/k6q8CAwyvs7OReMdy.i', NULL, NULL, 3, 'xLMV5T0prDUiINibnxyKKqEFWmm8e8yt'),
 (681, 'zx', 'zxdc', 'zxd', 'eMEzfU', '$2y$13$E2CiQqXDFm0UFuP7pAmOweKNa5L.7eDAoIIdlUOefE/xqTkXDpS92', NULL, NULL, 3, 'gVc1ZZzgTI9qq3jK8OzGAuZgjmeBID2_'),
-(682, 'zxasd', 'zxdc', 'zxsa', 'dx1--9', '$2y$13$HWVaIcG/DwlynpREiAP7iuo2xlXinV8Eu0azX1D0wkL.10z/Db82m', NULL, NULL, 3, '_8k3BwHzQSgogBiZtt8h0Q9hqcAkdmhC');
+(682, 'zxasd', 'zxdc', 'zxsa', 'dx1--9', '$2y$13$HWVaIcG/DwlynpREiAP7iuo2xlXinV8Eu0azX1D0wkL.10z/Db82m', NULL, NULL, 3, '_8k3BwHzQSgogBiZtt8h0Q9hqcAkdmhC'),
+(683, 'asd', 'asd', 'asd', '6R6fwP', '$2y$13$7bRRcWx54I0u3GtFQZQuMuJ5V7dAqMIQruGfWWilqtrKNykkRSDra', NULL, NULL, 4, 'RQ5OTvK0CbNOlGxMiU7jpcvvL6oxgOm3'),
+(684, 'asd', 'asd', 'asd', 'cz4DhN', '$2y$13$i3oKsuQt6.vlB9hV6zAqpuSinv1f6HIxQyXyQ1SJzYAzXJ61Kzx.a', NULL, NULL, 4, '1iHwFMXT51XQWLk0PwNPWFTgHPtjQvVy'),
+(685, 'asd', 'asd', 'asd', '4CKbU0', '$2y$13$KM7.pW.ibQz.kKgmpD8TbOuttp.Lt92lOdfjtdS5RPlgPalsrwMAu', NULL, NULL, 4, '3e1XcgIDpT0X1rDJqfWHfMxCT1HmUSZe');
 
 -- --------------------------------------------------------
 
@@ -1440,7 +1444,10 @@ INSERT INTO `user_group` (`id`, `user_id`, `group_id`) VALUES
 (535, 667, 1),
 (536, 668, 1),
 (537, 669, 1),
-(538, 670, 1);
+(538, 670, 1),
+(539, 683, 1),
+(540, 684, 1),
+(541, 685, 1);
 
 --
 -- Indexes for dumped tables
@@ -1540,8 +1547,9 @@ ALTER TABLE `role`
 -- Indexes for table `student_answer`
 --
 ALTER TABLE `student_answer`
-  ADD KEY `ansuer_id` (`ansuer_id`),
-  ADD KEY `student_answer_ibfk_1` (`student_test_id`);
+  ADD KEY `ansuer_id` (`answer_id`),
+  ADD KEY `student_answer_ibfk_1` (`student_test_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `student_test`
@@ -1680,13 +1688,13 @@ ALTER TABLE `test_status`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=683;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=686;
 
 --
 -- AUTO_INCREMENT for table `user_group`
 --
 ALTER TABLE `user_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=539;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=542;
 
 --
 -- Constraints for dumped tables
@@ -1744,7 +1752,8 @@ ALTER TABLE `question`
 --
 ALTER TABLE `student_answer`
   ADD CONSTRAINT `student_answer_ibfk_1` FOREIGN KEY (`student_test_id`) REFERENCES `student_test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `student_answer_ibfk_2` FOREIGN KEY (`ansuer_id`) REFERENCES `answer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `student_answer_ibfk_2` FOREIGN KEY (`answer_id`) REFERENCES `answer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_answer_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `student_test`

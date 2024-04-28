@@ -23,6 +23,8 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/createUsers.css',
+        'css/student-test-view.css',
+        'css/test-view.css',
     ];
     public $js = [
         // 'https://unpkg.com/vue@3/dist/vue.global.js'

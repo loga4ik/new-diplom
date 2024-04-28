@@ -4,16 +4,23 @@ namespace app\models;
 
 use Yii;
 use yii\db\Query;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "group_test".
  *
  * @property int $id
- * @property int $test_id
+ * @property string|null $date
+ * @property float|null $avg_points
+ * @property int|null $val_5
+ * @property int|null $val_4
+ * @property int|null $val_3
+ * @property int|null $fails
  * @property int $group_id
+ * @property int $test_id
  *
- * @property Group $group
- * @property Test $test
+ * @property Deny[] $denies
+ * @property StudentTest[] $studentTests
  */
 class GroupTest extends \yii\db\ActiveRecord
 {
@@ -31,10 +38,10 @@ class GroupTest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['test_id', 'group_id'], 'required'],
-            [['test_id', 'group_id'], 'integer'],
-            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::class, 'targetAttribute' => ['group_id' => 'id']],
-            [['test_id'], 'exist', 'skipOnError' => true, 'targetClass' => Test::class, 'targetAttribute' => ['test_id' => 'id']],
+            [['date'], 'safe'],
+            [['avg_points'], 'number'],
+            [['val_5', 'val_4', 'val_3', 'fails', 'group_id', 'test_id'], 'integer'],
+            [['group_id', 'test_id'], 'required'],
         ];
     }
 
@@ -45,29 +52,35 @@ class GroupTest extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'test_id' => 'Test ID',
+            'date' => 'Date',
+            'avg_points' => 'Avg Points',
+            'val_5' => 'Val 5',
+            'val_4' => 'Val 4',
+            'val_3' => 'Val 3',
+            'fails' => 'Fails',
             'group_id' => 'Group ID',
+            'test_id' => 'Test ID',
         ];
     }
 
     /**
-     * Gets query for [[Group]].
+     * Gets query for [[Denies]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getGroup()
+    public function getDenies()
     {
-        return $this->hasOne(Group::class, ['id' => 'group_id']);
+        return $this->hasMany(Deny::class, ['group_test_id' => 'id']);
     }
 
     /**
-     * Gets query for [[Test]].
+     * Gets query for [[StudentTests]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getTest()
+    public function getStudentTests()
     {
-        return $this->hasOne(Test::class, ['id' => 'test_id']);
+        return $this->hasMany(StudentTest::class, ['group_test_id' => 'id']);
     }
     public static function getArrOfPassedTestUsers($test_id)
     {
@@ -77,6 +90,7 @@ class GroupTest extends \yii\db\ActiveRecord
             ->from('group_test')
             ->indexBy('id')
             ->column();
+        return $testingGroup;
     }
     public static function changeGroupTest($group_test_id)
     {
@@ -103,5 +117,25 @@ class GroupTest extends \yii\db\ActiveRecord
             $test->fails++;
         }
         return $test->save();
+    }
+    public static function getGroupTestId()
+    {
+        $groupId = UserGroup::findOne(['user_id' => Yii::$app->user->identity->id])->group_id;
+        $allActiveTests = (new Query())
+            ->select('id')
+            ->from('test')
+            ->where(['is_active' => true])
+            ->indexBy('id')
+            ->column();
+
+        // die;
+        // $activeTest = self::findOne(['group_id' => $groupId, 'test_id' => $allActiveTests]);
+        // GroupTest::findOne(['group_id' => $groupId])->test_id;
+
+        // VarDumper::dump($activeTest->id, 10, true);
+        // VarDumper::dump($allActiveTests, 10, true);
+        // VarDumper::dump($groupId, 10, true);
+        // die;
+        return self::findOne(['group_id' => $groupId, 'test_id' => $allActiveTests]);
     }
 }
