@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 use yii\helpers\VarDumper;
 
 /**
@@ -119,13 +120,13 @@ class Test extends \yii\db\ActiveRecord
     {
         return Subject::findOne(['test_id', self::findOne(['id' => $id])->subject_id])->title;
     }
-    public static function getTestQuestionsList($group_test_id)
+    public static function getTestQuestionsList($group_test)
     {
         $questions_list = [];
-        $group_test = GroupTest::findOne($group_test_id)->test_id;
-        // VarDumper::dump(Test::findOne($group_test), 10, true);
+        // $group_test = GroupTest::findOne($group_test_id)->test_id;
+        // VarDumper::dump($group_test->test_id, 10, true);
         // die;
-        $question = Test::findOne($group_test)->question_count;
+        $question = Test::findOne($group_test->test_id)->question_count;
         for ($i = 0; $i < $question; $i++) {
             $questions_list[$i + 1] = 'unpassed';
         }
@@ -264,5 +265,13 @@ class Test extends \yii\db\ActiveRecord
     public static function getFindActiveTest()
     {
         return GroupTest::findOne(['group_id' => UserGroup::findOne(['user_id' => Yii::$app->user->identity->id])->group_id])->test_id;
+    }
+    public static function getActiveTestCount()
+    {
+        return (int)(new Query())
+            ->select('test_id')
+            ->from('group_test')
+            ->where(['group_id' => UserGroup::findOne(['user_id' => Yii::$app->user->identity->id])->group_id])
+            ->count();
     }
 }

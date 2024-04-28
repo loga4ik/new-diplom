@@ -51,9 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
     };
     ?>
     <?php
-    // VarDumper::dump($groups, 10, true);
-    // VarDumper::dump($model, 10, true);
+    // VarDumper::dump($groups, 10, true); //64
     // die;
+    // VarDumper::dump($model, 10, true);
     ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

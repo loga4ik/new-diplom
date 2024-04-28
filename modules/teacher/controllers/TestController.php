@@ -173,7 +173,7 @@ class TestController extends Controller
 
                             if ($modelQuestion->type_id == QuestionType::getTypeId('Несколько правильных ответов')) {
                                 if ($counter <= 1) {
-                                    Yii::$app->session->setFlash('error', 'Необходимо указать несколько вариантов ответа в вопросе №' . $indexQuestion + 1);
+                                    Yii::$app->session->setFlash('danger', 'Необходимо указать несколько вариантов ответа в вопросе №' . $indexQuestion + 1);
                                     $flag = false;
                                 }
                             }

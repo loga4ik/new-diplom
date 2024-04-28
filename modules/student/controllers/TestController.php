@@ -46,18 +46,23 @@ class TestController extends Controller
     public function actionIndex()
     {
 
-        $group_test_id = GroupTest::findOne(['test_id' => Test::getFindActiveTest()]);
+        $group_test_id = GroupTest::getGroupTestId();
         $session = Yii::$app->session;
-        // VarDumper::dump(Test::findOne(GroupTest::findOne($group_test_id)->test_id)->id, 10, true);
+        // VarDumper::dump(Test::getFindActiveTest(), 10, true);
         // die;
         $current_question = Yii::$app->request->post('question');
         $current_question = empty($current_question) ? 1 : $current_question;
-        $test_id = Test::findOne(GroupTest::findOne($group_test_id)->test_id)->id;
-        if (StudentTest::findOne(['test_id' => Test::getFindActiveTest(), 'user_id' => Yii::$app->user->identity->id])) {
-            $attempt = StudentTest::findOne(['test_id' => Test::getFindActiveTest(), 'user_id' => Yii::$app->user->identity->id])->try;
-        } else {
+        // $test_id = Test::findOne(GroupTest::findOne($group_test_id)->test_id)->id;
+        $test_id = 17;
             $attempt = 0;
-        }
+            $attempt = StudentAnswer::getLastAttempt($group_test_id) + 1;
+        // VarDumper::dump($attempt,10,true);die;
+
+        // if (StudentTest::findOne(['test_id' => Test::getFindActiveTest(), 'user_id' => Yii::$app->user->identity->id])) {
+        //     $attempt = StudentTest::findOne(['test_id' => Test::getFindActiveTest(), 'user_id' => Yii::$app->user->identity->id])->attempt;
+        // } else {
+        //     $attempt = 0;
+        // }
         // VarDumper::dump($attempt, 10, true);
         // die;
 
@@ -72,7 +77,11 @@ class TestController extends Controller
                         $modelStudentAnswer->user_id = Yii::$app->user->identity->id;
                         $modelStudentAnswer->question_id = $_POST['StudentAnswer']['question_id'];
                         $modelStudentAnswer->answer_id = $answer_id;
-                        // $modelStudentAnswer->attempt = $attempt;
+                        $modelStudentAnswer->attempt = $attempt;
+                        $modelStudentAnswer->is_true = Answer::findOne(['id' => $modelStudentAnswer->answer_id])->is_true;
+                        // VarDumper::dump(Question::findOne(['id' => $modelStudentAnswer->question_id]), 10, true);
+                        // VarDumper::dump($modelStudentAnswer->attributes, 10, true);
+                        // die;
                         $modelStudentAnswer->save();
                     }
                 } else {
@@ -80,6 +89,18 @@ class TestController extends Controller
                     $modelStudentAnswer->user_id = Yii::$app->user->identity->id;
                     $modelStudentAnswer->question_id = $_POST['StudentAnswer']['question_id'];
                     $modelStudentAnswer->load($this->request->post());
+                    $modelStudentAnswer->is_true = Answer::findOne(['id' => $modelStudentAnswer->answer_id])->is_true;
+                    // VarDumper::dump(Answer::findOne(['id' => $modelStudentAnswer->answer_id])->attributes, 10, true);
+                    // VarDumper::dump($modelStudentAnswer->attributes, 10, true);
+                    // die;
+                    // $modelStudentAnswer->validate();
+                    // VarDumper::dump($modelStudentAnswer->errors, 10, true);
+                    // $modelStudentAnswer->question_id = 16;
+                    // if (!$modelStudentAnswer->question_id) {
+                    //     # code...
+                    //     VarDumper::dump($modelStudentAnswer->attributes, 10, true);
+                    //     die;
+                    // }
                     $modelStudentAnswer->save();
                 }
                 $current_question++;
@@ -107,10 +128,9 @@ class TestController extends Controller
             if (StudentTest::createStudentTest($test_id, $group_test_id, $attempt, Yii::$app->user->identity->id)) {
                 if (GroupTest::changeGroupTest($group_test_id)) {
                     StudentTest::getIsChecked(Yii::$app->user->identity->id, $group_test_id, $attempt);
-                    return $this->redirect('/student/group-test');
+                    return $this->redirect('/student');
                 }
             } else {
-                Yii::$app->session->setFlash('error', 'Ошибка при отправлении теста');
                 return true;
             }
         }

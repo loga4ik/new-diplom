@@ -3,21 +3,28 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "student_answer".
  *
- * @property int $student_test_id
- * @property int $ansuer_id
- * @property string|null $text
+ * @property int $id
+ * @property int $question_id
+ * @property int $user_id
+ * @property int $answer_id
+ * @property string|null $answer_title
+ * @property int|null $cheked
+ * @property int|null $is_true
+ * @property int|null $attempt
  *
- * @property int $cheked
- * @property Answer $ansuer
- * @property StudentTest $studentTest
+ * @property Answer $answer
+ * @property Question $question
+ * @property User $user
  */
 class StudentAnswer extends \yii\db\ActiveRecord
 {
-    public $question_id;
+    // public $question_id;
+
     /**
      * {@inheritdoc}
      */
@@ -32,11 +39,12 @@ class StudentAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_test_id', 'ansuer_id', 'cheked'], 'required'],
-            [['student_test_id', 'ansuer_id', 'cheked'], 'integer'],
-            [['text'], 'string'],
-            [['student_test_id'], 'exist', 'skipOnError' => true, 'targetClass' => StudentTest::class, 'targetAttribute' => ['student_test_id' => 'id']],
-            [['ansuer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Answer::class, 'targetAttribute' => ['ansuer_id' => 'id']],
+            [['question_id', 'user_id', 'answer_id'], 'required'],
+            [['question_id', 'user_id', 'answer_id', 'cheked', 'is_true', 'attempt'], 'integer'],
+            [['answer_title'], 'string', 'max' => 255],
+            [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Question::class, 'targetAttribute' => ['question_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['answer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Answer::class, 'targetAttribute' => ['answer_id' => 'id']],
         ];
     }
 
@@ -46,30 +54,45 @@ class StudentAnswer extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'student_test_id' => 'Student Test ID',
-            'ansuer_id' => 'Ansuer ID',
-            'text' => 'Text',
+            'id' => 'ID',
+            'question_id' => 'Question ID',
+            'user_id' => 'User ID',
+            'answer_id' => 'Answer ID',
+            'answer_title' => 'Answer Title',
+            'cheked' => 'Cheked',
+            'is_true' => 'Is True',
+            'attempt' => 'Attempt',
         ];
     }
 
     /**
-     * Gets query for [[Ansuer]].
+     * Gets query for [[Answer]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAnsuer()
+    public function getAnswer()
     {
-        return $this->hasOne(Answer::class, ['id' => 'ansuer_id']);
+        return $this->hasOne(Answer::class, ['id' => 'answer_id']);
     }
 
     /**
-     * Gets query for [[StudentTest]].
+     * Gets query for [[Question]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getStudentTest()
+    public function getQuestion()
     {
-        return $this->hasOne(StudentTest::class, ['id' => 'student_test_id']);
+        return $this->hasOne(Question::class, ['id' => 'question_id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
     public static function getLastAttempt($group_test_id)
     {
@@ -102,7 +125,7 @@ class StudentAnswer extends \yii\db\ActiveRecord
         // sVarDumper::dump($user_answers_id, 10, true);die;
 
         if ($question_id) {
-            $correct_answers = Question::findOne($question_id)->getAnswers()->where(['true_false' => 1])->column();
+            $correct_answers = Question::findOne($question_id)->getAnswers()->where(['is_true' => 1])->column();
             $first_array_diff = array_diff($correct_answers, $user_answers_id);
             $second_array_diff = array_diff($user_answers_id, $correct_answers);
             $array_merge = array_merge($first_array_diff, $second_array_diff);

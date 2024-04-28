@@ -4,18 +4,23 @@ namespace app\models;
 
 use Yii;
 use yii\db\Query;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "student_test".
  *
  * @property int $id
+ * @property int $points
  * @property int $mark
- * @property int $point
  * @property int $test_id
  * @property int $user_id
- * @property int $try
+ * @property int $group_test_id
+ * @property int $cheked
+ * @property string|null $date
+ * @property int $attempt
+ * @property string|null $ip
  *
- * @property StudentAnswer[] $studentAnswers
+ * @property GroupTest $groupTest
  * @property Test $test
  * @property User $user
  */
@@ -35,8 +40,11 @@ class StudentTest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mark', 'point', 'test_id', 'user_id', 'try'], 'required'],
-            [['mark', 'point', 'test_id', 'user_id', 'try'], 'integer'],
+            [['points', 'mark', 'test_id', 'user_id', 'group_test_id', 'cheked', 'attempt'], 'required'],
+            [['points', 'mark', 'test_id', 'user_id', 'group_test_id', 'cheked', 'attempt'], 'integer'],
+            [['date'], 'safe'],
+            [['ip'], 'string', 'max' => 255],
+            [['group_test_id'], 'exist', 'skipOnError' => true, 'targetClass' => GroupTest::class, 'targetAttribute' => ['group_test_id' => 'id']],
             [['test_id'], 'exist', 'skipOnError' => true, 'targetClass' => Test::class, 'targetAttribute' => ['test_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -49,22 +57,26 @@ class StudentTest extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'points' => 'Points',
             'mark' => 'Mark',
-            'point' => 'Point',
             'test_id' => 'Test ID',
             'user_id' => 'User ID',
-            'try' => 'Try',
+            'group_test_id' => 'Group Test ID',
+            'cheked' => 'Cheked',
+            'date' => 'Date',
+            'attempt' => 'Attempt',
+            'ip' => 'Ip',
         ];
     }
 
     /**
-     * Gets query for [[StudentAnswers]].
+     * Gets query for [[GroupTest]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getStudentAnswers()
+    public function getGroupTest()
     {
-        return $this->hasMany(StudentAnswer::class, ['student_test_id' => 'id']);
+        return $this->hasOne(GroupTest::class, ['id' => 'group_test_id']);
     }
 
     /**
@@ -132,29 +144,42 @@ class StudentTest extends \yii\db\ActiveRecord
             ->indexBy('id')
             ->column();
     }
-    public static function createStudentTest($test_id, $group_test_id, $try, $user_id)
+    public static function createStudentTest($test_id, $group_test_id, $attempt, $user_id)
     {
         $modelStudentTest = new StudentTest();
-        $modelStudentTest->points = static::getStudentTestPoints($test_id, $group_test_id, $try, $user_id);
-        $modelStudentTest->mark = static::getStudentTestMark($test_id, $group_test_id, $try, $user_id);
+        $modelStudentTest->points = static::getStudentTestPoints($test_id, $group_test_id, $attempt, $user_id);
+        $modelStudentTest->mark = static::getStudentTestMark($test_id, $group_test_id, $attempt, $user_id);
         $modelStudentTest->test_id = $test_id;
         $modelStudentTest->user_id = Yii::$app->user->identity->id;
-        $modelStudentTest->group_test_id = $group_test_id;
+        $modelStudentTest->group_test_id = $group_test_id->id;
         $modelStudentTest->cheked = 0;
-        $modelStudentTest->try = $try;
+        $modelStudentTest->attempt = $attempt;
         $modelStudentTest->date = date('Y-m-d');
 
         $test_questions = Test::getTestQuestionsList($group_test_id);
 
+        $res = false;
         if ($modelStudentTest->save()) {
-            $deny = Deny::find()->where(['user_id' => Yii::$app->user->identity->id, 'group_test_id' => $group_test_id])->one();
-            $deny->true_false = 0;
-            $res = $deny->save();
+            // $deny = Deny::find()->where(['user_id' => Yii::$app->user->identity->id, 'group_test_id' => $group_test_id])->one();
+            // // VarDumper::dump($deny->attributes, 10, true);
+            // // die;
+            // if (Deny::find()->where(['user_id' => Yii::$app->user->identity->id, 'group_test_id' => $group_test_id])->one()) {
+            //     $deny = Deny::find()->where(['user_id' => Yii::$app->user->identity->id, 'group_test_id' => $group_test_id])->one();
+            // }
+            // else {
+            //     $deny = new Deny();
+            //     // $deny
+            // }
+            // $deny->is_true = 0;
+            $res = true;
         }
+
         return $res;
     }
-    public static function getStudentTestPoints($test_id, $group_test_id, $try, $user_id)
+    public static function getStudentTestPoints($test_id, $group_test_id, $attempt, $user_id)
     {
+        // VarDumper::dump($attempt, 10, true);
+        // die;
         // $user = User::findOne(Yii::$app->user->identity->id);
         $test = Test::findOne($test_id);
         $points = 0;
@@ -162,7 +187,7 @@ class StudentTest extends \yii\db\ActiveRecord
         $answers = [];
         foreach ($questions as $question) {
             $student_answers = StudentAnswer::find()
-                ->where(['user_id' => $user_id, 'try' => $try, 'question_id' => $question['id']])
+                ->where(['user_id' => $user_id, 'attempt' => $attempt, 'question_id' => $question['id']])
                 ->all();
             $i = 0;
             foreach ($student_answers  as $answer) {
@@ -172,8 +197,8 @@ class StudentTest extends \yii\db\ActiveRecord
         }
         foreach ($answers as $question_id => $answer) {
             if (Question::findOne($question_id)->type_id == QuestionType::getTypeId('Ввод ответа от студента')) {
-                $student_answer = StudentAnswer::findOne(['question_id' => $question_id, 'user_id' => $user_id, 'try' => $try]);
-                $res = $student_answer->true_false;
+                $student_answer = StudentAnswer::findOne(['question_id' => $question_id, 'user_id' => $user_id, 'attempt' => $attempt]);
+                $res = $student_answer->is_true;
             } else {
                 $res = StudentAnswer::getIsCorrectAnswer($question_id, $answer);
             }
@@ -190,12 +215,14 @@ class StudentTest extends \yii\db\ActiveRecord
         }
         return $points;
     }
-    public static function getStudentTestMark($test_id, $group_test_id, $try, $user_id)
+    public static function getStudentTestMark($test_id, $group_test_id, $attempt, $user_id)
     {
-        $student_points = static::getStudentTestPoints($test_id, $group_test_id, $try, $user_id);
-        $max_points = Test::findOne($test_id)->max_points;
+        $student_points = static::getStudentTestPoints($test_id, $group_test_id, $attempt, $user_id);
+        // VarDumper::dump($test_id, 10, true);
+        // die;
+        $point_count = Test::findOne($test_id)->point_count;
 
-        $percent =  $student_points * 100 / $max_points;
+        $percent =  $student_points * 100 / $point_count;
         if ($percent >= 80) {
             $mark = 5;
         } elseif ($percent < 80 && $percent >= 60) {
@@ -207,14 +234,14 @@ class StudentTest extends \yii\db\ActiveRecord
         }
         return $mark;
     }
-    public static function getIsChecked($student_id, $group_test_id, $try)
+    public static function getIsChecked($student_id, $group_test_id, $attempt)
     {
-        $current_student_test = static::findOne(['user_id' => $student_id, 'group_test_id' => $group_test_id, 'try' => $try]);
+        $current_student_test = static::findOne(['user_id' => $student_id, 'group_test_id' => $group_test_id, 'attempt' => $attempt]);
         $test_id = GroupTest::findOne($group_test_id)->test_id;
         $questions = Question::find()->where(['test_id' => $test_id])->all();
         $counter = 0;
         foreach ($questions as $question) {
-            $student_answer = StudentAnswer::findOne(['question_id' => $question['id'], 'user_id' => $student_id, 'try' => $try]);
+            $student_answer = StudentAnswer::findOne(['question_id' => $question['id'], 'user_id' => $student_id, 'attempt' => $attempt]);
             if ($student_answer) {
                 if ($student_answer->cheked === 0) {
                     $counter++;

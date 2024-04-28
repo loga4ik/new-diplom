@@ -4,9 +4,12 @@
 /** @var string $content */
 
 use app\assets\Admin2Asset;
+use app\assets\MainAppAsset;
 use app\models\Role;
 use app\models\Test;
 use app\models\User;
+use yii\bootstrap5\Alert;
+use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html as Bootstrap5Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
@@ -33,7 +36,7 @@ if (Yii::$app->user->isGuest) {
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('student')) {
     $navLinks = [
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>личный кабинет</p>', 'url' => ['/student']],
-        Test::getFindActiveTest() ?
+        Test::getActiveTestCount() ?
             ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>Решить активный тест</p>', 'url' => ['/student/test']] : [],
         // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
         // ['label' => 'группы', 'url' => ['/manager/group']],
@@ -61,6 +64,8 @@ $getNavLinks = function ($navLinks) {
     }
     return $string;
 };
+// MainAppAsset::register($this);
+
 Admin2Asset::register($this);
 
 $this->registerCsrfMetaTags();
@@ -183,6 +188,13 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     <div class="row">
                         <!-- Left col -->
                         <section class="col-lg-12 connectedSortable">
+                            <div class="my-3">
+                                <?php if (!empty($this->params['breadcrumbs'])) : ?>
+                                    <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
+                                <?php endif ?>
+                            </div>
+                            <?= Alert::widget()
+                            ?>
                             <?= $content ?>
                         </section>
                         <!-- /.Left col -->

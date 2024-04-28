@@ -1,0 +1,109 @@
+.list-questions{
+    padding-left: 0px;
+    background-color: white;
+    border-radius:3px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2);
+    margin-top: 50px;
+    
+}
+.list-questions li{
+    padding: 10px;
+}
+
+.student-test-question{
+    font-size: 20px;
+    color: #fff  !important;
+    background-color: #324f6c   !important;
+    font-weight: 200 !important;
+}
+
+.student-correct-answer{
+    color: #117054 !important;
+    font-weight: 100;
+    background-color: #343a402e  !important;
+}
+.student-incorrect-answer{
+    color: #842029 !important;
+    font-weight: 100;
+    background-color: #343a402e  !important;
+}
+
+.student-test-correct-answer{
+    font-weight: 100;
+    color: #117054 !important;
+}
+.student-test-incorrect-answer{
+    font-weight: 100;
+    color: #842029 !important;
+}
+
+
+
+.student-question-mid::before {
+    content: "Средний";
+    position: absolute;
+    color: #ffc107;
+    padding:6px 9px 11px 9px;
+    top: -30px;
+    left: 0px;
+    font-size: 14px;
+    border-radius:5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: #324f6c ;
+    display: inline-block;
+    width:auto;
+    height:auto;
+    font-weight: 100;
+    border: 1px solid #324f6c; 
+    border-bottom: none;
+    /* box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2); */
+    z-index: 0;
+    /* overflow: hidden; */
+}
+
+.student-question-easy::before {
+    content: "Лёгкий";
+    position: absolute;
+    color: #00ce6f;
+    padding:6px 9px 11px 9px;
+    top: -30px;
+    left: 0px;
+    font-size: 14px;
+    border-radius:5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: #324f6c ;
+    display: inline-block;
+    width:auto;
+    height:auto;
+    font-weight: 100;
+    border: 1px solid #324f6c; 
+    border-bottom: none;
+    /* box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2); */
+    z-index: 0;
+    /* overflow: hidden; */
+}
+.student-question-hard::before {
+    content: "Сложный";
+    position: absolute;
+    color: #dc3545;
+    padding:6px 9px 11px 9px;
+    top: -30px;
+    left: 0px;
+    font-size: 14px;
+    border-radius:5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: #324f6c ;
+    display: inline-block;
+    width:auto;
+    height:auto;
+    font-weight: 100;
+    border: 1px solid #324f6c; 
+    border-bottom: none;
+    /* box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2); */
+    z-index: 0;
+    /* overflow: hidden; */
+}

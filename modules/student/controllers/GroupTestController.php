@@ -1,21 +1,17 @@
 <?php
 
-namespace app\modules\manager\controllers;
+namespace app\modules\student\controllers;
 
-use app\models\Group;
-use app\models\User;
-use app\models\UserGroup;
-use app\modules\manager\models\StudentSearch;
-use Yii;
+use app\models\GroupTest;
+use app\modules\student\models\GroupTestSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\VarDumper;
 
 /**
- * StudentController implements the CRUD actions for User model.
+ * GroupTestController implements the CRUD actions for GroupTest model.
  */
-class StudentController extends Controller
+class GroupTestController extends Controller
 {
     /**
      * @inheritDoc
@@ -36,48 +32,23 @@ class StudentController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all GroupTest models.
      *
      * @return string
      */
-    public function actionIndex($group_id = null)
+    public function actionIndex()
     {
-        $searchModel = new StudentSearch();
+        $searchModel = new GroupTestSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
-        if ($group_id) {
-            $users_arr = [];
-            foreach (UserGroup::findAll(['group_id' => $group_id]) as $value) {
-                $users_arr[] = $value->user_id;
-            }
-            $dataProvider->query->andWhere(['id' => $users_arr]); //, 'role' => 1
-        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionAddGroup($user_id)
-    {
-        $model = UserGroup::findOne(['user_id' => $user_id]) ? UserGroup::findOne(['user_id' => $user_id]) : new UserGroup();
 
-
-        if ($this->request->isPost && $model->load($this->request->post())) {
-            $model->user_id = $user_id;
-
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->user_id]);
-            }
-        }
-
-        return $this->render('addGroup', [
-            'model' => $model,
-            'groupTitle' => Group::getGroupTitle(),
-        ]);
-    }
     /**
-     * Displays a single User model.
+     * Displays a single GroupTest model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -90,13 +61,13 @@ class StudentController extends Controller
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new GroupTest model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new User();
+        $model = new GroupTest();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -112,7 +83,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing GroupTest model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -132,7 +103,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing GroupTest model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -146,15 +117,15 @@ class StudentController extends Controller
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the GroupTest model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return User the loaded model
+     * @return GroupTest the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne(['id' => $id])) !== null) {
+        if (($model = GroupTest::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

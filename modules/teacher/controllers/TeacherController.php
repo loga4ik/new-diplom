@@ -66,7 +66,6 @@ class TeacherController extends Controller
     {
         if ($_GET['login'] && $_GET['pass']) {
             // VarDumper::dump($_GET, 10, true);
-            Yii::$app->session->setFlash('success', 'логин:' . $_GET['login'] . 'пароль:' . $_GET['pass']);
         }
         return $this->render('view', [
             'model' => $this->findModel($id),

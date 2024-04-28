@@ -68,4 +68,29 @@ class Group extends \yii\db\ActiveRecord
     {
         return self::findOne(['id' => $group_id])->title;
     }
+
+    public static function getCurrentGroup($first_group_id)
+    {
+        $next_groups = [];
+        $next_group = Group::findOne(['previous_group_id' => $first_group_id]);
+        if ($next_group) {
+            $next_group_id = $next_group->id;
+            for ($i = 1; $i < 5; $i++) {
+                if ($next_group = Group::findOne(['previous_group_id' => $next_group_id])) {
+                    if ($next_group_id = $next_group->id) {
+                        array_push($next_groups, $next_group_id);
+                    }
+                } else {
+                    return $next_group_id;
+                }
+            }
+            return end($next_groups);
+        } else {
+            return $first_group_id;
+        }
+    }
+    public static function getUserGroup()
+    {
+        
+    }
 }
