@@ -22,11 +22,14 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'css/layout.css',
         'css/createUsers.css',
         'css/student-test-view.css',
         'css/test-view.css',
+        'css/my-buttons.css',
     ];
     public $js = [
+        "https://code.jquery.com/jquery-3.7.1.js"
         // 'https://unpkg.com/vue@3/dist/vue.global.js'
     ];
     public $depends = [

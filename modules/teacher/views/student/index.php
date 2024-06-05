@@ -2,6 +2,7 @@
 
 use app\models\User;
 use app\models\UserGroup;
+use yii\bootstrap5\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -18,15 +19,18 @@ use function PHPUnit\Framework\isEmpty;
 
 $this->title = 'Список студентов';
 $this->params['breadcrumbs'][] = $this->title;
+// VarDumper::dump($groups, 10, true);
+// die;
 ?>
 <div class="user-index">
 
     <h1>
         <?= Html::encode($this->title) ?>
     </h1>
+
     <p>
-        <?= Html::a('добавить студента', ['../teacher/student/create'], ['class' => 'btn btn-success']) ?>
-        <?= $group_id ? Html::a('скачать список', ['download-list', 'id' => $group_id], ['class' => 'btn btn-primary']) : '' ?>
+        <?= Html::a('добавить студента', ['../teacher/student/create'], ['class' => 'btn my-btn-success']) ?>
+        <?= $group_id ? Html::a('скачать список', ['download-list', 'id' => $group_id], ['class' => 'btn my-btn-primary']) : '' ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -50,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
         return $averageMark;
     };
     ?>
+
     <?php
     // VarDumper::dump($groups, 10, true); //64
     // die;
@@ -58,6 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager' => [
+            'class' => LinkPager::class
+        ],
         'summary' => false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -77,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => false,
             ],
             [
-                'label' => 'group_id',
+                'label' => 'группа',
                 // 'enableSorting' => false,
                 'filter' => Html::activeDropDownList($searchModel, 'id', ArrayHelper::map($groupsObj, 'title', 'title'), ['class' => 'form-control', 'prompt' => 'Выберите группу']),
                 // 'filter' => fn ($model) => $form->field($model, 'group_id')->dropDownList($groupArr, ['prompt' => 'выберите группу']),
@@ -91,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => '',
                 'format' => 'html',
-                'value' => fn ($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']),
+                'value' => fn ($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn my-btn-primary']),
             ],
         ],
     ]); ?>

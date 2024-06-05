@@ -39,7 +39,7 @@ use yii\bootstrap5\ActiveForm;
     ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Отправить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Отправить', ['class' => 'btn my-btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

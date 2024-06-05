@@ -19,10 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
     </h1>
 
     <p>
-        <?= Html::a('редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('редактировать', ['update', 'id' => $model->id], ['class' => 'btn my-btn-primary']) ?>
         <?= Html::a('добавить группу', ['add-group', 'user_id' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
         <?= Html::a('удалить', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn my-btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $grupBtn = function ($userGroupArr, $model) {
         $str = '';
         foreach ($userGroupArr as $value) {
-            $str .= Html::a($value, ['./teacher/editing-group', 'id' => $value, 'user_id' => $model->id], ['class' => 'btn btn-primary mx-2']);
+            $str .= Html::a($value, ['./teacher/editing-group', 'id' => $value, 'user_id' => $model->id], ['class' => 'btn my-btn-primary mx-2']);
         }
         return $str;
     }

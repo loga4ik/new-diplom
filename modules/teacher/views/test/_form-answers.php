@@ -36,11 +36,11 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
 ]); ?>
 
-<div class="row">
+<div class="row d-flex justify-content-between">
 
     <h4 class="col-8">Ответы</h4>
-    <div class="col-4">
-        <button type="button" class="mb-3 p-1 add-answer btn btn-success btn-xs " style="width: auto;"><i class="fi fi-rr-plus" style="height: 15px; width: 15px; display:block"></i></button>
+    <div class="col-2">
+        <button type="button" class="mb-3 p-1 add-answer btn my-btn-success btn-xs; border-radius: 100%;"><i class="fi fi-rr-plus" style="height: 20px; width: 20px; display:block"></i></button>
     </div>
 </div>
 <div class="container-answers">
@@ -51,18 +51,18 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 echo Html::activeHiddenInput($modelAnswer, "[{$indexQuestion}][{$indexAnswer}]id");
             }
             ?>
-            <div class="row d-flex align-items-center">
+            <div class="row d-flex justify-content-between align-items-center">
 
                 <div class="col-1 d-flex justify-content-around">
-                    <?= $form->field($modelAnswer, "[{$indexQuestion}][{$indexAnswer}]is_true")->label(false)->checkbox() ?>
+                    <?= $form->field($modelAnswer, "[{$indexQuestion}][{$indexAnswer}]is_true")->label("правильный ответ", ['class' => "form-check-label w-100", 'style' => 'color:black'])->checkbox(['class' => "form-check-input"]) ?>
                 </div>
 
                 <div class="col-7">
-                    <?= $form->field($modelAnswer, "[{$indexQuestion}][{$indexAnswer}]title")->label(false)->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($modelAnswer, "[{$indexQuestion}][{$indexAnswer}]title")->label(false)->textInput(['maxlength' => true, 'class' => 'answer-input-text form-control']) ?>
                 </div>
 
-                <div class="col-4  ">
-                    <button type="button" class="mb-3 p-1 remove-answer btn btn-danger btn-xs"><i class="fi fi-rr-cross" style="height: 15px; width: 15px; display:block"></i></button>
+                <div class="col-2">
+                    <button type="button" class="mb-3 p-1 remove-answer btn my-btn-danger btn-xs; border-radius: 100%;"><i class="fi fi-rr-cross" style="height: 20px; width: 20px; display:block"></i></button>
                 </div>
 
             </div>

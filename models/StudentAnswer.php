@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 use yii\helpers\VarDumper;
 
 /**
@@ -136,4 +137,25 @@ class StudentAnswer extends \yii\db\ActiveRecord
             }
         }
     }
+    public static function getstudentAnswerByIdAndUserId($answer_id, $user_id, $student_test_id)
+    {
+        // VarDumper::dump(["answer_id" => $answer_id, "user_id" => $user_id, 'attempt' => StudentTest::findOne(['id' => $student_test_id])->attempt], 10, true);
+        // die;
+
+        // VarDumper::dump((new Query())
+        //     ->select('id')
+        //     ->from('student_answer')
+        //     ->where(['answer_id' => $answer_id, 'user_id' => $user_id, 'attempt' => StudentTest::findOne(['id' => $student_test_id])->attempt])
+        //     ->column(), 10, true);
+        // die;
+        return (new Query())
+            ->select('id')
+            ->from('student_answer')
+            ->where(['answer_id' => $answer_id, 'user_id' => $user_id, 'attempt' => StudentTest::findOne(['id' => $student_test_id])->attempt])
+            ->count();
+    }
+    // public static function getQuestions($test_id)
+    // {
+    //     return $this->hasMany(Question::class, ['test_id' => $test_id]);
+    // }
 }

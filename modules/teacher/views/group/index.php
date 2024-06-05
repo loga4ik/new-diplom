@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </h1>
 
     <p>
-        <?= Html::a('Создать группу', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать группу', ['create'], ['class' => 'btn my-btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -37,26 +37,18 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            // [
-            //     'attribute' => 'id',
-            //     'format' => 'html',
-            //     'filter' => false,
-            //     'enableSorting' => false,
-            //     'value' => fn ($model) => $model->id
-            // ],
             [
                 'attribute' => 'title',
                 'format' => 'html',
                 // 'filter' => false,
                 'enableSorting' => false,
-                'value' => fn ($model) => Html::a($model->title, ['../teacher/student', 'group_id' => $model->id], ['class' => 'btn btn-primary'])
+                'value' => fn ($model) => Html::a($model->title, ['../teacher/student', 'group_id' => $model->id], ['class' => 'mt-1'])
             ],
             [
                 'label' => '',
                 'enableSorting' => false,
                 'format' => 'html',
-                'value' => fn ($model) => Html::a('Сменить название', ['update', 'id' => $model->id], ['class' => 'btn btn-primary'])
+                'value' => fn ($model) => Html::a('Сменить название', ['update', 'id' => $model->id], ['class' => 'btn my-btn-primary'])
             ],
         ],
     ]); ?>

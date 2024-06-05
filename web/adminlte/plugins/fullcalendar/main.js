@@ -14533,7 +14533,7 @@ var FullCalendar = (function (exports) {
         table: 'table-bordered',
         tableCellShaded: 'table-active',
         buttonGroup: 'btn-group',
-        button: 'btn btn-primary',
+        button: 'btn my-btn-primary',
         buttonActive: 'active',
         popover: 'popover',
         popoverHeader: 'popover-header',

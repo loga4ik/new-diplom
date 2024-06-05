@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </h1>
 
     <p>
-        <?= Html::a('Добавить группу', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить группу', ['create'], ['class' => 'btn my-btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'format' => 'html',
-                'value' => fn ($model) => html::a($model->title, ['./student', 'group_id' => $model->id], ['class' => 'btn btn-primary'])
+                'value' => fn ($model) => html::a($model->title, ['./student', 'group_id' => $model->id], ['class' => 'btn my-btn-primary'])
             ],
             [
                 'class' => ActionColumn::className(),

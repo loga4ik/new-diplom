@@ -268,10 +268,46 @@ class Test extends \yii\db\ActiveRecord
     }
     public static function getActiveTestCount()
     {
-        return (int)(new Query())
+        // return (int)(new Query())
+        //     ->select('test_id')
+        //     ->from('group_test')
+        //     ->where(['group_id' => UserGroup::findOne(['user_id' => Yii::$app->user->identity->id])->group_id])
+        //     ->indexBy('id')
+        //     ->column();
+        $testIdArr = (new Query())
             ->select('test_id')
             ->from('group_test')
             ->where(['group_id' => UserGroup::findOne(['user_id' => Yii::$app->user->identity->id])->group_id])
+            ->indexBy('id')
+            ->column();
+        foreach ($testIdArr as $key => $value) {
+            # code...
+            $test = (new Query())
+                ->select('id')
+                ->from('test')
+                ->where(['id' => $value, 'is_active' => true])
+                ->count();
+            if ($test) {
+                return $test;
+            }
+        }
+        // VarDumper::dump($testIdArr, 10, true);
+        // die();
+    }
+    public static function getActiveTest($group_id)
+    {
+        // VarDumper::dump($group_id,10,true);die();
+        $groupTests = (new Query())
+            ->select('test_id')
+            ->from('group_test')
+            ->where(['group_id' => $group_id])
+            ->indexBy('id')
+            ->column();
+
+        return (new Query())
+            ->select('id')
+            ->from('test')
+            ->where(['is_active' => true])
             ->count();
     }
 }

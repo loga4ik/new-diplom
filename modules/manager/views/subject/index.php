@@ -19,10 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить предмет', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить предмет', ['create'], ['class' => 'btn my-btn-success']) ?>
     </p>
     <p>
-        <?= Html::a('предметы и преподаватели', ['./teacher-subject'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('предметы и преподаватели', ['./teacher-subject'], ['class' => 'btn my-btn-primary']) ?>
     </p>
 
     <?php Pjax::begin(); ?>

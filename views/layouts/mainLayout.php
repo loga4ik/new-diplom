@@ -8,7 +8,7 @@ use app\assets\MainAppAsset;
 use app\models\Role;
 use app\models\Test;
 use app\models\User;
-use yii\bootstrap5\Alert;
+use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html as Bootstrap5Html;
 use yii\bootstrap5\Nav;
@@ -32,6 +32,7 @@ if (Yii::$app->user->isGuest) {
         ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/student/create']],
         ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/teacher/group']],
         ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/test']],
+        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>проверить тесты</p>', 'url' => ['/teacher/student-test']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('student')) {
     $navLinks = [
@@ -52,7 +53,6 @@ if (Yii::$app->user->isGuest) {
 $getNavLinks = function ($navLinks) {
     $string = '';
     if (!is_null($navLinks)) {
-        # code...
         foreach ($navLinks as $value) {
             if (!$value) {
                 break;
@@ -80,6 +80,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 
 <head>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
     <title>
         <?= Html::encode($this->title) ?>
     </title>
@@ -111,9 +112,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                         'Войти',
                         '/site/login',
                         ['class' => 'nav-link btn btn-link logout']
-                    )
-                    : '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
+                    ) :
+                    Html::beginForm(['/site/logout'])
                     . Html::submitButton(
                         'Выйти (' . User::findOne(['login' => Yii::$app->user->identity->login])->name . ')',
                         ['class' => 'nav-link btn btn-link logout']
@@ -188,14 +188,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     <div class="row">
                         <!-- Left col -->
                         <section class="col-lg-12 connectedSortable">
-                            <div class="my-3">
-                                <?php if (!empty($this->params['breadcrumbs'])) : ?>
-                                    <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-                                <?php endif ?>
+                            <div class="project-body">
+                                <div class="my-3">
+                                    <?php if (!empty($this->params['breadcrumbs'])) : ?>
+                                        <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
+                                    <?php endif ?>
+                                </div>
+                                <?= Alert::widget()
+                                ?>
+                                <?= $content ?>
                             </div>
-                            <?= Alert::widget()
-                            ?>
-                            <?= $content ?>
                         </section>
                         <!-- /.Left col -->
                         <!-- right col (We are only adding the ID to make the widgets sortable)-->

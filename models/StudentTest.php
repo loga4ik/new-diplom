@@ -57,14 +57,14 @@ class StudentTest extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'points' => 'Points',
-            'mark' => 'Mark',
+            'points' => 'баллы',
+            'mark' => 'оценка',
             'test_id' => 'Test ID',
-            'user_id' => 'User ID',
+            'user_id' => 'студент',
             'group_test_id' => 'Group Test ID',
-            'cheked' => 'Cheked',
+            'cheked' => 'проверено',
             'date' => 'Date',
-            'attempt' => 'Attempt',
+            'attempt' => 'попытка',
             'ip' => 'Ip',
         ];
     }
@@ -88,7 +88,9 @@ class StudentTest extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Test::class, ['id' => 'test_id']);
     }
-
+    public static function getQuestionsByStudentTestId($id)
+    {
+    }
     /**
      * Gets query for [[User]].
      *
@@ -112,11 +114,11 @@ class StudentTest extends \yii\db\ActiveRecord
             ->where(['user_id' => Yii::$app->user->id])
             ->column()));
     }
-    public static function getPassedTests()
+    public static function getPassedTests($user_id)
     {
         return (new Query())
             ->from('student_test')
-            ->where(['user_id' => Yii::$app->user->id])
+            ->where(['user_id' => $user_id])
             ->all();
         // ->select()
         // $res = static::find()

@@ -1,0 +1,46 @@
+/* @keyframes btn-prymary{
+0%{
+
+} */
+/* } */
+.my-btn-primary {
+  border-radius: 0.425rem;
+  border: #0069d9 1px solid;
+  padding: 7px 20px;
+  /* animation-duration: 1000ms; */
+  transition-duration: 0.5s;
+  /* transition: ease-in-out; */
+  color: #0069d9;
+}
+.my-btn-primary:hover {
+  background-color: #0069d9;
+  color: #f4f6f9;
+}
+
+.my-btn-success {
+  border-radius: 0.425rem;
+  border: #00bb28 1px solid;
+  padding: 7px 20px;
+  /* animation-duration: 1000ms; */
+  transition-duration: 0.5s;
+  /* transition: ease-in-out; */
+  color: #00bb28;
+}
+.my-btn-success:hover {
+  background-color: #00c22a;
+  color: #f4f6f9;
+}
+
+.my-btn-danger {
+  border-radius: 0.425rem;
+  border: #bb0000 1px solid;
+  padding: 7px 20px;
+  /* animation-duration: 1000ms; */
+  transition-duration: 0.5s;
+  /* transition: ease-in-out; */
+  color: #bb0000;
+}
+.my-btn-danger:hover {
+  background-color: #bb0000;
+  color: #f4f6f9;
+}

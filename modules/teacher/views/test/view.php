@@ -6,6 +6,9 @@ use yii\bootstrap5\Html;
 use yii\widgets\DetailView;
 use app\models\Question;
 use app\models\QuestionLevel;
+use app\models\QuestionType;
+use app\models\StudentAnswer;
+use app\models\StudentTest;
 use app\models\Test;
 use yii\helpers\VarDumper;
 
@@ -13,7 +16,7 @@ use yii\helpers\VarDumper;
 /** @var app\models\Test $model */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Tests', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Тесты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -22,22 +25,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a($model->is_active ? 'закрыть тест' : 'открыть тест', ['chenge-active-test', 'test_id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Вы действительно хотите удалить тест?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= !$user_id ?  Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn my-btn-success mx-1']) .
+            Html::a($model->is_active ? 'закрыть тест' : 'открыть тест', ['chenge-active-test', 'test_id' => $model->id], ['class' => 'btn my-btn-primary mx-1']) .
+            Html::a('Удалить', ['delete', 'id' => $model->id], [
+                'class' => 'btn my-btn-danger mx-1',
+                'data' => [
+                    'confirm' => 'Вы действительно хотите удалить тест?',
+                    'method' => 'post',
+                ],
+            ]) : '' ?>
     </p>
 
-
-
-
-
-    <?
+    <?php
     $list = [];
     foreach ($model->questions as $question) {
         if ($question->level_id == QuestionLevel::getLevelId('Лёгкий')) {
@@ -55,12 +54,66 @@ $this->params['breadcrumbs'][] = $this->title;
                 "</li>"
         );
         foreach ($question->answers as $answer) {
-            if ($answer->is_true == 1) {
+            if ($answer->is_true && !$user_id) {
                 array_push(
                     $list,
                     "<li class='list-group-item list-test-item-correct'>" .
                         $answer->title .
                         "</li>"
+                );
+            } elseif ($user_id && !$answer->is_true && StudentAnswer::getstudentAnswerByIdAndUserId($answer->id, $user_id, $student_test_id)) {
+                array_push(
+                    $list,
+                    "<li class='list-group-item list-test-item-user-incorrect'>" .
+                        $answer->title .
+                        "</li>"
+                );
+            } elseif (
+                $user_id
+                && StudentAnswer::getstudentAnswerByIdAndUserId($answer->id, $user_id, $student_test_id)
+                && !StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => StudentTest::findOne(['id' => $student_test_id])->attempt, 'answer_id' => $answer->id])->cheked
+            ) {
+                array_push(
+                    $list,
+                    "<li class='list-group-item list-test-item-correct d-flex justify-content-between'>" .
+                        StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => $studentTest->attempt, 'answer_id' => $answer_id])->answer_title
+                        ? StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => $studentTest->attempt, 'answer_id' => $answer_id])
+                        : $answer->title . "<div>" .
+                        Html::a('Одобрить', [
+                            './test/accept',
+                            'test_id' => $model->id,
+                            'student_test_id' => $student_test_id,
+                            'user_id' => $user_id,
+                            'answer_id' => $answer->id
+                        ], ['class' => 'btn my-btn-success p-1 mx-1']) .
+                        Html::a('Отклонить', [
+                            './test/deny',
+                            'test_id' => $model->id,
+                            'student_test_id' => $student_test_id,
+                            'user_id' => $user_id,
+                            'answer_id' => $answer->id
+                        ], ['class' => 'btn my-btn-danger p-1 mx-1']) .
+                        "</div></li>"
+                );
+                // } elseif (
+                //     $user_id && $answer->is_true
+                //     && StudentAnswer::getstudentAnswerByIdAndUserId($answer->id, $user_id, $student_test_id)
+                //     && $question->type_id == QuestionType::getTypeId('Ввод ответа от студента')
+                // ) {
+                //     array_push(
+                //         $list,
+                //         "<li class='list-group-item list-test-item-correct d-flex justify-content-between'>" .
+                //             StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => StudentTest::findOne(['id' => $student_test_id])->attempt, 'answer_id' => $answer->id])->answer_title
+                //             ? StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => StudentTest::findOne(['id' => $student_test_id])->attempt, 'answer_id' => $answer->id])->answer_title
+                //             : $answer->title . "</li>"
+
+                //     );
+            } elseif ($user_id && $answer->is_true && StudentAnswer::getstudentAnswerByIdAndUserId($answer->id, $user_id, $student_test_id)) {
+                array_push(
+                    $list,
+                    "<li class='list-group-item list-test-item-correct d-flex justify-content-between'>" .
+                        $answer->title . "</li>"
+
                 );
             } else {
                 array_push(
@@ -75,8 +128,8 @@ $this->params['breadcrumbs'][] = $this->title;
             $list,
             "</ul>"
         );
-    }
-    foreach ($list as $item) {
+    } ?>
+    <?php foreach ($list as $item) {
         echo $item;
     }
     // VarDumper::dump($list, 10, true);

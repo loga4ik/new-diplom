@@ -47,15 +47,17 @@ class TestController extends Controller
     {
 
         $group_test_id = GroupTest::getGroupTestId();
+        //  VarDumper::dump($group_test_id, 10, true);
+        // die;
         $session = Yii::$app->session;
         // VarDumper::dump(Test::getFindActiveTest(), 10, true);
         // die;
         $current_question = Yii::$app->request->post('question');
         $current_question = empty($current_question) ? 1 : $current_question;
         // $test_id = Test::findOne(GroupTest::findOne($group_test_id)->test_id)->id;
-        $test_id = 17;
-            $attempt = 0;
-            $attempt = StudentAnswer::getLastAttempt($group_test_id) + 1;
+        $test_id = $group_test_id->test_id;
+        $attempt = 0;
+        $attempt = StudentAnswer::getLastAttempt($group_test_id) + 1;
         // VarDumper::dump($attempt,10,true);die;
 
         // if (StudentTest::findOne(['test_id' => Test::getFindActiveTest(), 'user_id' => Yii::$app->user->identity->id])) {
@@ -144,7 +146,7 @@ class TestController extends Controller
 
         $session->set('questions_square',  $questions_square);
 
-        $questions_str = join(array_map(fn ($question_key, $question) => "<div class='btn  btn-my-green-outline {$question} question-square text-center'>{$question_key}</div>", array_keys($questions_square), $questions_square));
+        $questions_str = join(array_map(fn ($question_key, $question) => "<div class='vertical-divider-item {$question} question-square text-center'><span style='display: block;'>{$question_key}</span></div>", array_keys($questions_square), $questions_square));
 
         $test_title = Test::findOne($test_id)->title;
 
@@ -169,10 +171,13 @@ class TestController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $student_test_id)
     {
+        // VarDumper::dump($user_id,10,true);die;
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'student_test_id' => $student_test_id,
         ]);
     }
 
