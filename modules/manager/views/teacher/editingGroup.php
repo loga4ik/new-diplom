@@ -17,9 +17,9 @@ use yii\bootstrap5\ActiveForm;
     <?= $form->field($model, 'group_id')->dropDownList($groupTitle, ['id' => 'editGroupInput', 'v-on:click' => 'isFileInputClickHandler', 'class' => 'form-control w-25', 'style' => 'min-width: 200px', 'prompt' => 'выберите группу']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('сохранить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('сохранить', ['class' => 'btn my-btn-success']) ?>
         <?= Html::a('Удалить', ['../user-group/delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn my-btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',

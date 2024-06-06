@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Apr 14, 2024 at 04:53 AM
--- Server version: 5.7.39-log
--- PHP Version: 8.1.9
+-- Хост: 127.0.0.1:3306
+-- Время создания: Июн 06 2024 г., 13:23
+-- Версия сервера: 8.0.30
+-- Версия PHP: 8.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,108 +18,116 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `new_diplom`
+-- База данных: `new_diplom2`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `answer`
+-- Структура таблицы `answer`
 --
 
 CREATE TABLE `answer` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` text NOT NULL,
   `is_true` tinyint(1) NOT NULL,
-  `question_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `question_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `answer`
+-- Дамп данных таблицы `answer`
 --
 
 INSERT INTO `answer` (`id`, `title`, `is_true`, `question_id`) VALUES
-(14, 'd', 1, 15),
-(15, 'd', 0, 15);
+(16, 'ответ правильный', 1, 16),
+(17, 'ответ второй', 0, 16),
+(18, 'ответ первый', 0, 17),
+(19, 'ответ правильный', 1, 17),
+(20, '1', 0, 18),
+(21, 'прав', 1, 18),
+(22, 'прав', 1, 19),
+(23, '2', 0, 19),
+(25, 'фыв', 1, 21),
+(26, 'фыв', 1, 22);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auth_assignment`
+-- Структура таблицы `auth_assignment`
 --
 
 CREATE TABLE `auth_assignment` (
-  `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `user_id` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `item_name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `user_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `created_at` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auth_item`
+-- Структура таблицы `auth_item`
 --
 
 CREATE TABLE `auth_item` (
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `type` smallint(6) NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `type` smallint NOT NULL,
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci,
+  `rule_name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `data` blob,
-  `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `created_at` int DEFAULT NULL,
+  `updated_at` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auth_item_child`
+-- Структура таблицы `auth_item_child`
 --
 
 CREATE TABLE `auth_item_child` (
-  `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `parent` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `child` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auth_rule`
+-- Структура таблицы `auth_rule`
 --
 
 CREATE TABLE `auth_rule` (
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `data` blob,
-  `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `created_at` int DEFAULT NULL,
+  `updated_at` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `deny`
+-- Структура таблицы `deny`
 --
 
 CREATE TABLE `deny` (
-  `id` int(11) NOT NULL,
-  `true_false` tinyint(1) NOT NULL,
-  `group_test_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int NOT NULL,
+  `is_true` tinyint(1) NOT NULL,
+  `group_test_id` int NOT NULL,
+  `user_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group`
+-- Структура таблицы `group`
 --
 
 CREATE TABLE `group` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `group`
+-- Дамп данных таблицы `group`
 --
 
 INSERT INTO `group` (`id`, `title`) VALUES
@@ -129,35 +137,47 @@ INSERT INTO `group` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group_test`
+-- Структура таблицы `group_test`
 --
 
 CREATE TABLE `group_test` (
-  `id` int(11) NOT NULL,
-  `test_id` int(11) NOT NULL,
-  `group_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int NOT NULL,
+  `date` date DEFAULT NULL,
+  `avg_points` float DEFAULT NULL,
+  `val_5` int DEFAULT NULL,
+  `val_4` int DEFAULT NULL,
+  `val_3` int DEFAULT NULL,
+  `fails` int DEFAULT NULL,
+  `group_id` int NOT NULL,
+  `test_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `group_test`
+-- Дамп данных таблицы `group_test`
 --
 
-INSERT INTO `group_test` (`id`, `test_id`, `group_id`) VALUES
-(18, 16, 1);
+INSERT INTO `group_test` (`id`, `date`, `avg_points`, `val_5`, `val_4`, `val_3`, `fails`, `group_id`, `test_id`) VALUES
+(38, NULL, 2, 7, NULL, 6, NULL, 1, 17),
+(39, NULL, 4, 1, NULL, NULL, NULL, 1, 19),
+(45, NULL, NULL, NULL, NULL, NULL, NULL, 2, 21),
+(46, NULL, 4, 1, NULL, NULL, NULL, 1, 21),
+(47, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17),
+(48, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17),
+(49, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `migration`
+-- Структура таблицы `migration`
 --
 
 CREATE TABLE `migration` (
   `version` varchar(180) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `apply_time` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `migration`
+-- Дамп данных таблицы `migration`
 --
 
 INSERT INTO `migration` (`version`, `apply_time`) VALUES
@@ -170,39 +190,44 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `question`
+-- Структура таблицы `question`
 --
 
 CREATE TABLE `question` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `text` text NOT NULL,
-  `points_per_question` int(10) UNSIGNED NOT NULL,
+  `points_per_question` int NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `level_id` int(11) NOT NULL,
-  `test_id` int(11) NOT NULL,
-  `type_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `level_id` int NOT NULL,
+  `test_id` int NOT NULL,
+  `type_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `question`
+-- Дамп данных таблицы `question`
 --
 
 INSERT INTO `question` (`id`, `text`, `points_per_question`, `image`, `level_id`, `test_id`, `type_id`) VALUES
-(15, 'd', 1, NULL, 2, 16, 1);
+(16, 'вопрос первый', 2, NULL, 2, 17, 1),
+(17, 'вопрос второй', 2, NULL, 2, 17, 1),
+(18, '1', 1, NULL, 1, 19, 1),
+(19, '2', 3, NULL, 3, 19, 1),
+(21, 'фыв', 2, NULL, 2, 21, 3),
+(22, 'фыв', 2, NULL, 2, 21, 3);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `question_level`
+-- Структура таблицы `question_level`
 --
 
 CREATE TABLE `question_level` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `question_level`
+-- Дамп данных таблицы `question_level`
 --
 
 INSERT INTO `question_level` (`id`, `title`) VALUES
@@ -213,16 +238,16 @@ INSERT INTO `question_level` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `question_type`
+-- Структура таблицы `question_type`
 --
 
 CREATE TABLE `question_type` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `question_type`
+-- Дамп данных таблицы `question_type`
 --
 
 INSERT INTO `question_type` (`id`, `title`) VALUES
@@ -233,16 +258,16 @@ INSERT INTO `question_type` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `role`
+-- Структура таблицы `role`
 --
 
 CREATE TABLE `role` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `role`
+-- Дамп данных таблицы `role`
 --
 
 INSERT INTO `role` (`id`, `title`) VALUES
@@ -254,47 +279,85 @@ INSERT INTO `role` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `student_answer`
+-- Структура таблицы `student_answer`
 --
 
 CREATE TABLE `student_answer` (
-  `student_test_id` int(11) NOT NULL,
-  `answer_id` int(11) NOT NULL,
-  `text` text,
-  `question_id` int(11) NOT NULL,
-  `answer_title` text NOT NULL,
-  `cheked` tinyint(1) NOT NULL,
-  `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int NOT NULL,
+  `question_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `answer_id` int NOT NULL,
+  `answer_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cheked` tinyint(1) DEFAULT NULL,
+  `is_true` tinyint(1) DEFAULT NULL,
+  `attempt` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `student_answer`
+--
+
+INSERT INTO `student_answer` (`id`, `question_id`, `user_id`, `answer_id`, `answer_title`, `cheked`, `is_true`, `attempt`) VALUES
+(569, 17, 77, 19, NULL, 1, 1, 0),
+(570, 16, 77, 16, NULL, 1, 1, 0),
+(571, 16, 77, 17, NULL, 1, 0, 0),
+(572, 17, 77, 18, NULL, 1, 0, 0),
+(573, 17, 77, 19, NULL, 1, 1, 1),
+(574, 16, 77, 16, NULL, 1, 1, 1),
+(575, 16, 77, 17, NULL, 1, 0, 2),
+(576, 17, 77, 19, NULL, 1, 1, 2),
+(577, 16, 77, 16, NULL, 1, 1, 1),
+(578, 17, 77, 19, NULL, 1, 1, 1),
+(579, 17, 77, 18, NULL, 1, 0, 3),
+(580, 16, 77, 17, NULL, 1, 0, 3),
+(581, 21, 77, 25, 'asdasdasd', 1, 1, 1),
+(582, 22, 77, 26, 'asdasdasdasd', 1, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `student_test`
+-- Структура таблицы `student_test`
 --
 
 CREATE TABLE `student_test` (
-  `id` int(11) NOT NULL,
-  `mark` int(11) NOT NULL,
-  `point` int(11) NOT NULL,
-  `test_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `try` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int NOT NULL,
+  `points` int NOT NULL,
+  `mark` int NOT NULL,
+  `test_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `group_test_id` int NOT NULL,
+  `cheked` tinyint(1) NOT NULL,
+  `date` date DEFAULT NULL,
+  `attempt` int NOT NULL,
+  `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `student_test`
+--
+
+INSERT INTO `student_test` (`id`, `points`, `mark`, `test_id`, `user_id`, `group_test_id`, `cheked`, `date`, `attempt`, `ip`) VALUES
+(82, 4, 5, 17, 77, 38, 1, '2024-04-28', 0, NULL),
+(83, 0, 2, 17, 77, 38, 0, '2024-04-28', 0, NULL),
+(84, 4, 5, 17, 77, 38, 1, '2024-04-28', 1, NULL),
+(85, 2, 3, 17, 77, 38, 1, '2024-04-30', 2, NULL),
+(86, 4, 5, 17, 77, 39, 1, '2024-05-07', 1, NULL),
+(87, 0, 2, 17, 77, 38, 1, '2024-05-07', 3, NULL),
+(88, 4, 5, 21, 77, 46, 1, '2024-05-09', 1, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subject`
+-- Структура таблицы `subject`
 --
 
 CREATE TABLE `subject` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `subject`
+-- Дамп данных таблицы `subject`
 --
 
 INSERT INTO `subject` (`id`, `title`) VALUES
@@ -304,17 +367,17 @@ INSERT INTO `subject` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `teacher_subject`
+-- Структура таблицы `teacher_subject`
 --
 
 CREATE TABLE `teacher_subject` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `subject_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `subject_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `teacher_subject`
+-- Дамп данных таблицы `teacher_subject`
 --
 
 INSERT INTO `teacher_subject` (`id`, `user_id`, `subject_id`) VALUES
@@ -324,38 +387,41 @@ INSERT INTO `teacher_subject` (`id`, `user_id`, `subject_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `test`
+-- Структура таблицы `test`
 --
 
 CREATE TABLE `test` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` text NOT NULL,
-  `question_count` int(10) UNSIGNED NOT NULL,
-  `point_count` int(10) UNSIGNED DEFAULT NULL,
-  `subject_id` int(11) NOT NULL,
+  `question_count` int NOT NULL,
+  `point_count` int DEFAULT NULL,
+  `subject_id` int NOT NULL,
   `is_active` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `test`
+-- Дамп данных таблицы `test`
 --
 
 INSERT INTO `test` (`id`, `title`, `question_count`, `point_count`, `subject_id`, `is_active`) VALUES
-(16, 'd', 1, 1, 1, 1);
+(17, 'новый тест по писать код нада', 2, 4, 1, 0),
+(18, 'новый тест по писать код нада', 2, 4, 1, 0),
+(19, 'новая теста по не писать код', 2, 4, 2, 0),
+(21, 'asd', 2, 4, 2, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `test_status`
+-- Структура таблицы `test_status`
 --
 
 CREATE TABLE `test_status` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `test_status`
+-- Дамп данных таблицы `test_status`
 --
 
 INSERT INTO `test_status` (`id`, `title`) VALUES
@@ -366,11 +432,11 @@ INSERT INTO `test_status` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Структура таблицы `user`
 --
 
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `surname` varchar(255) NOT NULL,
   `patronimyc` varchar(255) NOT NULL,
@@ -378,216 +444,18 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
-  `role_id` int(11) NOT NULL,
+  `role_id` int NOT NULL,
   `auth_key` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `user`
+-- Дамп данных таблицы `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `surname`, `patronimyc`, `login`, `password`, `email`, `phone`, `role_id`, `auth_key`) VALUES
 (2, 'admin', 'admin', 'admin', 'admin', '$2y$13$OPlJC8YfaEg4KmDEQzIvH.cN0aRiJZh0MgmVQkB94bpDRyjBZDWDy', 'admin', 'admin', 1, 'qCRkB2qqOQz6IGyPYRnwkKy7m0jmpwOJ'),
-(64, 'manager', 'manager', 'manager', 'manager', '$2y$13$epYjBRhA5xhI9EB5XqmU3.p5A9qSVG4uXNH9ma1HXay9ReNfovSCC', 'manager', 'manager', 2, 'f6ngohpbehFcE-5hcojG7N_LnIOnD5zO'),
 (68, 'teacher', 'teacher', 'teacher', 'teacher', '$2y$13$Tq7pIwFSvU.JgAFj1I1.x.ETffLgNx44o/TH8./f50zVR1TciKHbq', 'teacher', 'teacher', 3, 'LwJUjcM9VhLjsEQvDuyMvot8nDN0J2XF'),
 (77, 'student', 'student', 'student', 'student', '$2y$13$xceS3/d8uJpFbwBIGZwk1uSv0mwd3/neiZvy53fMvloNBiS004dHW', 'student', 'student', 4, '6AGxewilkapWVuCJ8sBrkknUA2mgp5QK'),
-(161, 'zxc', 'zxc', 'zzxc', 'TPjIAA', '$2y$13$TEONH5mblAOzApgtYkjgdOIIV9.QlprncVsEiw2Hthj2MTBxyONQG', NULL, NULL, 3, 'bncFJgxKnqNuQ9G0fZNDZBA6VclxfKmh'),
-(162, 'zxc', 'zxc', 'zzxc', 'ECVLPK', '$2y$13$z4BCOx69UKiMMjDo7Chey.YY6VOkUapXLO/8gdjaqc0NMB8T94bPC', NULL, NULL, 3, 'EsuSJSsqNjm0_8P2Wn2NthgOaYFdC1yi'),
-(163, 'zxc', 'zxc', 'zzx', 'OLL3bF', '$2y$13$PXNNcDgjha7km.3Qn3I3cejPemUUmkJBXT6OP7WbL0atMCvS9wQnK', NULL, NULL, 3, 'XsMAWBx9C5rhkz4ivrEFvcUUD0Km92Vt'),
-(164, 'zxc', 'zxc', 'zzxc', 'f1t7iy', '$2y$13$gcSNzIr.QTvjeyx4.463ieLGRyqEL0jgS9zDS2FY49aYtu62kAguG', NULL, NULL, 3, 'nGfZ0p3rT2s4zd_954EWiEen0nWS70iQ'),
-(165, 'zxc', 'zxc', 'zzxc', 'EoAtwF', '$2y$13$pg/kBDHXGow98FRRjZFJfu5rVr5.DcMynyOhlLrN3w3Q1xatHc2Ke', NULL, NULL, 3, 'EW_Xp_NiA9rezV4x6vBSLxgpCnB45U55'),
-(166, 'zxc', 'zxc', 'zzx', 'M9Rm0D', '$2y$13$24MxVCULCcX0NYTSwIjWQu2dZQ2imQihyuMfVEITiuD6.gavElxOa', NULL, NULL, 3, '7BzABjhCrrXIKUKe7ZFfGwOFIExrpyF-'),
-(167, 'zxc', 'zxc', 'zzxc', 'lU12nX', '$2y$13$21nS7QlFyr.j6OO2DIoALuAHz6yMwcFQMawLbt.dPwPav6ZwYMSGO', NULL, NULL, 3, '6ZEXqEu8oYMgJjCifbTsioJDIadco5i3'),
-(168, 'zxc', 'zxc', 'zzxc', '3EzmTC', '$2y$13$5kPVzmNs/CHjX.peto1A5.m75ny7mdouE7Ir3mAt1QoGE662qaCoy', NULL, NULL, 3, 'O0966UixCUR6dujHUnPtpQJIvH-wF00D'),
-(169, 'zxc', 'zxc', 'zzxc', '0BXfoA', '$2y$13$/Dqyb0gDwYRsMTr2gToLkODFvSBGf1sf5M/F6EQBYmCXp8tvZX4pi', NULL, NULL, 3, 'o5FTqgOVhwYA-txRGoty2sfOZ7LlQY9A'),
-(170, 'zxc', 'zxc', 'zzxc', 'apu0ZS', '$2y$13$OHG3WJztCdsqKgkHHteF3Oa8nyfn9wQJbtjhrmYBo98eQpzziylgW', NULL, NULL, 3, '8TfNyuSsYZJJLTdaTXAMfzxfQ7AtzzCt'),
-(171, 'zxc', 'zxc', 'zzx', 'b3b7fy', '$2y$13$erw..1CDqzjSIBfUKgRBc.7QmxNpLtGu9qeJrRE3ypHntTkLpbmQW', NULL, NULL, 3, 'VEkkQYAeArDL9rd0loWgG30jOSeBsqYP'),
-(172, 'zxc', 'zxc', 'zzxc', 'yUMfSD', '$2y$13$c9jHq0cY8qQIk3oLjAzfluCVjieg0.OSHEk726vBSqT6MUG5CXmwG', NULL, NULL, 3, 'W3tLkh_TNZJorcgtZvH2Gi9Th7eUV8xV'),
-(173, 'zxc', 'zxc', 'zzxc', 'pUu6jB', '$2y$13$UnknggUG97MIeyzsFmVSguZPdSrMALFxqNE1umENc64vpCDLz6NV6', NULL, NULL, 3, 'rqL5OOfgQYQueyaxdJkuepq0-8fA7sdS'),
-(174, 'zxc', 'zxc', 'zzx', 'Ld58hZ', '$2y$13$P8VICibF9EcgqYTfNmoWKOsQSCKp1FAd0C0woDzIx1875ZaHbt126', NULL, NULL, 3, '_pa1Vap0pnbFSkU-W4xGGF24tuI3xKV1'),
-(175, 'zxc', 'zxc', 'zzxc', 'pdOvVs', '$2y$13$OPm6kBB1/z.01W57zDK12umA3rQyh2R/iqKf6MQumon5upZe334Pm', NULL, NULL, 3, 'hPXIldmf3mZ-cC7vBYeJ1ppyO4UzRvk9'),
-(176, 'zxc', 'zxc', 'zzxc', 'tsAXEK', '$2y$13$WZ5qwCPPeI.4OmetD7PSqOsIDLEJarX8Z1wDYsPwuJHcMbVIcuZ/K', NULL, NULL, 3, 'iXlZdoX1-KsCZ-2WC6u2zPOA7bFqb8HI'),
-(177, 'zxc', 'zxc', 'zzx', '_HvlFk', '$2y$13$El8E6U09l9LD4worzXjNVuLg1Q810anWFkan3P3OwZz7bEQ90vGSm', NULL, NULL, 3, 'HXz41ZUyfN-M0xPLgSfcmBve2XN0oMJO'),
-(178, 'zxc', 'zxc', 'zzxc', 'nf8Bca', '$2y$13$0lFEf3i.PPRNHjqIlSyaPeUjLsuvjeVhOTVk8hmjcyGs.Ov71XoGu', NULL, NULL, 3, 'GnS5MxbGpKqVhtE202qu3No5LXPVSKTY'),
-(179, 'zxc', 'zxc', 'zzxc', 'fDekuI', '$2y$13$od87VhD1diC9mSD93Kou8OuXzoAeQAwTgUlcmcPARxlvO/Wx05GsW', NULL, NULL, 3, 'mmrE68BbWimXZtBcnvBkoz2VjyvgH7wq'),
-(180, 'zxc', 'zxc', 'zzx', 'YGlC6q', '$2y$13$OTOE.yfa0RjakGWyB3qbre4SER4XkkSn3OG11oxGI1SWB/nnxGrTm', NULL, NULL, 3, 'i2R4o20qAI_sknDEuMjgPIJZ6-eFuMh4'),
-(181, 'zxc', 'zxc', 'zzxc', 'PU4m-x', '$2y$13$lgdxlnsBnHBXtKvyKyRddOqWP8iDlr1URIE5eoDMyggZoaBP86szC', NULL, NULL, 3, 'iFA0tQuG6g6F2y0h4tIcc8eaW8A_F0vs'),
-(182, 'zxc', 'zxc', 'zzxc', '7f9G2w', '$2y$13$Mui8nWNfC/LbDiYKnBHDdOI1ucKTlUv5ddlSnnB2UveZGWUYq1/iK', NULL, NULL, 3, '240RPUMJz2NjOi89WDBSPXQ3nh_X4zLu'),
-(183, 'zxc', 'zxc', 'zzx', 'MuWQXh', '$2y$13$MwcNb/vhlG2BqWGP6dTTcukZ7GSoxfTrX.MPLJBM6.EhjeEzwIKJe', NULL, NULL, 3, 'YXjt-37r0lP0ypwp11zWYrs-AbCAE1IV'),
-(184, 'zxc', 'zxc', 'zzxc', '6gIvCp', '$2y$13$nbr3LGHVyakp1QvKOK7LLu0Gywaj0QT0.sQ19yell7p3nqGXJzM7.', NULL, NULL, 3, '99bq2HlGw2zXsGRRlQ5J5g7vNd2BiqAy'),
-(185, 'zxc', 'zxc', 'zzxc', 'PBSTZQ', '$2y$13$wMBsxhgBxJAvSEtXx2eHr.rXRzgVEyNWMCQEaB/38BX.Dq0VcDQUm', NULL, NULL, 3, 'IpIeaOPtfTWCY-uNXqHe1jTYO8H2afA4'),
-(186, 'zxc', 'zxc', 'zzx', 'gl2llQ', '$2y$13$ZqM4pUu8OrcTcZPbKqbdt.JG61z28Iavw/35xY0A5gDTLTYs4ItvS', NULL, NULL, 3, 'vTJTqaZFEvN1RsDvl4f_7G9emWvseaJ4'),
-(187, 'zxc', 'zxc', 'zzxc', 'klLP7o', '$2y$13$.FLnu54pZSLo7.MWvYXsfu9ZY096PBUqsktc3lxSWDnb.hpL3M22i', NULL, NULL, 3, '1kpHsdh8Vi_2EsLauh5d-31_5AjgGgWM'),
-(188, 'zxc', 'zxc', 'zzxc', 'rS19U6', '$2y$13$mqHBh5tM2T9B/qess43eR.ZjKuDDWyqp40juwbNoeoMqGGlUxvl1W', NULL, NULL, 3, 'vO17BHDcDmgGX8Rg9RZ0dMYqxxVESQDW'),
-(189, 'zxc', 'zxc', 'zzx', 'ikwTt8', '$2y$13$p6vjcUlk4VPYp3O33iPolucPXdL.jktjTHw6jtcxnjsc14dtr55i2', NULL, NULL, 3, 'Dx0cwdjdDT900-Mo9lM4LrU6eC5yehFv'),
-(190, 'zxc', 'zxc', 'zzxc', 'tWNFzC', '$2y$13$lN1FGSnWJgc1jLU1MzD4Uuzicbme1bSxbRp9l9YmfOU5YG5RtgZsC', NULL, NULL, 3, 'Vv_MkbEEjiHQ_ddCGkieIypQXrJQm9Sp'),
-(191, 'zxc', 'zxc', 'zzxc', 'mRv2aC', '$2y$13$nE49qaOboqT/LKER7kGfK.ShWAnwAgI/r6kLIvWz1kGnibI5KBD.2', NULL, NULL, 3, '9Tw-aNucxxnptV-uBL0xb5GX1EdWRQKI'),
-(192, 'zxc', 'zxc', 'zzx', 'JbMXOp', '$2y$13$hH/BlRDiD/FfZXFKAGbeheGG3NLvq.KQk4Ma28R5dlN6/zK46D6Ru', NULL, NULL, 3, '0U4h2lM4gz4pwmE7mW_anRagAKH_0RHY'),
-(193, 'zxc', 'zxc', 'zzxc', 'F_9Jt_', '$2y$13$L5Tpx7EteP66CxvLNAO5Reqp5eRie0zg4UMCGYhpXa4nfU.VebaWC', NULL, NULL, 3, 'gqG62GQ_BQWNkTr4hpTMDcZBPANnQgFF'),
-(194, 'zxc', 'zxc', 'zzxc', 'ZnVUWi', '$2y$13$L9NFv9lnpnEb9CBj362Pium/iwv5bFn1hM.hx57dIdxFWDR.PjZP.', NULL, NULL, 3, 'mquPPSrdCJm9n3KGGGXFEX34zPu99KVJ'),
-(195, 'zxc', 'zxc', 'zzx', 'AJB8T0', '$2y$13$c87.9oIrWsbRmq6bCGDFcuU6ZsSA5hGSwpkCJL0qL0HjVbTCJjpzu', NULL, NULL, 3, 'xZ-SDbishNDDhDEmbGGOgj3094w6r_uw'),
-(196, 'asd', 'asd', 'asd', 'SYv1Ko', 'Rbusg1', NULL, NULL, 4, '2wswApznFJYIKHn3q-J6SGgsIPtJKZYi'),
-(197, 'asd', 'asd', 'asd', 'jYoAiH', '9evLs2', NULL, NULL, 4, 'gcOwme25oUkpBop4_qmH2I3hS1pejjqC'),
-(198, 'asd', 'asd', 'asd', '3LDoyq', 'wjyf6f', NULL, NULL, 4, 'YYiyKoF8942w18sN6WSe_O0FKYglkBRn'),
-(199, 'asd', 'asd', 'as', 'RgqJSk', 'jhzHvn', NULL, NULL, 4, 'fyaS0wHBV5OVbyRUX5020Zmilp3eX_IB'),
-(200, 'zxc', 'zxc', 'zxc', 'AiZzKB', 'BFPHZO', NULL, NULL, 3, '_1aJQSgyXr8mzls4WhwWlKnRagJBKimR'),
-(201, 'zxc', 'zxc', 'zxc', 'Bt3ASp', 'xMnAMB', NULL, NULL, 3, 'GBssEAV3UklqatUo9cPa_dX1SeBTjX4h'),
-(202, 'zxc', 'zxc', 'zx', 'cNCpS0', 'aDpP6X', NULL, NULL, 3, 'zdoLmvX5_lybKLRVSA_aKYbqTJbNZ9tH'),
-(203, 'zxc', 'zxc', 'zxc', 'CHNSea', 'g67DBG', NULL, NULL, 4, 'g24trlRXVjt-mjUH5WR2IWWc8dJcQavP'),
-(204, 'zxc', 'zxc', 'zxc', '9y2pxA', '7fNSVy', NULL, NULL, 4, 'aWKKcVeK-eaAaT8iOn7ZZkJ7OSV1hJC9'),
-(205, 'zxc', 'zxc', 'zx', 'SWzFZH', 'rcRYGb', NULL, NULL, 4, 'e3QxSiHlFUL7_iptArdy6gxbgRjqqsTC'),
-(206, 'zxc', 'zxc', 'zxc', 'IOB_Ye', 'FB-NfS', NULL, NULL, 4, 'edaJ4YrcbxSwOqv5LeA5TiWdTkPwbPrM'),
-(207, 'zxc', 'zxc', 'zxc', 'lgYHY4', 'LU0G83', NULL, NULL, 4, '6fFPZiJo4Fk6SpPWdIQAKp9KpPQPuHPn'),
-(208, 'zxc', 'zxc', 'zx', 'qSOdfs', 'hA3lkG', NULL, NULL, 4, 'RjEzg7dbCUmuRoyKNKw2a3408_I9eiDM'),
-(209, 'zxc', 'zxc', 'zxc', 'XN4LuZ', 'kvnlXD', NULL, NULL, 4, 'o8pWLNL3wHEDbNJNyTdyz4ibvC8mx-Gx'),
-(210, 'zxc', 'zxc', 'zxc', 'Gch_Rp', 'yCyiSi', NULL, NULL, 4, '1pgRJaJV1pxtfZUZzUzMA3KC4MNg-D2g'),
-(211, 'zxc', 'zxc', 'zx', 'XzNnRD', 'wIu06T', NULL, NULL, 4, 'hPbG9byf0-lkOie_xash97IilZTJX5YN'),
-(212, 'zxc', 'zxc', 'zxc', 'YV-zEZ', 'yXDgYE', NULL, NULL, 4, 'V4Ygs3G4fwRQwqxRZ-GzUCBmTuYx90NF'),
-(213, 'zxc', 'zxc', 'zxc', 'ucuXwM', 'NVL-iP', NULL, NULL, 4, 'aX5gTOPzPNHjTyrZ1VOpjEbH8hVR65Dk'),
-(214, 'zxc', 'zxc', 'zx', 'DZxYiv', 'x45nmU', NULL, NULL, 4, 'rVrMEOqxo0VPbjWboqgeJFockG_Sl-_G'),
-(215, 'zxc', 'zxc', 'zxc', 'ywPam_', 'SsEzLS', NULL, NULL, 4, 'CJyIk0m8_Cr1oDv8fpXwvQuHlXMZOSmQ'),
-(216, 'zxc', 'zxc', 'zxc', '2fle_S', '6sl3Wy', NULL, NULL, 4, 'EBrACNw4SQryEZibSUaUtL_KsbO_2M5Z'),
-(217, 'zxc', 'zxc', 'zx', 'N0wNRr', 'NgiAHN', NULL, NULL, 4, 'vXkyQ3pQVqlevt08xtReFWMCSWWHTAUW'),
-(218, 'zxc', 'zxc', 'zxc', 'vfwmKl', 'wBfwkD', NULL, NULL, 4, 'lPXIV_iI8O0ZgnnsNIXAhyoJDQsW1-rc'),
-(219, 'zxc', 'zxc', 'zxc', '3g5TsZ', 'nxya0m', NULL, NULL, 4, 'CM7tZSjMHJBBwFJ6JVzyIj8syCgXetGq'),
-(220, 'zxc', 'zxc', 'zx', 'y1gB1S', 'He2VHw', NULL, NULL, 4, 'XkXanJSSjNgBm9LyQJ_0szkTC_ruOmbn'),
-(221, 'zxc', 'zxc', 'zxc', 'X6fNcj', 'Sb3NfZ', NULL, NULL, 4, 'Yr3GRJlycAK4QhgUX5-E6TfYFUL195f_'),
-(222, 'zxc', 'zxc', 'zxc', 'I2VdMP', 'eUn1jw', NULL, NULL, 4, 'H2qRztOJ1tebCc0R7gu74MmeEoIk0-zu'),
-(223, 'zxc', 'zxc', 'zx', 'q-yJTh', 'Ml-O2a', NULL, NULL, 4, 'YVQkaVRmy0yrBie-6SMBm6MnGvIXShvT'),
-(224, 'zxc', 'zxc', 'zxc', '4E8a9a', 'kFXcU9', NULL, NULL, 4, 'Tk1eInRQWX5w4-QNogt-SUOL74oTWbEL'),
-(225, 'zxc', 'zxc', 'zxc', 'A83eAq', 'I1Pyyc', NULL, NULL, 4, 'x1K9t3n8wfXu5Z5o6jdDR98Te2MKj-yN'),
-(226, 'zxc', 'zxc', 'zx', '92hT4n', 'AbOpBh', NULL, NULL, 4, 'SCZdwkz_SVmlm9Kt1AcToYIxLdKC-kZ5'),
-(227, 'zxc', 'zxc', 'zxc', 'nR_tOZ', 'HCHLRL', NULL, NULL, 4, 'vdkXRqO6g_D0HHLv50Sci5u4ecLVIPJ1'),
-(228, 'zxc', 'zxc', 'zxc', 'F6FYCd', 'X-zJtW', NULL, NULL, 4, 'C8EYajYMgw1KlLQRTThwvT3fxdryfGuo'),
-(229, 'zxc', 'zxc', 'zx', '7XAtnF', 'mUBBQL', NULL, NULL, 4, 'qdYu5gBP-e1sRZvBaNSKFIGq46o_L4Hh'),
-(230, 'zxc', 'zxc', 'zxc', 'ouWbyB', 'X2kaJV', NULL, NULL, 4, '7UQlL7eLCuAB5b0sHGdojL-k2Di2GXfo'),
-(231, 'zxc', 'zxc', 'zxc', 'DIQfyF', 'yAWlEw', NULL, NULL, 4, 'g8_IW0BzfGBWVAXMujmlAJC0ljAlryT3'),
-(232, 'zxc', 'zxc', 'zx', 'Df3F9e', 'VvvMCB', NULL, NULL, 4, '72iotd7sxtcV2rTdDoTKVZH-tJXVVRs2'),
-(233, 'zxc', 'zxc', 'zxc', 'LdI4iv', 'U0faht', NULL, NULL, 4, 'a70kqTvCR23Q8pgePk5rwEU3iNqb0JzK'),
-(234, 'zxc', 'zxc', 'zxc', '-Z7rTa', '6-YCNt', NULL, NULL, 4, 'Wal1aSn2tVJoFWZjIOOOoC0dh9qSgVZ_'),
-(235, 'zxc', 'zxc', 'zx', '2vIedk', 'U4KnTz', NULL, NULL, 4, 'vn2tLo9RFZ2bD6N0aE-TTDSKVYn5SNck'),
-(236, 'zxc', 'zxc', 'zxc', 'm6FPBX', '2jtul3', NULL, NULL, 4, 'E-orhtHOMMjghKs537MR7adgdTm4FL1k'),
-(237, 'zxc', 'zxc', 'zxc', 'cW8OQ_', 'DXdlR0', NULL, NULL, 4, 'CJpxroi6-l0yvyPo0mnnlXQYYbsxqJ00'),
-(238, 'zxc', 'zxc', 'zx', 'ZzpEgS', 'f_vCcM', NULL, NULL, 4, 'yh-lurJYp21rehJjoHXJSnYDZgoVydBD'),
-(239, 'zxc', 'zxc', 'zxc', 'i28V1w', 'RajtUx', NULL, NULL, 4, 'eytnGpHCoTcvZQvYEw5iWFyh_OVKD_C4'),
-(240, 'zxc', 'zxc', 'zxc', '0JrCAO', '_IVBNg', NULL, NULL, 4, '1T-b_QFDPDDsoLUTyFzGzq1UYxxHvFvv'),
-(241, 'zxc', 'zxc', 'zx', 'ttq_rS', 'pm_8YV', NULL, NULL, 4, 'dVpPD4gdQqHGUl-EzO4x2tzz_yXdyJNG'),
-(242, 'zxc', 'zxc', 'zxc', '3ph9bG', '1iz4m2', NULL, NULL, 4, 'sKtd1oM3sQFZgU5qSJFZE7QZy6WhWeXX'),
-(243, 'zxc', 'zxc', 'zxc', 'fSia-Z', 'I_PtiF', NULL, NULL, 4, 'ojR3klEBfiA6yjLKi-oVgOy86VMTOIu9'),
-(244, 'zxc', 'zxc', 'zx', 'bnY8i7', 'q-dYQu', NULL, NULL, 4, 'BmowkULK3B6sayvI9zJQ9IneEqkl39De'),
-(245, 'zxc', 'zxc', 'zxc', 'xV0bvu', 'y8NxkT', NULL, NULL, 4, 'cEtj29sCPt1TcyaEyMMjzptuIYCLM4Bt'),
-(246, 'zxc', 'zxc', 'zxc', 'Ofrx0H', 'cW_GsF', NULL, NULL, 4, '1E8I93fBAZO1ipVaU86rykBgEjqKFSzh'),
-(247, 'zxc', 'zxc', 'zx', 'R58SkD', 'OnEZP1', NULL, NULL, 4, '9TXzyTS3JhFaujWPgX6fppKMJVSSTjit'),
-(248, 'zxc', 'zxc', 'zxc', 'tw6w_P', 'CPFHkF', NULL, NULL, 4, 'zF--vBgLnq2YKBvfFCqwW3vO5Vei9iNv'),
-(249, 'zxc', 'zxc', 'zxc', 'c81v2b', 'Kzxkh_', NULL, NULL, 4, 'gJBDcjZP1gKx5kvoOU2MspwJUenwcms5'),
-(250, 'zxc', 'zxc', 'zx', 'RFZpd_', 'Gtwlg2', NULL, NULL, 4, '14yXc6RVPvz_pfEzUOLhLBRQICqwScmP'),
-(251, 'zxc', 'zxc', 'zxc', 'yYVJwW', 'bz1rKJ', NULL, NULL, 4, 'oTrE5dVwMPV-PquY7rKgNynC20mwb_JI'),
-(252, 'zxc', 'zxc', 'zxc', '0oOaW0', 'khsFZm', NULL, NULL, 4, 'G2qi39ixG6NIsXSjXkS7L2hJB-xG9MqS'),
-(253, 'zxc', 'zxc', 'zx', 'GwmW32', '2KA0Jn', NULL, NULL, 4, 'rwZYPEXS26QLlqlCVIhub_E3cSkEguh_'),
-(254, 'zxc', 'zxc', 'zxc', 'efBedz', 'KT6RNB', NULL, NULL, 4, 'RCfCR4F7TLoUnQQZtMCT_f2GhuHwCLFS'),
-(255, 'zxc', 'zxc', 'zxc', '15fogn', 'qwQ5Fm', NULL, NULL, 4, '8MTswvHzmFEm_WVx0Rf1vQA4kw2GO1Gb'),
-(256, 'zxc', 'zxc', 'zx', 'IRSZHd', '7u0zVY', NULL, NULL, 4, 'FJPviyWQ5pXIt1gW0ntyxeNEUN3AvfMc'),
-(257, 'zxc', 'zxc', 'zxc', 'WDUOAN', 'DHaL16', NULL, NULL, 4, 'lut_VghgxxeBQEF4Cn3HL1vKozZPMn0Y'),
-(258, 'zxc', 'zxc', 'zxc', 'AlDbAf', 'vBY2qJ', NULL, NULL, 4, '7NUoizNRL7CF9Xc5nQ0jzr578OdxSxQe'),
-(259, 'zxc', 'zxc', 'zx', 'IrlBGq', 'Gaq9-M', NULL, NULL, 4, 'SXl_XBT-us-a08SjUN5hJWBX5dq_O-Eo'),
-(260, 'zxc', 'zxc', 'zxc', 'tXOSba', 'gTtKDJ', NULL, NULL, 4, '6GUJu_jJvKYEa86aqtTKgUEEZuwjJIku'),
-(261, 'zxc', 'zxc', 'zxc', 'MJwo06', 'cHPZ3o', NULL, NULL, 4, 'aH29w0PbOqEJyiF2IfuwjbaCFxh00P9Q'),
-(262, 'zxc', 'zxc', 'zx', 'mZ01UU', 'inCIYB', NULL, NULL, 4, 'zaAj28cwh_rBMVdnsqY01WtGkqnY-tzM'),
-(263, 'zxc', 'zxc', 'zxc', '-cZHnd', 'GYti6A', NULL, NULL, 4, 'DU82bh-rsC0QyPLpBufFrPogmSSUoWdF'),
-(264, 'zxc', 'zxc', 'zxc', 'Xdc1Wr', 'Iz8LSr', NULL, NULL, 4, 'yQFlp6wvJ_UxDa9I-Cv2MFhoDgqrCb1_'),
-(265, 'zxc', 'zxc', 'zx', 'LkXjql', 'X4Jz3W', NULL, NULL, 4, '4BcW0ko_wfKGLK603HrCr6XLrBz58UaX'),
-(266, 'zxc', 'zxc', 'zxc', 'CldjIW', 'BQtvEe', NULL, NULL, 4, '9RrgW-NUTAF42pTFG65L1eiC2H7yAZAs'),
-(267, 'zxc', 'zxc', 'zxc', 'deZhdc', '5KgKaM', NULL, NULL, 4, 'CkGgEqV_hBpLkWCKULRkEDBmK-YCpSTd'),
-(268, 'zxc', 'zxc', 'zx', 'gB3Zb8', 'j07q0B', NULL, NULL, 4, 'tKWpbNeVzpDwDn4J3pfzjGLLvJoC8nOw'),
-(269, 'zxc', 'zxc', 'zxc', 'c7ic3j', '9cccLY', NULL, NULL, 4, 'soYBWX0olzlctmW-VFupUWHTJJKTIZCZ'),
-(270, 'zxc', 'zxc', 'zxc', 'CGkWzR', 'hndPGS', NULL, NULL, 4, 'imjwu9-bIclOg2S2eRd_afC21-IEkSHu'),
-(271, 'zxc', 'zxc', 'zxc', 'B3xuWc', 'g8x8MO', NULL, NULL, 4, 'jS4LOPLyuvJnAuxprRl8Ww89AgNTvBca'),
-(272, 'zxc', 'zxc', 'zxc', 'Qlhtdm', 'irSCuC', NULL, NULL, 4, '2BW-ogHxBPQePLg0XdoEdVWhANXvMuhX'),
-(273, 'zxc', 'zxc', 'zx', 'O-7r92', 'vPEDhL', NULL, NULL, 4, 'lv9cedB1OWzwZVAlAZlR_3s7ygwKb5aj'),
-(274, 'zxc', 'zxc', 'zxc', 'Mz1qZ3', 'gIRUzS', NULL, NULL, 4, 'oT0yy0noEW7qg3MJgn6Y6c-WXqFpdYeM'),
-(275, 'zxc', 'zxc', 'zxc', 'nf6Gy7', '6g4tU4', NULL, NULL, 4, 'UY5VC59-BewKMcyPADCFE1oWZUtTzr3b'),
-(276, 'zxc', 'zxc', 'zx', 'EyTfeP', 'ttJRNf', NULL, NULL, 4, '9gThe04j6Z-PeBECXjwvZboWkPG8s8-i'),
-(277, 'zxc', 'zxc', 'zxc', 'JKzMaO', 'lHZtyv', NULL, NULL, 4, 'vCvBfqp2sxq7jzjOOTkh_Ffk_lo24Jce'),
-(278, 'zxc', 'zxc', 'zxc', '4R1h0d', 's0KTtT', NULL, NULL, 4, 'lrn1f50O3qOCxDdS3tDgsoear7N8XFNZ'),
-(279, 'zxc', 'zxc', 'zx', 'eJN2nD', 'RlndWh', NULL, NULL, 4, 'jC2Icm_8XO4IEWsLv63YICPm5SHsKgEB'),
-(280, 'zxc', 'zxc', 'zxc', 'VLpkU8', '-FdKFe', NULL, NULL, 4, 'mNU070K51yi7Yth5ao0_pDbEJdlZVyaA'),
-(281, 'zxc', 'zxc', 'zxc', 'VFGqoE', 'u71mXh', NULL, NULL, 4, 'vEorlfivaOPM3jOZyXBRzInavxhBnus9'),
-(282, 'zxc', 'zxc', 'zx', 'gdeICY', 'oavLxj', NULL, NULL, 4, 'xKVcPULEduzHijVlRd0kSU5JZKyxQs77'),
-(283, 'zxc', 'zxc', 'zxc', 'oxsHDp', '7H8A7t', NULL, NULL, 4, 'MQiYP7POAnRG-tXIcybKPMsIzXw9nYDf'),
-(284, 'zxc', 'zxc', 'zxc', '5Ak4U_', '1Ycu22', NULL, NULL, 4, 'HTebtiYhUSuR61PHYpo8otwFYl819NUL'),
-(285, 'zxc', 'zxc', 'zx', '23ijno', 'wqnpy_', NULL, NULL, 4, 'bPVL4opzXmjSXMiP3R-6Fr5ATCAyE0AY'),
-(286, 'zxc', 'zxc', 'zxc', 'QsigB1', 'LUj43i', NULL, NULL, 4, '33qinVyCB-eI6XoN_C3SfpoWlAFvAon9'),
-(287, 'zxc', 'zxc', 'zxc', 'VtDlhX', 'fJWJEJ', NULL, NULL, 4, 'QZOJEXRSV1c70F9t7LQtuP6rQq1h91eO'),
-(288, 'zxc', 'zxc', 'zx', 'Flo6g2', '6j5vNk', NULL, NULL, 4, 'dfpHmZ_mi2VnC19r7Wps4f6FXyM1cQnt'),
-(289, 'zxc', 'zxc', 'zxc', '4gx9Sg', 'fETSdM', NULL, NULL, 4, 'oedj5M2C7P29wrgsRqjc9x0FgM3EayHJ'),
-(290, 'zxc', 'zxc', 'zxc', 'rkiuZg', '5l-T8v', NULL, NULL, 4, '_LueMGj79kNBKTp3dw_0JC43qgdOXXcC'),
-(291, 'zxc', 'zxc', 'zx', 'aNjvFX', 'Tiu_bs', NULL, NULL, 4, 'PiWuPp-NxX_tu3TnskTewiD073WWvGXE'),
-(292, 'zxc', 'zxc', 'zxc', 'UmZ3KS', '1aLaTI', NULL, NULL, 4, 'FcCeX1amk0CTE5xqTBsY5vDWQEHq-iBz'),
-(293, 'zxc', 'zxc', 'zxc', 'kFzugN', 'PC6_H-', NULL, NULL, 4, 'M0yu3fq9le0wTH63yZfYNkq8QYp-7o5a'),
-(294, 'zxc', 'zxc', 'zx', 'vuynGc', 'J09VTk', NULL, NULL, 4, 'k1VOUVBwBvg0rukmoQsn6pGk2i31cPdm'),
-(295, 'zxc', 'zxc', 'zxc', 'QmXbGx', 'tBUgfL', NULL, NULL, 4, 'VvNmPQ5_XauhNS6rGUjOe-KlyBLd7B3P'),
-(296, 'zxc', 'zxc', 'zxc', 'gKiFta', 'J4xgTL', NULL, NULL, 4, 'wJEjX-4mWImDy6yc_u1yJz1aAlmGvRQQ'),
-(297, 'zxc', 'zxc', 'zx', '3BSuhj', 'kRVGm0', NULL, NULL, 4, '2Pzms5KSyV7QGGDXQOYV6JvsoBYJeLpZ'),
-(298, 'zxc', 'zxc', 'zxc', 't8-blp', '6ZvMkO', NULL, NULL, 4, 'eaWdp2XYvXDe7dB9wa6fxtEutGa80Fze'),
-(299, 'zxc', 'zxc', 'zxc', 'bfk5s1', 'l-vvli', NULL, NULL, 4, '5DtS92H6BIJr-TyhZuLMlTrsqq8dNlSJ'),
-(300, 'zxc', 'zxc', 'zx', 'ImwnQe', 'sWT9A-', NULL, NULL, 4, 'mpMWLvf_9g4SQaTDuBORI7maEbgtYXYv'),
-(301, 'zxc', 'zxc', 'zxc', 'UVHiYI', 'DLmn2a', NULL, NULL, 4, 'SPL14QIjXJZzCpw6zD7K-wNiSCJrRGLC'),
-(302, 'zxc', 'zxc', 'zxc', '7bq_Sr', 'U6x478', NULL, NULL, 4, 'vHeRUndezU1FPxqW2AKyIpK5pxkABQSA'),
-(303, 'zxc', 'zxc', 'zx', 'E6-DSd', 'kWTZt0', NULL, NULL, 4, '_IWWO-I7qECk1fORpxN7MZJMvYEy2sNr'),
-(304, 'zxc', 'zxc', 'zxc', '-fxT21', 'bMjvJv', NULL, NULL, 4, 'v-vtyFnt-y1fxndEUp1qUsgWusZ7Qfs9'),
-(305, 'zxc', 'zxc', 'zxc', '8LrlvU', 'bP0qNf', NULL, NULL, 4, 'qg618IkxcufNdF4Gw7zV5Nh8vbunwweM'),
-(306, 'zxc', 'zxc', 'zx', 'T5CHEX', 'uNU1lS', NULL, NULL, 4, 'fmN5dLhCoPG_DbAKUpQeqaXaXItplGnf'),
-(307, 'zxc', 'zxc', 'zxc', 'mcluN9', 'ugeIA4', NULL, NULL, 4, '4eiW9NzmVMWpOKC16Lm1PhbrTBWpE9V6'),
-(308, 'zxc', 'zxc', 'zxc', 'OZounI', 'taMYAf', NULL, NULL, 4, 'v0L3Vn6HZdnqd1RRCw98E9l1cGAgH9Zx'),
-(309, 'zxc', 'zxc', 'zx', 'd8zcS7', 'Xqbf_u', NULL, NULL, 4, 'UlDaSqZfgVt5wR2cZXLyXB6B2vm7t-yS'),
-(310, 'zxc', 'zxc', 'zxc', 'h8FLrj', 'xPxHwf', NULL, NULL, 4, 'L7e9C7AvnvWoE2gg8NypyGDBhuWwpPVE'),
-(311, 'zxc', 'zxc', 'zxc', 'moDoXh', 'IqLFhU', NULL, NULL, 4, 'Oad40mX-OrQammuw6oeEQOpIOcjxGvzD'),
-(312, 'zxc', 'zxc', 'zx', 'LqS7hl', 'R7qjYj', NULL, NULL, 4, '3QeGU9tw_fBBhjMtFtw8xCu8Tvr3HWHD'),
-(313, 'zxc', 'zxc', 'zxc', 'Zr7xy3', 'X7vp3d', NULL, NULL, 4, 'HmQDvi4TG558R4pFtbYGnNRgMVGBJOeO'),
-(314, 'zxc', 'zxc', 'zxc', 'Oc8JJ-', 'bcNddU', NULL, NULL, 4, '3OfmiFkOYDB4oYtG726j1ARAl7_Xsd5L'),
-(315, 'zxc', 'zxc', 'zx', 'oftnOM', 'Vs5dkd', NULL, NULL, 4, 'uEz_K2XqA-EqtOJNh9xcx4gmsOaqjf9i'),
-(316, 'zxc', 'zxc', 'zxc', 'UfU7P7', 'GWckr5', NULL, NULL, 4, '0OD5g62nmCtgzpLBwBewQ0bUCIb4faaf'),
-(317, 'zxc', 'zxc', 'zxc', 'vtu53N', 'VvHSBm', NULL, NULL, 4, 'X2YC6L508ILqX1CbAGBt0h7eR80pYDJd'),
-(318, 'zxc', 'zxc', 'zx', '_i76yW', 'jaQzBW', NULL, NULL, 4, 'kyWgbOja1Wne6x1SjiIirXC_ciBXKlab'),
-(319, 'zxc', 'zxc', 'zxc', 'rf3XP8', 'Rii903', NULL, NULL, 4, 'DIcdy-vUsJW-Fr4__BNjf1Td5Xuk0xFU'),
-(320, 'zxc', 'zxc', 'zxc', 'y6LlzT', 'RtuQid', NULL, NULL, 4, 'p8ZQYttVo8xwLYgPmifiDkiwvm3zUZ4I'),
-(321, 'zxc', 'zxc', 'zx', 'vZ5Lgp', '8siCYd', NULL, NULL, 4, 'D0Cwm3OIVprF08lt0PhdOu17BxFoXnuw'),
-(322, 'zxc', 'zxc', 'zxc', '5bOrWn', 'QeCKj-', NULL, NULL, 4, 'fQvaOl5aunVnb21-3XZl-bcX73oStXhJ'),
-(323, 'zxc', 'zxc', 'zxc', 'zX3UC9', 'CBcT5L', NULL, NULL, 4, 'DU-Gpwdx9qhdZii4LAl-BvjjGux4BdVh'),
-(324, 'zxc', 'zxc', 'zx', 'OC7ldI', 'PVaBLi', NULL, NULL, 4, 'AjqTAyL7ZpYRbRHLIYZUDBgzbsZ1YLk6'),
-(325, 'zxc', 'zxc', 'zxc', 'OoTbHb', '06v1sk', NULL, NULL, 4, 'lk5rIy-90iwJh87W8hrKdmHZXd38yQGt'),
-(326, 'zxc', 'zxc', 'zxc', '31JDvf', 'PzvKjD', NULL, NULL, 4, 'xaYncVB3HsIX4IjE17yJAtl5kB05DHJD'),
-(327, 'zxc', 'zxc', 'zx', 'hTb2VF', 'AfQk8h', NULL, NULL, 4, 'zOBf9W4O1nORii428ApW_1-THqs28PIh'),
-(328, 'zxc', 'zxc', 'zxc', 'G8G8SV', '8KzqhT', NULL, NULL, 4, '8lJgXwYHAxdocG37AX0NSipJT1negYx8'),
-(329, 'zxc', 'zxc', 'zxc', 'xjKGZ0', 'zZjUcd', NULL, NULL, 4, 'zJu61DwGLfSdLaSZbOGz8G--gDjlDfw0'),
-(330, 'zxc', 'zxc', 'zx', '3OLNW3', 'U6kB1H', NULL, NULL, 4, 'nnPi4U4hyucXThGYy1C2Z9_KBxfTZHMY'),
-(331, 'zxc', 'zxc', 'zxc', 'YwfhUA', 'eOl-66', NULL, NULL, 4, '1IVDJ6mzxoSLVwSt3XoN-TRf80zByNOU'),
-(332, 'zxc', 'zxc', 'zxc', 'tt--_q', 'xn9BzJ', NULL, NULL, 4, 'TB0oBauEsYhXg4Ayg69iubbvLjGDeBnZ'),
-(333, 'zxc', 'zxc', 'zx', '82FRUI', 'dlT5eP', NULL, NULL, 4, 'FQJ2fbUrfhjOUGD0g9NqNSPILU_GU74u'),
-(334, 'zxc', 'zxc', 'zxc', 'Op962H', 'YyaG31', NULL, NULL, 4, 'B2cpdbEKC3GwYZ3CmQ7hFhfIatv9MgAm'),
-(335, 'zxc', 'zxc', 'zxc', 'kr5Slo', 'X7e6Zk', NULL, NULL, 4, 'y5a5cGu6RkmwkoGCuZ_2wcMhyUcOdRX4'),
-(336, 'zxc', 'zxc', 'zx', 'FAyCG4', 'do8b7b', NULL, NULL, 4, 'a0C2omX_ZXZ7SvSyC9A30OWNO3ruf2Z9'),
-(337, 'zxc', 'zxc', 'zxc', 'TY86xe', 'aLxFxU', NULL, NULL, 4, 'FUEKvKdKGN5mY0-eq_BysRLJ3Hdv33Pm'),
-(338, 'zxc', 'zxc', 'zxc', 'mDlZkT', '8qzQq-', NULL, NULL, 4, 'y7mOWIrsjDHI4D9dsJxB7-uZZG0-z3ge'),
-(339, 'zxc', 'zxc', 'zx', 'OhdTrK', 'yuKpOK', NULL, NULL, 4, 'wecTKq8q2Rl60X085_1v_fg1l5wWg59f'),
-(340, 'zxc', 'zxc', 'zxc', 'w4tq60', '76Njkr', NULL, NULL, 4, 'wnKE2LWFG6P0f9Fee-z_NR42jx8QzP4M'),
-(341, 'zxc', 'zxc', 'zxc', '5p9IzP', 'yf6t2A', NULL, NULL, 4, 'xgKceGOtb0Oh4v-eXaRuoIBxvRrSdMw0'),
-(342, 'zxc', 'zxc', 'zx', 'FhStBu', 'L43B0t', NULL, NULL, 4, 'Wka7vN-l8hWPD94Q878kWVwIoDMi4sUP'),
-(343, 'zxc', 'zxc', 'zxc', 'VOLd9N', 'WEdw6T', NULL, NULL, 4, '7e3StzxzmM7SYH85LmkcRJ3jo3Mgue7h'),
-(344, 'zxc', 'zxc', 'zxc', '0IS9T6', 'RmRgn8', NULL, NULL, 4, 'UPknh6nFLr4jQqM59tzkVKJ6LCjF66iu'),
-(345, 'zxc', 'zxc', 'zx', 'NVkk9g', 'LDXb63', NULL, NULL, 4, 'scDY4vossF4cvQA1cnYAGPcvNWcasYOR'),
-(346, 'zxc', 'zxc', 'zxc', 'qjEZHk', 'Mo2csf', NULL, NULL, 4, 'Tq3sbey7kNCacHNdmdroKlCMIwu00JqM'),
-(347, 'zxc', 'zxc', 'zxc', 'woPTUa', 'LBMrP4', NULL, NULL, 4, 'pLn-D0ylynjxVsHij8QOPqVDnF7vuhYt'),
-(348, 'zxc', 'zxc', 'zx', 'wNdOaZ', '34tKV2', NULL, NULL, 4, 'FxDmoC7CCoFBCfMAgOlAUnNetaKjFcpA'),
-(349, 'zxc', 'zxc', 'zxc', 'NnTMg2', '8eVuw5', NULL, NULL, 4, '4perTzdQR1IZs6Z23rSm4uTtpcyTlglv'),
-(350, 'zxc', 'zxc', 'zxc', 'jrGTrV', 'vlze2I', NULL, NULL, 4, 'uOVJN9jEck9u9fExttThcIYxPZFv6kF3'),
-(351, 'zxc', 'zxc', 'zx', 'GIbkIs', 'ft-whr', NULL, NULL, 4, '31lGlZrUMqseSdDLjdkNBAB5Dj2x4MZe'),
-(352, 'zxc', 'zxc', 'zxc', 'nq0a1e', 'MWXX0N', NULL, NULL, 4, 'IhaNsPTbU1mG8bEf4fwAYS8pIv377xEu'),
-(353, 'zxc', 'zxc', 'zxc', '2IJNHm', 'HlMFSG', NULL, NULL, 4, '2U5tn1vWgt8qumIk1iqCqku9_id3nZtI'),
-(354, 'zxc', 'zxc', 'zx', 'jAst1M', '_Y9BbT', NULL, NULL, 4, '9yko_9fcxtA4T4mx3naEX6mK8R-ZcYu6'),
-(355, 'zxc', 'zxc', 'zxc', 'e9cxEh', 'CO1AoC', NULL, NULL, 4, 'jgZxnXhG2qm-weiYoUqxRjyg1qieNNS2'),
-(356, 'zxc', 'zxc', 'zxc', 'iyb-GD', 'plxRVd', NULL, NULL, 4, 'wf1RL4uGupsvB278T9_0mWy7zly4JlPs'),
-(357, 'zxc', 'zxc', 'zx', '3QkebA', 'F7umxj', NULL, NULL, 4, 'qBlsWKG3oXI4ZQKWwYKTnKCgougarH38'),
 (358, 'zxc', 'zxc', 'zxc', 'I1B4ig', '9HoVqi', NULL, NULL, 4, '4q_Hxw84JuP6gBIChmVsApwbC9SaiypZ'),
 (359, 'zxc', 'zxc', 'zxc', 'OdaCB_', 'gSUPDJ', NULL, NULL, 4, 'BdhAaL_LxEYFQOjos_3hGXLE1s2PH38Y'),
 (360, 'zxc', 'zxc', 'zx', 'l8mbTN', '_kWgJ_', NULL, NULL, 4, 'ZDRX8ZlKzBKe9fzJVpl9BivB79G089mt'),
@@ -874,8 +742,7 @@ INSERT INTO `user` (`id`, `name`, `surname`, `patronimyc`, `login`, `password`, 
 (641, 'zx', 'zxdc', 'zx', 'zKFnUk', 'IPobd7', NULL, NULL, 4, 'k-mNs_UGQ0lhIcFgbv-LRYIYlryhNkN1'),
 (642, 'zxasd', 'zxdc', 'zx', 'E9dr3o', 'txx6VU', NULL, NULL, 4, 'mlnzIrxNEEmZ3tm1nuAMCXRD0M8P4Ri3'),
 (643, 'd', 'd', 'd', 'L-JNHr', '$2y$13$CBcw1Rdt9zc93hUCEiDq2uM4j75cWoSvr4WOgmbZTxLFJQthMOswi', NULL, NULL, 4, 'gisTg1RnfgszUR430fAUqSxcsOs-N3oW'),
-(644, 'zd', 'zxcd', 'zvxc', 'zL0Jq4', '_bSbIR', NULL, NULL, 4, 'D7ZVWUYhgDcMDYg37BJXFWnkEbvee4qd');
-INSERT INTO `user` (`id`, `name`, `surname`, `patronimyc`, `login`, `password`, `email`, `phone`, `role_id`, `auth_key`) VALUES
+(644, 'zd', 'zxcd', 'zvxc', 'zL0Jq4', '_bSbIR', NULL, NULL, 4, 'D7ZVWUYhgDcMDYg37BJXFWnkEbvee4qd'),
 (645, 'zx', 'zxdc', 'zx', 'rsADx7', 'kriR5n', NULL, NULL, 4, 'B0u0U-alVZRdNEWw_dUNYjM4Ib85KwrQ'),
 (646, 'zxasd', 'zxdc', 'zx', 'B7vZAe', 'd7Zux_', NULL, NULL, 4, '-E0rfpP3MSLOb0WT-UFdwmgIpXqV2V2x'),
 (647, 'zd', 'zxcd', 'zvxc', '1oTCll', 'k8qDL1', NULL, NULL, 4, 'XzYayQss_H-6P0oN5kUMFOAFiM_yZS5h'),
@@ -916,222 +783,44 @@ INSERT INTO `user` (`id`, `name`, `surname`, `patronimyc`, `login`, `password`, 
 (682, 'zxasd', 'zxdc', 'zxsa', 'dx1--9', '$2y$13$HWVaIcG/DwlynpREiAP7iuo2xlXinV8Eu0azX1D0wkL.10z/Db82m', NULL, NULL, 3, '_8k3BwHzQSgogBiZtt8h0Q9hqcAkdmhC'),
 (683, 'asd', 'asd', 'asd', '6R6fwP', '$2y$13$7bRRcWx54I0u3GtFQZQuMuJ5V7dAqMIQruGfWWilqtrKNykkRSDra', NULL, NULL, 4, 'RQ5OTvK0CbNOlGxMiU7jpcvvL6oxgOm3'),
 (684, 'asd', 'asd', 'asd', 'cz4DhN', '$2y$13$i3oKsuQt6.vlB9hV6zAqpuSinv1f6HIxQyXyQ1SJzYAzXJ61Kzx.a', NULL, NULL, 4, '1iHwFMXT51XQWLk0PwNPWFTgHPtjQvVy'),
-(685, 'asd', 'asd', 'asd', '4CKbU0', '$2y$13$KM7.pW.ibQz.kKgmpD8TbOuttp.Lt92lOdfjtdS5RPlgPalsrwMAu', NULL, NULL, 4, '3e1XcgIDpT0X1rDJqfWHfMxCT1HmUSZe');
+(685, 'asd', 'asd', 'asd', '4CKbU0', '$2y$13$KM7.pW.ibQz.kKgmpD8TbOuttp.Lt92lOdfjtdS5RPlgPalsrwMAu', NULL, NULL, 4, '3e1XcgIDpT0X1rDJqfWHfMxCT1HmUSZe'),
+(686, 'zd', 'zxcd', 'zvxc', 'f1IzMc', '4stucd', NULL, NULL, 4, 'ClNTzZMYrCWNgGgWGeumxTNahjLRfrpe'),
+(687, 'zx', 'zxdc', 'zxd', 'onQJb8', 'ekjb0J', NULL, NULL, 4, 'Frx6fO41Z_so4FJ5JMD3NqDK8kN9cmsk'),
+(688, 'zxasd', 'zxdc', 'zxsa', 'idLgNl', 'Zcmn4f', NULL, NULL, 4, 'ouLbIonHhqhXoG463Rl3-L5uzFMi2Xz7'),
+(689, 'asdc', 'asdc', 'asdc', 'KKSC-h', '$2y$13$Jw7WAUkE2bDJk87LEzrf8eDTbm0pLFMiQCItfMiTAWoOS4HU6ZNIy', NULL, NULL, 4, 'tZe1HJ6NAt0YxPN7gMEFQZgV5eNYt-z_'),
+(690, 'zd', 'zxcd', 'zvxc', 'DF_DXB', '4AhfK6', NULL, NULL, 4, '0umSTlrK3V3m_pb_uzm6YLZTr6YgV3Qx'),
+(691, 'zx', 'zxdc', 'zxd', 'WN0opk', 'TJnF8B', NULL, NULL, 4, 'naQWIzMBAoc9O8Fnn3sv7wSO9Jem2U35'),
+(692, 'zxasd', 'zxdc', 'zxsa', 'dD4Uj6', 'DoqQhs', NULL, NULL, 4, '9fRYjN23lqb-GLV8F2526ZWd9q0WzNY7'),
+(693, 'zd', 'zxcd', 'zvxc', 'vO3Ir_', 'UhKA7x', NULL, NULL, 4, '0iozdKhDvh-QVLM0_d_kj-JCnYBbUsjZ'),
+(694, 'zx', 'zxdc', 'zxd', 'dDzvHY', 'CfnEnr', NULL, NULL, 4, 'p3r-k6EIO-opw4nfaVnZdcvnoQOhhqEO'),
+(695, 'zxasd', 'zxdc', 'zxsa', '_P6fe2', '_F6_Q9', NULL, NULL, 4, 'SY65HdbOVMQ5ltJ3Y-eYI7BSaoYQM6IV'),
+(696, 'zd', 'zxcd', 'zvxc', 'a3k742', 'f1lDsI', NULL, NULL, 4, 'jHql5cj-NWNSvb084HMtxJx1FFlvVZKI'),
+(697, 'zx', 'zxdc', 'zxd', 'thJEIi', 'S9b2Cl', NULL, NULL, 4, 'WR06IGQBoMIGuE77WNNu4nVNrUxVRMgZ'),
+(698, 'zxasd', 'zxdc', 'zxsa', 'c0eHAe', 'hNfajh', NULL, NULL, 4, 'J7V_jHMQavC-TBedVueRpT34J2GgUN9D'),
+(699, 'zd', 'zxcd', 'zvxcd', 'wIJoYN', 'yqLuqw', NULL, NULL, 4, '9BwCF5kk3poMePV0nLsgeauID1PaTwnT'),
+(700, 'zx', 'zxdc', 'zxdd', 'RUtLmA', 'nj_CAf', NULL, NULL, 4, 'XqZ9Kw5uO5sua167TTfjZotDlghLmDtB'),
+(701, 'zxasd', 'zxdc', 'zxsad', '2RH0qL', 'uGhVy6', NULL, NULL, 4, 'RL3VkaineaXVoGrQmWT6LK_mB_Os3MJh');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_group`
+-- Структура таблицы `user_group`
 --
 
 CREATE TABLE `user_group` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `group_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `group_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `user_group`
+-- Дамп данных таблицы `user_group`
 --
 
 INSERT INTO `user_group` (`id`, `user_id`, `group_id`) VALUES
 (11, 2, 1),
 (13, 2, 2),
 (15, 77, 1),
-(20, 68, 1),
-(21, 68, 2),
-(34, 161, 2),
-(35, 162, 2),
-(36, 163, 2),
-(37, 164, 2),
-(38, 165, 2),
-(39, 166, 2),
-(40, 169, 2),
-(41, 170, 2),
-(42, 171, 2),
-(43, 172, 1),
-(44, 173, 1),
-(45, 174, 1),
-(46, 175, 1),
-(47, 176, 1),
-(48, 177, 1),
-(49, 178, 1),
-(50, 179, 1),
-(51, 180, 1),
-(52, 181, 1),
-(53, 182, 1),
-(54, 183, 1),
-(55, 184, 1),
-(56, 185, 1),
-(57, 186, 1),
-(58, 187, 1),
-(59, 188, 1),
-(60, 189, 1),
-(61, 190, 1),
-(62, 191, 1),
-(63, 192, 1),
-(64, 193, 2),
-(65, 194, 2),
-(66, 195, 2),
-(67, 196, 1),
-(68, 197, 1),
-(69, 198, 2),
-(70, 199, 2),
-(71, 203, 2),
-(72, 204, 2),
-(73, 205, 2),
-(74, 206, 2),
-(75, 207, 2),
-(76, 208, 2),
-(77, 209, 2),
-(78, 210, 2),
-(79, 211, 2),
-(80, 212, 2),
-(81, 213, 2),
-(82, 214, 2),
-(83, 215, 2),
-(84, 216, 2),
-(85, 217, 2),
-(86, 218, 2),
-(87, 219, 2),
-(88, 220, 2),
-(89, 221, 2),
-(90, 222, 2),
-(91, 223, 2),
-(92, 224, 2),
-(93, 225, 2),
-(94, 226, 2),
-(95, 227, 2),
-(96, 228, 2),
-(97, 229, 2),
-(98, 230, 2),
-(99, 231, 2),
-(100, 232, 2),
-(101, 233, 2),
-(102, 234, 2),
-(103, 235, 2),
-(104, 236, 2),
-(105, 237, 2),
-(106, 238, 2),
-(107, 239, 2),
-(108, 240, 2),
-(109, 241, 2),
-(110, 242, 1),
-(111, 243, 1),
-(112, 244, 1),
-(113, 245, 1),
-(114, 246, 1),
-(115, 247, 1),
-(116, 248, 1),
-(117, 249, 1),
-(118, 250, 1),
-(119, 251, 1),
-(120, 252, 1),
-(121, 253, 1),
-(122, 254, 1),
-(123, 255, 1),
-(124, 256, 1),
-(125, 257, 1),
-(126, 258, 1),
-(127, 259, 1),
-(128, 260, 1),
-(129, 261, 1),
-(130, 262, 1),
-(131, 263, 1),
-(132, 264, 1),
-(133, 265, 1),
-(134, 266, 1),
-(135, 267, 1),
-(136, 268, 1),
-(137, 269, 1),
-(138, 270, 1),
-(139, 271, 1),
-(140, 272, 1),
-(141, 273, 1),
-(142, 274, 1),
-(143, 275, 1),
-(144, 276, 1),
-(145, 277, 1),
-(146, 278, 1),
-(147, 279, 1),
-(148, 280, 1),
-(149, 281, 1),
-(150, 282, 1),
-(151, 283, 1),
-(152, 284, 1),
-(153, 285, 1),
-(154, 286, 1),
-(155, 287, 1),
-(156, 288, 1),
-(157, 289, 1),
-(158, 290, 1),
-(159, 291, 1),
-(160, 292, 1),
-(161, 293, 1),
-(162, 294, 1),
-(163, 295, 1),
-(164, 296, 1),
-(165, 297, 1),
-(166, 298, 1),
-(167, 299, 1),
-(168, 300, 1),
-(169, 301, 1),
-(170, 302, 1),
-(171, 303, 1),
-(172, 304, 1),
-(173, 305, 1),
-(174, 306, 1),
-(175, 307, 1),
-(176, 308, 1),
-(177, 309, 1),
-(178, 310, 1),
-(179, 311, 1),
-(180, 312, 1),
-(181, 313, 1),
-(182, 314, 1),
-(183, 315, 1),
-(184, 316, 1),
-(185, 317, 1),
-(186, 318, 1),
-(187, 319, 1),
-(188, 320, 1),
-(189, 321, 1),
-(190, 322, 1),
-(191, 323, 1),
-(192, 324, 1),
-(193, 325, 1),
-(194, 326, 1),
-(195, 327, 1),
-(196, 328, 1),
-(197, 329, 1),
-(198, 330, 1),
-(199, 331, 1),
-(200, 332, 1),
-(201, 333, 1),
-(202, 334, 1),
-(203, 335, 1),
-(204, 336, 1),
-(205, 337, 1),
-(206, 338, 1),
-(207, 339, 1),
-(208, 340, 1),
-(209, 341, 1),
-(210, 342, 1),
-(211, 343, 1),
-(212, 344, 1),
-(213, 345, 1),
-(214, 346, 1),
-(215, 347, 1),
-(216, 348, 1),
-(217, 349, 1),
-(218, 350, 1),
-(219, 351, 1),
-(220, 352, 1),
-(221, 353, 1),
-(222, 354, 1),
-(223, 355, 1),
-(224, 356, 1),
-(225, 357, 1),
 (226, 358, 1),
 (227, 359, 1),
 (228, 360, 1),
@@ -1447,28 +1136,44 @@ INSERT INTO `user_group` (`id`, `user_id`, `group_id`) VALUES
 (538, 670, 1),
 (539, 683, 1),
 (540, 684, 1),
-(541, 685, 1);
+(541, 685, 1),
+(542, 686, 2),
+(543, 687, 2),
+(544, 688, 2),
+(545, 689, 1),
+(546, 690, 2),
+(547, 691, 2),
+(548, 692, 2),
+(549, 693, 1),
+(550, 694, 1),
+(551, 695, 1),
+(552, 696, 1),
+(553, 697, 1),
+(554, 698, 1),
+(555, 699, 1),
+(556, 700, 1),
+(557, 701, 1);
 
 --
--- Indexes for dumped tables
+-- Индексы сохранённых таблиц
 --
 
 --
--- Indexes for table `answer`
+-- Индексы таблицы `answer`
 --
 ALTER TABLE `answer`
   ADD PRIMARY KEY (`id`),
   ADD KEY `question_id` (`question_id`);
 
 --
--- Indexes for table `auth_assignment`
+-- Индексы таблицы `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
   ADD PRIMARY KEY (`item_name`,`user_id`),
   ADD KEY `idx-auth_assignment-user_id` (`user_id`);
 
 --
--- Indexes for table `auth_item`
+-- Индексы таблицы `auth_item`
 --
 ALTER TABLE `auth_item`
   ADD PRIMARY KEY (`name`),
@@ -1476,20 +1181,20 @@ ALTER TABLE `auth_item`
   ADD KEY `idx-auth_item-type` (`type`);
 
 --
--- Indexes for table `auth_item_child`
+-- Индексы таблицы `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
   ADD PRIMARY KEY (`parent`,`child`),
   ADD KEY `child` (`child`);
 
 --
--- Indexes for table `auth_rule`
+-- Индексы таблицы `auth_rule`
 --
 ALTER TABLE `auth_rule`
   ADD PRIMARY KEY (`name`);
 
 --
--- Indexes for table `deny`
+-- Индексы таблицы `deny`
 --
 ALTER TABLE `deny`
   ADD PRIMARY KEY (`id`),
@@ -1497,13 +1202,13 @@ ALTER TABLE `deny`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `group`
+-- Индексы таблицы `group`
 --
 ALTER TABLE `group`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `group_test`
+-- Индексы таблицы `group_test`
 --
 ALTER TABLE `group_test`
   ADD PRIMARY KEY (`id`),
@@ -1511,13 +1216,13 @@ ALTER TABLE `group_test`
   ADD KEY `test_id` (`test_id`);
 
 --
--- Indexes for table `migration`
+-- Индексы таблицы `migration`
 --
 ALTER TABLE `migration`
   ADD PRIMARY KEY (`version`);
 
 --
--- Indexes for table `question`
+-- Индексы таблицы `question`
 --
 ALTER TABLE `question`
   ADD PRIMARY KEY (`id`),
@@ -1526,47 +1231,49 @@ ALTER TABLE `question`
   ADD KEY `type_id` (`type_id`);
 
 --
--- Indexes for table `question_level`
+-- Индексы таблицы `question_level`
 --
 ALTER TABLE `question_level`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `question_type`
+-- Индексы таблицы `question_type`
 --
 ALTER TABLE `question_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `role`
+-- Индексы таблицы `role`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `student_answer`
+-- Индексы таблицы `student_answer`
 --
 ALTER TABLE `student_answer`
-  ADD KEY `ansuer_id` (`answer_id`),
-  ADD KEY `student_answer_ibfk_1` (`student_test_id`),
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `answer_id` (`answer_id`),
+  ADD KEY `question_id` (`question_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `student_test`
+-- Индексы таблицы `student_test`
 --
 ALTER TABLE `student_test`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `group_test_id` (`group_test_id`),
   ADD KEY `test_id` (`test_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `subject`
+-- Индексы таблицы `subject`
 --
 ALTER TABLE `subject`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `teacher_subject`
+-- Индексы таблицы `teacher_subject`
 --
 ALTER TABLE `teacher_subject`
   ADD PRIMARY KEY (`id`),
@@ -1574,7 +1281,7 @@ ALTER TABLE `teacher_subject`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `test`
+-- Индексы таблицы `test`
 --
 ALTER TABLE `test`
   ADD PRIMARY KEY (`id`),
@@ -1582,20 +1289,20 @@ ALTER TABLE `test`
   ADD KEY `test_ibfk_2` (`is_active`);
 
 --
--- Indexes for table `test_status`
+-- Индексы таблицы `test_status`
 --
 ALTER TABLE `test_status`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- Индексы таблицы `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD KEY `role_id` (`role_id`);
 
 --
--- Indexes for table `user_group`
+-- Индексы таблицы `user_group`
 --
 ALTER TABLE `user_group`
   ADD PRIMARY KEY (`id`),
@@ -1603,144 +1310,143 @@ ALTER TABLE `user_group`
   ADD KEY `user_id` (`user_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT для сохранённых таблиц
 --
 
 --
--- AUTO_INCREMENT for table `answer`
+-- AUTO_INCREMENT для таблицы `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT for table `deny`
+-- AUTO_INCREMENT для таблицы `deny`
 --
 ALTER TABLE `deny`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
--- AUTO_INCREMENT for table `group`
+-- AUTO_INCREMENT для таблицы `group`
 --
 ALTER TABLE `group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `group_test`
+-- AUTO_INCREMENT для таблицы `group_test`
 --
 ALTER TABLE `group_test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
--- AUTO_INCREMENT for table `question`
+-- AUTO_INCREMENT для таблицы `question`
 --
 ALTER TABLE `question`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT for table `question_level`
+-- AUTO_INCREMENT для таблицы `question_level`
 --
 ALTER TABLE `question_level`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `question_type`
+-- AUTO_INCREMENT для таблицы `question_type`
 --
 ALTER TABLE `question_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `role`
+-- AUTO_INCREMENT для таблицы `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `student_test`
+-- AUTO_INCREMENT для таблицы `student_answer`
+--
+ALTER TABLE `student_answer`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=583;
+
+--
+-- AUTO_INCREMENT для таблицы `student_test`
 --
 ALTER TABLE `student_test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
--- AUTO_INCREMENT for table `subject`
+-- AUTO_INCREMENT для таблицы `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `teacher_subject`
+-- AUTO_INCREMENT для таблицы `teacher_subject`
 --
 ALTER TABLE `teacher_subject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `test`
+-- AUTO_INCREMENT для таблицы `test`
 --
 ALTER TABLE `test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT for table `test_status`
+-- AUTO_INCREMENT для таблицы `test_status`
 --
 ALTER TABLE `test_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=686;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=702;
 
 --
--- AUTO_INCREMENT for table `user_group`
+-- AUTO_INCREMENT для таблицы `user_group`
 --
 ALTER TABLE `user_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=542;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=558;
 
 --
--- Constraints for dumped tables
+-- Ограничения внешнего ключа сохраненных таблиц
 --
 
 --
--- Constraints for table `answer`
+-- Ограничения внешнего ключа таблицы `answer`
 --
 ALTER TABLE `answer`
   ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `auth_assignment`
+-- Ограничения внешнего ключа таблицы `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
   ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `auth_item`
+-- Ограничения внешнего ключа таблицы `auth_item`
 --
 ALTER TABLE `auth_item`
   ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `auth_item_child`
+-- Ограничения внешнего ключа таблицы `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
   ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `deny`
+-- Ограничения внешнего ключа таблицы `deny`
 --
 ALTER TABLE `deny`
   ADD CONSTRAINT `deny_ibfk_1` FOREIGN KEY (`group_test_id`) REFERENCES `group_test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `deny_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `group_test`
---
-ALTER TABLE `group_test`
-  ADD CONSTRAINT `group_test_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `group_test_ibfk_2` FOREIGN KEY (`test_id`) REFERENCES `test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `question`
+-- Ограничения внешнего ключа таблицы `question`
 --
 ALTER TABLE `question`
   ADD CONSTRAINT `question_ibfk_2` FOREIGN KEY (`level_id`) REFERENCES `question_level` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1748,41 +1454,42 @@ ALTER TABLE `question`
   ADD CONSTRAINT `question_ibfk_4` FOREIGN KEY (`type_id`) REFERENCES `question_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `student_answer`
+-- Ограничения внешнего ключа таблицы `student_answer`
 --
 ALTER TABLE `student_answer`
-  ADD CONSTRAINT `student_answer_ibfk_1` FOREIGN KEY (`student_test_id`) REFERENCES `student_test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `student_answer_ibfk_2` FOREIGN KEY (`answer_id`) REFERENCES `answer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `student_answer_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `student_answer_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_answer_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_answer_ibfk_3` FOREIGN KEY (`answer_id`) REFERENCES `answer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `student_test`
+-- Ограничения внешнего ключа таблицы `student_test`
 --
 ALTER TABLE `student_test`
-  ADD CONSTRAINT `student_test_ibfk_1` FOREIGN KEY (`test_id`) REFERENCES `test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `student_test_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `student_test_ibfk_1` FOREIGN KEY (`group_test_id`) REFERENCES `group_test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_test_ibfk_2` FOREIGN KEY (`test_id`) REFERENCES `test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_test_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `teacher_subject`
+-- Ограничения внешнего ключа таблицы `teacher_subject`
 --
 ALTER TABLE `teacher_subject`
   ADD CONSTRAINT `teacher_subject_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `teacher_subject_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `test`
+-- Ограничения внешнего ключа таблицы `test`
 --
 ALTER TABLE `test`
   ADD CONSTRAINT `test_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `user`
+-- Ограничения внешнего ключа таблицы `user`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `user_group`
+-- Ограничения внешнего ключа таблицы `user_group`
 --
 ALTER TABLE `user_group`
   ADD CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

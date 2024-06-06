@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <!-- <p>
-        <?= Html::a('Create Group Test', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Group Test', ['create'], ['class' => 'btn my-btn-success']) ?>
     </p> -->
 
     <!-- <?php echo $this->render('_search', ['model' => $searchModel]); ?> -->

@@ -8,7 +8,7 @@ use yii\bootstrap5\Html;
 /** @var app\models\User $model */
 
 $this->title = 'Добавить студента';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'студенты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create" id="createTeacher">

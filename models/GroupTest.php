@@ -134,8 +134,9 @@ class GroupTest extends \yii\db\ActiveRecord
 
         // VarDumper::dump($activeTest->id, 10, true);
         // VarDumper::dump($allActiveTests, 10, true);
-        // VarDumper::dump($groupId, 10, true);
+        // VarDumper::dump(self::findOne(['group_id' => $groupId, 'test_id' => $allActiveTests]), 10, true);
         // die;
+
         return self::findOne(['group_id' => $groupId, 'test_id' => $allActiveTests]);
     }
 }

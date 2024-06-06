@@ -8282,7 +8282,7 @@ var LinkDialog = /*#__PURE__*/function () {
         text: this.lang.link.useProtocol,
         checked: true
       }).render()).html()].join('');
-      var buttonClass = 'btn btn-primary note-btn note-btn-primary note-link-btn';
+      var buttonClass = 'btn my-btn-primary note-btn note-btn-primary note-link-btn';
       var footer = "<input type=\"button\" href=\"#\" class=\"".concat(buttonClass, "\" value=\"").concat(this.lang.link.insert, "\" disabled>");
       this.$dialog = this.ui.dialog({
         className: 'link-dialog',
@@ -8572,7 +8572,7 @@ var ImageDialog = /*#__PURE__*/function () {
 
       var $container = this.options.dialogsInBody ? this.$body : this.options.container;
       var body = ['<div class="form-group note-form-group note-group-select-from-files">', '<label for="note-dialog-image-file-' + this.options.id + '" class="note-form-label">' + this.lang.image.selectFromFiles + '</label>', '<input id="note-dialog-image-file-' + this.options.id + '" class="note-image-input form-control-file note-form-control note-input" ', ' type="file" name="files" accept="' + this.options.acceptImageFileTypes + '" multiple="multiple"/>', imageLimitation, '</div>', '<div class="form-group note-group-image-url">', '<label for="note-dialog-image-url-' + this.options.id + '" class="note-form-label">' + this.lang.image.url + '</label>', '<input id="note-dialog-image-url-' + this.options.id + '" class="note-image-url form-control note-form-control note-input" type="text"/>', '</div>'].join('');
-      var buttonClass = 'btn btn-primary note-btn note-btn-primary note-image-btn';
+      var buttonClass = 'btn my-btn-primary note-btn note-btn-primary note-image-btn';
       var footer = "<input type=\"button\" href=\"#\" class=\"".concat(buttonClass, "\" value=\"").concat(this.lang.image.insert, "\" disabled>");
       this.$dialog = this.ui.dialog({
         title: this.lang.image.insert,
@@ -8921,7 +8921,7 @@ var VideoDialog = /*#__PURE__*/function () {
     value: function initialize() {
       var $container = this.options.dialogsInBody ? this.$body : this.options.container;
       var body = ['<div class="form-group note-form-group row-fluid">', "<label for=\"note-dialog-video-url-".concat(this.options.id, "\" class=\"note-form-label\">").concat(this.lang.video.url, " <small class=\"text-muted\">").concat(this.lang.video.providers, "</small></label>"), "<input id=\"note-dialog-video-url-".concat(this.options.id, "\" class=\"note-video-url form-control note-form-control note-input\" type=\"text\"/>"), '</div>'].join('');
-      var buttonClass = 'btn btn-primary note-btn note-btn-primary note-video-btn';
+      var buttonClass = 'btn my-btn-primary note-btn note-btn-primary note-video-btn';
       var footer = "<input type=\"button\" href=\"#\" class=\"".concat(buttonClass, "\" value=\"").concat(this.lang.video.insert, "\" disabled>");
       this.$dialog = this.ui.dialog({
         title: this.lang.video.insert,

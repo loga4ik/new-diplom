@@ -1,0 +1,52 @@
+.vertical-divider-container {
+  /* display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative; */
+}
+.vertical-divider-item {
+  margin: 0.5rem;
+  /* padding: 0 10px;
+  position: relative;
+  text-align: center; */
+}
+.vertical-divider-item:not(:last-child)::after {
+  /* content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 2px;
+  background-color: rgba(0, 0, 0, 0.493); */
+}
+
+.current_question span {
+  border-radius: 100%;
+  border: 1px;
+  border-style: inset;
+  border-color: #0069d9;
+  margin: 1px;
+  width: 26px;
+}
+
+.unpassed span {
+  border-radius: 100%;
+  border: 1px;
+  border-style: inset;
+  border-color: #00000050;
+  margin: 1px;
+  width: 26px;
+}
+
+.placeInClass::after {
+  position: relative;
+}
+
+.svg-crown {
+  position: absolute;
+  top: -12px;
+  transform: rotate(30deg);
+  right: -16px;
+  width: 32px; /* Установите нужный размер для SVG */
+  height: 32px; /* Установите нужный размер для SVG */
+}

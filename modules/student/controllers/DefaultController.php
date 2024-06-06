@@ -5,8 +5,11 @@ namespace app\modules\student\controllers;
 use app\models\Group;
 use app\models\StudentTest;
 use app\models\Test;
+use app\models\User;
 use app\models\UserGroup;
 use Yii;
+use yii\db\Query;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 
 /**
@@ -21,28 +24,53 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         $group = Group::getGroupTitle(UserGroup::findOne(['user_id' => Yii::$app->user->identity->id])->group_id);
-        // $group = Group::findOne($group_id)->title;u
         $tests_count = StudentTest::getTestsCount();
+        $group_id = UserGroup::findOne(['user_id' => Yii::$app->user->id]);
 
-        // $tests = StudentTest::getPassedTests(Yii::$app->user->identity->id);
-        // $test_list = [];
-        // foreach ($tests as $group_test_id => $student_test_id) {
-        //     $test_title = Test::findOne(GroupTest::findOne($group_test_id)->test_id)->title;
-        //     $test_mark = StudentTest::findOne($student_test_id)->mark;
-        //     if (StudentTest::findOne($student_test_id)->cheked) {
-        //         array_push(
-        //             $test_list,
-        //             '<p class="border-bottom border-1">' . $test_title . ' - ' . '<b style="color:red">' . $test_mark . '</b>' . '</p>'
-        //         );
-        //     }
-        // }
-        // $test_list = join($test_list);
+
+
+
+
+        $getGroupUsers = (new Query())
+            ->select('user_id')
+            ->from('user_group')
+            ->where(['group_id' => $group_id])
+            ->column();
+        $getAVGmark = function ($studentTest) {
+            if (!$studentTest) {
+                return 0;
+            }
+            $markSum = 0;
+
+            foreach ($studentTest as $key => $value) {
+                $markSum += $value;
+            }
+            return $markSum / count($studentTest);
+        };
+        $getAllUsersMarks = function ($getGroupUsers, $getAVGmark) {
+            $usersAVGresults = [];
+
+
+            foreach ($getGroupUsers as $value) {
+                array_push($usersAVGresults, $getAVGmark(StudentTest::getStudentsResults($value)));
+            }
+            return $usersAVGresults;
+        };
+
+        $arrOfAllUsersMarks = $getAllUsersMarks($getGroupUsers, $getAVGmark);
+        $activeUsersAVGmark = $getAVGmark(StudentTest::getStudentsResults(Yii::$app->user->id));
+        array_multisort($arrOfAllUsersMarks, SORT_DESC);
+
+        // VarDumper::dump($arrOfAllUsersMarks, 10, true);
+        // die;
+
         return $this->render(
             'index',
             [
                 // 'test_list' => $test_list,
                 'tests_count' => $tests_count,
-                'group' => $group
+                'group' => $group,
+                'placeInClass' => array_search($activeUsersAVGmark, $arrOfAllUsersMarks) + 1,
             ]
         );
     }

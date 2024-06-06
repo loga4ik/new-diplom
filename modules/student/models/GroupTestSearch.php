@@ -50,10 +50,6 @@ class GroupTestSearch extends GroupTest
         }else{
             $query = GroupTest::find();  
         }
-        
-
-        
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

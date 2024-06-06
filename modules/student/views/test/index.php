@@ -16,7 +16,8 @@ use yii\helpers\VarDumper;
 
 
 <div class="test-text">
-    <div class="text">
+    <div class="text text-muted">
+        название теста:
         <?= $test_title ?>
     </div>
 </div>
@@ -28,7 +29,7 @@ use yii\helpers\VarDumper;
     'enableReplaceState' => false,
     'timeout' => 5000
 ]); ?>
-<div class="questions-list d-flex justify-content-start flex-row gap-4 flex-wrap">
+<div class="questions-list d-flex justify-content-start flex-row gap-4 flex-wrap vertical-divider-container">
     <?= $questions_str ?>
 </div>
 
@@ -54,9 +55,15 @@ use yii\helpers\VarDumper;
         <?php if ($question->type_id == QuestionType::getTypeId('Один правильный ответ')) : ?>
             <div class="answers-test">
                 <?= $form->field($modelStudentAnswer, 'cheked')->hiddenInput(['value' => 1])->label(false) ?>
-                <?= $form->field($modelStudentAnswer, 'answer_id')->radioList($answers)->label(false) ?>
+                <?= $form->field($modelStudentAnswer, 'answer_id')->radioList($answers, [
+                    'item' => function ($index, $label, $name, $checked, $value) {
+                        $checkedAttribute = $checked ? 'checked' : '';
+                        return "<div class='form-check'>
+                    <input class='form-check-input' type='radio' name='{$name}' value='{$value}' {$checkedAttribute}><label classs='form-check-label', style='font-weight: 400;'>{$label}
+                </label></div>";
+                    }
+                ])->label(false) ?>
             </div>
-
         <?php elseif ($question->type_id == QuestionType::getTypeId('Несколько правильных ответов')) : ?>
             <div class="answers-test">
                 <?= $form->field($modelStudentAnswer, 'cheked')->hiddenInput(['value' => 1])->label(false) ?>
@@ -71,7 +78,7 @@ use yii\helpers\VarDumper;
         <?php endif ?>
         <div class="form-group">
             <?= Html::submitButton('Ответить', [
-                'class' => 'btn btn-my-green mt-2', 'id' => 'btn_ans',
+                'class' => 'my-btn-primary', 'id' => 'btn_ans',
                 'data' => [
                     'method' => 'post',
                     'params' => [

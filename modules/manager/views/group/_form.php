@@ -15,7 +15,7 @@ use yii\bootstrap5\ActiveForm;
     <?= $form->field($model, 'title')->textInput(['maxlength' => true, 'class' => 'form-control w-25', 'style' => 'min-width: 200px']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('сохранить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('сохранить', ['class' => 'btn my-btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

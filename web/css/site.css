@@ -88,3 +88,6 @@ a.desc:after {
   margin-bottom: 1rem;
 }
 
+.dropdown-list a:not(:last-child) {
+  border-bottom: 1px solid black; /* Замените на нужный вам цвет и стиль подчеркивания */
+}

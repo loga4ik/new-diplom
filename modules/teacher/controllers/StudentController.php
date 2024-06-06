@@ -9,6 +9,7 @@ use app\models\User;
 use app\models\UserGroup;
 use app\modules\teacher\models\StudentSearch;
 use Yii;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -178,8 +179,46 @@ class StudentController extends Controller
      */
     public function actionView($id)
     {
+        $group = Group::getGroupTitle(UserGroup::findOne(['user_id' => $id])->group_id);
+        $tests_count = StudentTest::getTestsCount();
+        $group_id = UserGroup::findOne(['user_id' => $id]);
+
+        $getGroupUsers = (new Query())
+            ->select('user_id')
+            ->from('user_group')
+            ->where(['group_id' => $group_id])
+            ->column();
+        $getAVGmark = function ($studentTest) {
+            if (!$studentTest) {
+                return 0;
+            }
+            $markSum = 0;
+
+            foreach ($studentTest as $key => $value) {
+                $markSum += $value;
+            }
+            return $markSum / count($studentTest);
+        };
+        $getAllUsersMarks = function ($getGroupUsers, $getAVGmark) {
+            $usersAVGresults = [];
+
+
+            foreach ($getGroupUsers as $value) {
+                array_push($usersAVGresults, $getAVGmark(StudentTest::getStudentsResults($value)));
+            }
+            return $usersAVGresults;
+        };
+
+        $arrOfAllUsersMarks = $getAllUsersMarks($getGroupUsers, $getAVGmark);
+        $activeUsersAVGmark = $getAVGmark(StudentTest::getStudentsResults($id));
+        array_multisort($arrOfAllUsersMarks, SORT_DESC);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id),    'tests_count' => $tests_count,
+            'group' => $group,
+            'placeInClass' => array_search($activeUsersAVGmark, $arrOfAllUsersMarks) + 1,
+            'student' => User::findOne($id)
+
         ]);
     }
 
@@ -188,6 +227,7 @@ class StudentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
+    
     public function actionCreate()
     {
         $model = new User();

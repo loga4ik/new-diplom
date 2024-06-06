@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </h1>
 
     <!-- <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create User', ['create'], ['class' => 'btn my-btn-success']) ?>
     </p> -->
 
     <?php Pjax::begin(); ?>
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => '',
                 'format' => 'html',
-                'value' => fn ($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-primary'])
+                'value' => fn ($model) => Html::a('просмотр', ['view', 'id' => $model->id], ['class' => 'btn my-btn-primary'])
             ],
         ],
     ]); ?>

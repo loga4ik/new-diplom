@@ -78,6 +78,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            // VarDumper::dump($model->password);
             // VarDumper::dump(Yii::$app->security->generatePasswordHash($model->login));
             // echo '<br>';
             // VarDumper::dump(Yii::$app->security->generateRandomString());

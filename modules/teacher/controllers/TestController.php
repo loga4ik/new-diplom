@@ -14,6 +14,8 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use app\models\Model;
 use app\models\QuestionLevel;
+use app\models\StudentAnswer;
+use app\models\StudentTest;
 use app\models\Subject;
 use app\models\Type;
 use app\modules\teacher\models\TestSearch;
@@ -58,19 +60,40 @@ class TestController extends Controller
         ]);
     }
 
+    public function actionGetAllSubjects()
+    {
+        // $arr = [];
+        // foreach (Subject::getAllSubject() as $key => $value) {
+        //     array_push($arr, [$key => $value]);
+        // }
+        // return json_encode($arr);
+        return json_encode(Subject::getAllSubject());
+    }
+    public function actionGetAllLevels()
+    {
+        // ['asd' => 'asd'];
+        return json_encode(QuestionLevel::getLevels());
+    }
+    public function actionGetAllTypes()
+    {
+        // ['asd' => 'asd'];
+        return json_encode(QuestionType::getTypes());
+    }
     /**
      * Displays a single Test model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $student_test_id = null, $user_id = null)
     {
         $questions = Question::getQuestionsOfTest($id);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'questions' => $questions
+            'questions' => $questions,
+            'student_test_id' => $student_test_id,
+            'user_id' => $user_id,
         ]);
     }
 
@@ -90,10 +113,6 @@ class TestController extends Controller
         $modelTest = new Test;
         $modelsQuestion = [new Question];
         $modelsAnswer = [[new Answer]];
-
-
-        // VarDumper::dump($modelTest->attributes, 10, true);
-        // die;
 
         if ($modelTest->load(Yii::$app->request->post())) {
             $modelsQuestion = Model::createMultiple(Question::class);
@@ -119,9 +138,6 @@ class TestController extends Controller
                                 $modelAnswer->is_true = 1;
                             }
                         }
-                        // VarDumper::dump($modelsQuestion[0]->attributes, 10, true);
-                        // VarDumper::dump($modelAnswer[0]->validate(), 10, true);
-                        // die;
                         $valid = $modelAnswer->validate();
                     }
                 }
@@ -130,7 +146,7 @@ class TestController extends Controller
                 $transaction = Yii::$app->db->beginTransaction();
 
                 try {
-
+                    $modelTest->question_count = count($modelsQuestion);
                     if ($flag = $modelTest->save(false)) {
 
                         foreach ($modelsQuestion as $indexQuestion => $modelQuestion) {
@@ -164,7 +180,6 @@ class TestController extends Controller
                                     if ($modelAnswer->is_true == 1) {
                                         $counter++;
                                     }
-
                                     if (!($flag = $modelAnswer->save(false))) {
                                         break;
                                     }
@@ -342,14 +357,25 @@ class TestController extends Controller
     {
         $model = new GroupTest();
         $testModel = Test::findOne(['id' => $test_id]);
+
+        function asd()
+        {
+            sleep(23111);
+            VarDumper::dump("success", 10, true);
+            die;
+        }
+
         if (!$testModel->is_active) {
             if ($this->request->isPost) {
                 if ($model->load($this->request->post())) {
+                    if (Test::getActiveTest($model->group_id)) {
+                        Yii::$app->session->setFlash('danger', 'у этой группы уже есть активный тест');
+                        return $this->redirect('../../teacher/test');
+                    }
                     $testModel->is_active = +!$testModel->is_active;
                     $model->test_id = $test_id;
-                    // VarDumper::dump($testModel->save(), 10, true);
-                    // die;
                     if ($model->save() && $testModel->save()) {
+                        Yii::$app->session->setFlash('success', 'тест открыт');
                         return $this->redirect('../../teacher/test');
                     }
                 }
@@ -364,6 +390,8 @@ class TestController extends Controller
         } else {
             $testModel->is_active = +!$testModel->is_active;
             if ($testModel->save()) {
+                // $evtSource = new EventSource("ssedemo.php");
+                Yii::$app->session->setFlash('success', 'тест закрыт');
                 return $this->redirect('../../teacher/test');
             }
         }
@@ -385,6 +413,7 @@ class TestController extends Controller
      * @return Test the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
+
     protected function findModel($id)
     {
         if (($model = Test::findOne(['id' => $id])) !== null) {
@@ -392,5 +421,49 @@ class TestController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionAccept($test_id, $student_test_id, $user_id, $answer_id)
+    {
+        $test = Test::findOne(['id' => $test_id]);
+        $studentTest = StudentTest::findOne(['id' => $student_test_id]);
+        $answer = Answer::findOne(['id' => $answer_id]);
+        $studentAnswer = StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => $studentTest->attempt, 'answer_id' => $answer_id]);
+        $studentAnswer->cheked = true;
+        $studentAnswer->save(false);
+
+        if (!StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => $studentTest->attempt, 'cheked' => 0])) {
+            $studentTest->cheked = 1;
+        }
+        $studentTest->save();
+        return $this->redirect('../../teacher/test/view?id=' . $test_id . '&user_id=' . $user_id . '&student_test_id=' . $student_test_id);
+    }
+
+    public function actionDeny($test_id, $student_test_id, $user_id, $answer_id)
+    {
+        $test = Test::findOne(['id' => $test_id]);
+        $studentTest = StudentTest::findOne(['id' => $student_test_id]);
+        $answer = Answer::findOne(['id' => $answer_id]);
+        $studentAnswer = StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => $studentTest->attempt, 'answer_id' => $answer_id]);
+        $studentAnswer->cheked = true;
+        $studentAnswer->is_true = 0;
+        $studentAnswer->save(false);
+
+        if (!StudentAnswer::findOne(['user_id' => $user_id, 'attempt' => $studentTest->attempt, 'cheked' => 0])) {
+            $studentTest->cheked = 1;
+        }
+        $percent =  ($studentTest->points - Question::findOne(['id' => $answer->question_id])->points_per_question) * 100 / $test->point_count;
+        if ($percent >= 80) {
+            $mark = 5;
+        } elseif ($percent < 80 && $percent >= 60) {
+            $mark = 4;
+        } elseif ($percent < 60 && $percent >= 40) {
+            $mark = 3;
+        } else {
+            $mark = 2;
+        }
+        $studentTest->mark = $mark;
+        $studentTest->save();
+        return $this->redirect('../../teacher/test/view?id=' . $test_id . '&user_id=' . $user_id . '&student_test_id=' . $student_test_id);
     }
 }

@@ -2151,7 +2151,7 @@ var TempusDominusBootstrap4 = function ($) {
 
       if (!this.use24Hours) {
         topRow.append($('<td>').addClass('separator'));
-        middleRow.append($('<td>').append($('<button>').addClass('btn btn-primary').attr({
+        middleRow.append($('<td>').append($('<button>').addClass('btn my-btn-primary').attr({
           'data-action': 'togglePeriod',
           tabindex: '-1',
           'title': this._options.tooltips.togglePeriod

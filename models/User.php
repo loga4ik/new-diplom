@@ -113,8 +113,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return self::findOne(['login' => $login]);
     }
+
     public function validatePassword($password)
     {
+        // VarDumper::dump($this->password);
+        // die;
         return Yii::$app->security->validatePassword($password, $this->password);
     }
     public static function getIsAdmin()
@@ -154,7 +157,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         }
         return $arr;
     }
-    
+
     public static function getAllStudents($group_id)
     {
         $newData = '';
@@ -172,7 +175,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         }
         return $newData;
     }
-    
+
     public static function getUserName($id)
     {
         $user =  self::findOne(['id' => $id]);

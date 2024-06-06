@@ -17,6 +17,8 @@ use Yii;
  */
 class Answer extends \yii\db\ActiveRecord
 {
+    public $imageFile;
+    
     const SKIP_ANSWER = 'skip_answer';
 
     /**
@@ -38,6 +40,7 @@ class Answer extends \yii\db\ActiveRecord
             [['title'], 'string'],
             [['is_true', 'question_id'], 'integer'],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Question::class, 'targetAttribute' => ['question_id' => 'id']],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -51,6 +54,7 @@ class Answer extends \yii\db\ActiveRecord
             'title' => 'Title',
             'is_true' => 'Is True',
             'question_id' => 'Question ID',
+            'imageFile' => 'Изображение',
         ];
     }
 
@@ -80,5 +84,17 @@ class Answer extends \yii\db\ActiveRecord
     public static function getAnswersOfQuestion($question_id)
     {
         return static::find()->where(['question_id' => $question_id])->asArray()->all();
+    }
+    
+    public function upload()
+    {
+        if ($this->validate()) {
+            $fileName = Yii::$app->user->identity->id . '_' . time() . '_' . Yii::$app->security->generateRandomString(10)  . '.' . $this->imageFile->extension;
+            $this->imageFile->saveAs(Yii::getAlias('@app') . '/web/question-img/' . $fileName);
+            $this->image = '/web/question-img/' . $fileName;
+            return true;
+        } else {
+            return false;
+        }
     }
 }

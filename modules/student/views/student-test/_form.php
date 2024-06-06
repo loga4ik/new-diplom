@@ -1,8 +1,6 @@
 <?php
 
-use app\models\Test;
 use yii\helpers\Html;
-use yii\helpers\VarDumper;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -13,18 +11,24 @@ use yii\widgets\ActiveForm;
 <div class="student-test-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <?php
-    VarDumper::dump(Test::getFindActiveTest(), 10, true);
-    ?>
-    <?= $form->field($model, 'mark')->textInput() ?>
 
-    <?= $form->field($model, 'point')->textInput() ?>
+    <?= $form->field($model, 'points')->textInput() ?>
+
+    <?= $form->field($model, 'mark')->textInput() ?>
 
     <?= $form->field($model, 'test_id')->textInput() ?>
 
     <?= $form->field($model, 'user_id')->textInput() ?>
 
-    <?= $form->field($model, 'try')->textInput() ?>
+    <?= $form->field($model, 'group_test_id')->textInput() ?>
+
+    <?= $form->field($model, 'cheked')->textInput() ?>
+
+    <?= $form->field($model, 'date')->textInput() ?>
+
+    <?= $form->field($model, 'attempt')->textInput() ?>
+
+    <?= $form->field($model, 'ip')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
