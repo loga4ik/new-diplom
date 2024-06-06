@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 30 2024 г., 04:46
+-- Время создания: Июн 06 2024 г., 13:23
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -48,19 +48,7 @@ INSERT INTO `answer` (`id`, `title`, `is_true`, `question_id`) VALUES
 (22, 'прав', 1, 19),
 (23, '2', 0, 19),
 (25, 'фыв', 1, 21),
-(26, 'фыв', 1, 22),
-(27, 'asd', 1, 23),
-(28, 'asd', 1, 23),
-(29, 'asdasdasd', 1, 24),
-(30, 'asdasdasdas', 1, 25),
-(31, 'mvc.', 1, 26),
-(32, 'mvvm', 0, 26),
-(33, 'Отображает данные пользователю.', 1, 27),
-(34, 'Выполняет бизнес-логику', 0, 27),
-(35, 'Управляет данными', 0, 27),
-(36, 'Контроллер получает данные от модели и передает их представлению.', 1, 28),
-(37, ' Контроллер управляет отображением данных и бизнес-логикой напрямую', 0, 28),
-(38, 'Контроллер не взаимодействует с моделью и представлением', 0, 28);
+(26, 'фыв', 1, 22);
 
 -- --------------------------------------------------------
 
@@ -144,7 +132,7 @@ CREATE TABLE `group` (
 
 INSERT INTO `group` (`id`, `title`) VALUES
 (1, 'iv123'),
-(2, '234');
+(2, '228');
 
 -- --------------------------------------------------------
 
@@ -169,16 +157,13 @@ CREATE TABLE `group_test` (
 --
 
 INSERT INTO `group_test` (`id`, `date`, `avg_points`, `val_5`, `val_4`, `val_3`, `fails`, `group_id`, `test_id`) VALUES
-(38, NULL, 1.66667, 8, NULL, 6, NULL, 1, 17),
+(38, NULL, 2, 7, NULL, 6, NULL, 1, 17),
 (39, NULL, 4, 1, NULL, NULL, NULL, 1, 19),
 (45, NULL, NULL, NULL, NULL, NULL, NULL, 2, 21),
 (46, NULL, 4, 1, NULL, NULL, NULL, 1, 21),
 (47, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17),
 (48, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17),
-(49, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17),
-(50, NULL, NULL, NULL, NULL, NULL, NULL, 1, 22),
-(51, NULL, NULL, NULL, NULL, NULL, NULL, 1, 19),
-(52, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17);
+(49, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17);
 
 -- --------------------------------------------------------
 
@@ -228,13 +213,7 @@ INSERT INTO `question` (`id`, `text`, `points_per_question`, `image`, `level_id`
 (18, '1', 1, NULL, 1, 19, 1),
 (19, '2', 3, NULL, 3, 19, 1),
 (21, 'фыв', 2, NULL, 2, 21, 3),
-(22, 'фыв', 2, NULL, 2, 21, 3),
-(23, 'asdasdasdasd', 2, NULL, 2, 22, 1),
-(24, 'asdasdasd', 1, NULL, 1, 22, 1),
-(25, 'asdasdasd', 3, NULL, 3, 22, 1),
-(26, 'метод разделения данных на три отдельных компонента так, что модификация каждого может осуществляться автономно.', 3, NULL, 3, 23, 1),
-(27, 'Какую роль выполняет представление (View) в MVC?', 2, NULL, 2, 23, 1),
-(28, 'Каким образом контроллер взаимодействует с моделью и представлением?', 1, NULL, 1, 23, 1);
+(22, 'фыв', 2, NULL, 2, 21, 3);
 
 -- --------------------------------------------------------
 
@@ -320,23 +299,19 @@ CREATE TABLE `student_answer` (
 
 INSERT INTO `student_answer` (`id`, `question_id`, `user_id`, `answer_id`, `answer_title`, `cheked`, `is_true`, `attempt`) VALUES
 (569, 17, 77, 19, NULL, 1, 1, 0),
+(570, 16, 77, 16, NULL, 1, 1, 0),
 (571, 16, 77, 17, NULL, 1, 0, 0),
 (572, 17, 77, 18, NULL, 1, 0, 0),
 (573, 17, 77, 19, NULL, 1, 1, 1),
 (574, 16, 77, 16, NULL, 1, 1, 1),
 (575, 16, 77, 17, NULL, 1, 0, 2),
 (576, 17, 77, 19, NULL, 1, 1, 2),
+(577, 16, 77, 16, NULL, 1, 1, 1),
 (578, 17, 77, 19, NULL, 1, 1, 1),
 (579, 17, 77, 18, NULL, 1, 0, 3),
 (580, 16, 77, 17, NULL, 1, 0, 3),
 (581, 21, 77, 25, 'asdasdasd', 1, 1, 1),
-(582, 22, 77, 26, 'asdasdasdasd', 1, 0, 1),
-(583, 23, 77, 27, NULL, 1, 1, 1),
-(584, 23, 77, 27, NULL, 1, 1, 1),
-(585, 23, 77, 27, NULL, 1, 1, 1),
-(586, 23, 77, 28, NULL, 1, 1, 1),
-(587, 17, 77, 18, NULL, 1, 0, 4),
-(588, 16, 77, 17, NULL, 1, 0, 4);
+(582, 22, 77, 26, 'asdasdasdasd', 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -368,8 +343,7 @@ INSERT INTO `student_test` (`id`, `points`, `mark`, `test_id`, `user_id`, `group
 (85, 2, 3, 17, 77, 38, 1, '2024-04-30', 2, NULL),
 (86, 4, 5, 17, 77, 39, 1, '2024-05-07', 1, NULL),
 (87, 0, 2, 17, 77, 38, 1, '2024-05-07', 3, NULL),
-(88, 4, 5, 21, 77, 46, 1, '2024-05-09', 1, NULL),
-(89, 0, 2, 17, 77, 38, 1, '2024-05-23', 4, NULL);
+(88, 4, 5, 21, 77, 46, 1, '2024-05-09', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -430,12 +404,10 @@ CREATE TABLE `test` (
 --
 
 INSERT INTO `test` (`id`, `title`, `question_count`, `point_count`, `subject_id`, `is_active`) VALUES
-(17, 'новый тест по писать код нада', 2, 4, 1, 1),
+(17, 'новый тест по писать код нада', 2, 4, 1, 0),
 (18, 'новый тест по писать код нада', 2, 4, 1, 0),
 (19, 'новая теста по не писать код', 2, 4, 2, 0),
-(21, 'asd', 2, 4, 2, 0),
-(22, 'asd', 3, 7, 1, 0),
-(23, 'тест по yii2', 3, 7, 1, 0);
+(21, 'asd', 2, 4, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -481,7 +453,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `surname`, `patronimyc`, `login`, `password`, `email`, `phone`, `role_id`, `auth_key`) VALUES
-(2, 'admin', 'admin', 'admin', 'admin', '$2y$13$OPlJC8YfaEg4KmDEQzIvH.cN0aRiJZh0MgmVQkB94bpDRyjBZDWDy', 'admin', 'admin', 2, 'qCRkB2qqOQz6IGyPYRnwkKy7m0jmpwOJ'),
+(2, 'admin', 'admin', 'admin', 'admin', '$2y$13$OPlJC8YfaEg4KmDEQzIvH.cN0aRiJZh0MgmVQkB94bpDRyjBZDWDy', 'admin', 'admin', 1, 'qCRkB2qqOQz6IGyPYRnwkKy7m0jmpwOJ'),
 (68, 'teacher', 'teacher', 'teacher', 'teacher', '$2y$13$Tq7pIwFSvU.JgAFj1I1.x.ETffLgNx44o/TH8./f50zVR1TciKHbq', 'teacher', 'teacher', 3, 'LwJUjcM9VhLjsEQvDuyMvot8nDN0J2XF'),
 (77, 'student', 'student', 'student', 'student', '$2y$13$xceS3/d8uJpFbwBIGZwk1uSv0mwd3/neiZvy53fMvloNBiS004dHW', 'student', 'student', 4, '6AGxewilkapWVuCJ8sBrkknUA2mgp5QK'),
 (358, 'zxc', 'zxc', 'zxc', 'I1B4ig', '9HoVqi', NULL, NULL, 4, '4q_Hxw84JuP6gBIChmVsApwbC9SaiypZ'),
@@ -1345,7 +1317,7 @@ ALTER TABLE `user_group`
 -- AUTO_INCREMENT для таблицы `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT для таблицы `deny`
@@ -1363,13 +1335,13 @@ ALTER TABLE `group`
 -- AUTO_INCREMENT для таблицы `group_test`
 --
 ALTER TABLE `group_test`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT для таблицы `question`
 --
 ALTER TABLE `question`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT для таблицы `question_level`
@@ -1393,13 +1365,13 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT для таблицы `student_answer`
 --
 ALTER TABLE `student_answer`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=589;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=583;
 
 --
 -- AUTO_INCREMENT для таблицы `student_test`
 --
 ALTER TABLE `student_test`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT для таблицы `subject`
@@ -1417,7 +1389,7 @@ ALTER TABLE `teacher_subject`
 -- AUTO_INCREMENT для таблицы `test`
 --
 ALTER TABLE `test`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT для таблицы `test_status`
