@@ -4,15 +4,11 @@
 /** @var string $content */
 
 use app\assets\Admin2Asset;
-use app\assets\MainAppAsset;
 use app\models\Role;
 use app\models\Test;
 use app\models\User;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
-use yii\bootstrap5\Html as Bootstrap5Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
 use yii\helpers\Html;
 
 if (Yii::$app->user->isGuest) {
@@ -21,34 +17,34 @@ if (Yii::$app->user->isGuest) {
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('manager')) {
     $navLinks = [
-        ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>преподаватели</p>', 'url' => ['/manager']],
-        ['label' => '<i class="nav-icon fi fi-rr-user-add"></i> <p>добавление преподавателя</p>', 'url' => ['/manager/teacher/create']],
-        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/manager/group']],
-        ['label' => '<i class="fi fi-rr-book-alt"></i> &nbsp; <p>предметы</p>', 'url' => ['/manager/subject']],
+        ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>Преподаватели</p>', 'url' => ['/manager']],
+        ['label' => '<i class="nav-icon fi fi-rr-user-add"></i> <p>Добавление преподавателя</p>', 'url' => ['/manager/teacher/create']],
+        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>Группы</p>', 'url' => ['/manager/group']],
+        ['label' => '<i class="nav-icon fi fi-rr-book-alt"></i> &nbsp; <p>Предметы</p>', 'url' => ['/manager/subject']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('teacher')) {
     $navLinks = [
-        ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>студенты</p>', 'url' => ['/teacher']],
-        ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>добавление студента</p>', 'url' => ['/teacher/student/create']],
-        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>группы</p>', 'url' => ['/teacher/group']],
-        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>тесты</p>', 'url' => ['/teacher/test']],
-        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>проверить тесты</p>', 'url' => ['/teacher/student-test']],
+        ['label' => '<i class="nav-icon fi fi-rr-user"></i> <p>Студенты</p>', 'url' => ['/teacher']],
+        ['label' => ' <i class="nav-icon fi fi-rr-user-add"></i> <p>Добавление студента</p>', 'url' => ['/teacher/student/create']],
+        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>Группы</p>', 'url' => ['/teacher/group']],
+        ['label' => '<i class="nav-icon fi fi-rr-document"></i>  <p>Тесты</p>', 'url' => ['/teacher/test']],
+        ['label' => '<i class="nav-icon fi fi-rr-assept-document"></i>  <p>Проверить тесты</p>', 'url' => ['/teacher/student-test']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('student')) {
     $navLinks = [
-        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>личный кабинет</p>', 'url' => ['/student']],
+        ['label' => '<i class="nav-icon fi fi-rr-home"></i> <p>Личный кабинет</p>', 'url' => ['/student']],
+        ['label' => '<i class="nav-icon fi fi-rr-list-check"></i> <p>Мои оценки</p>', 'url' => ['/student/student-test']],
         Test::getActiveTestCount() ?
-            ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>Решить активный тест</p>', 'url' => ['/student/test']] : [],
+            ['label' => '<i class="nav-icon fi-rr-edit"></i> <p>Решить активный тест</p>', 'url' => ['/student/test']] : [],
         // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
         // ['label' => 'группы', 'url' => ['/manager/group']],
     ];
 } elseif (Yii::$app->user->identity->role_id == Role::getRoleId('admin')) {
     $navLinks = [
-        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>личный кабинет</p>', 'url' => ['/student']],
-        // ['label' => 'добавление преподавателя', 'url' => ['/manager/teacher/create']],
-        // ['label' => 'группы', 'url' => ['/manager/group']],
+        ['label' => '<i class="nav-icon fi-rr-users-alt"></i> <p>Личный кабинет</p>', 'url' => ['/student']],
     ];
 }
+//http://new-diplom/student/test/view?id=17&student_test_id=83
 
 $getNavLinks = function ($navLinks) {
     $string = '';

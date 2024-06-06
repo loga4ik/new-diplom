@@ -5,6 +5,7 @@ namespace app\modules\student\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\StudentTest;
+use Yii;
 
 /**
  * StudentTestSeach represents the model behind the search form of `app\models\StudentTest`.
@@ -17,7 +18,8 @@ class StudentTestSeach extends StudentTest
     public function rules()
     {
         return [
-            [['id', 'mark', 'point', 'test_id', 'user_id', 'try'], 'integer'],
+            [['id', 'points', 'mark', 'test_id', 'user_id', 'group_test_id', 'cheked', 'attempt'], 'integer'],
+            [['date', 'ip'], 'safe'],
         ];
     }
 
@@ -58,12 +60,17 @@ class StudentTestSeach extends StudentTest
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'points' => $this->points,
             'mark' => $this->mark,
-            'point' => $this->point,
             'test_id' => $this->test_id,
-            'user_id' => $this->user_id,
-            'try' => $this->try,
+            'user_id' => Yii::$app->user->id,
+            'group_test_id' => $this->group_test_id,
+            'cheked' => $this->cheked,
+            'date' => $this->date,
+            'attempt' => $this->attempt,
         ]);
+
+        $query->andFilterWhere(['like', 'ip', $this->ip]);
 
         return $dataProvider;
     }

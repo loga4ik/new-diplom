@@ -51,6 +51,10 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 echo Html::activeHiddenInput($modelAnswer, "[{$indexQuestion}][{$indexAnswer}]id");
             }
             ?>
+            <div class="col-3">
+                <?= $form->field($modelAnswer, "[{$indexQuestion}][{$indexAnswer}]imageFile")->fileInput(['class' => 'form-control custom-file-input'])->label('Изображение', ['class' => 'custom-file-label']) ?>
+            </div>
+
             <div class="row d-flex justify-content-between align-items-center">
 
                 <div class="col-1 d-flex justify-content-around">

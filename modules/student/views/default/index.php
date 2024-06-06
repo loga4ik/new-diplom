@@ -84,9 +84,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     </b>
                 </div>
                 <?php if ($placeInClass == 1) : ?>
-                    <img src="/web/img/crown.svg" class="svg-crown" alt="SVG Image">
+                    <img src="/web/img/medal-gold.png" class="svg-crown" alt="SVG Image">
+                <?php elseif ($placeInClass == 2) : ?>
+                    <img src="/web/img/medal-silver.png" class="svg-crown" alt="SVG Image">
+                <?php elseif ($placeInClass == 3) : ?>
+                    <img src="/web/img/medal-bronze.png" class="svg-crown" alt="SVG Image">
+                    <!-- <i class="fi fi-rs-crown"></i> -->
                 <?php endif ?>
-                <!-- <i class="fi fi-rs-crown"></i> -->
             </div>
         </div>
     </div>
@@ -106,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
             return $arrOfMarks;
         };
         ?>
-        
+
         <?=
         $studentTest ?
             // VarDumper::dump([...$getArrOfMarks($model)], 10, true);
@@ -115,10 +119,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'options' => [
                     'height' => 300,
                     'width' => 400,
-                    // 'scales' => [
-                    //     'x' => ['max' => 150],
-                    //     'y' => ['max' => 150],
-                    // ]
                 ],
                 'data' => [
                     'labels' => ["2", "3", "4", "5"],

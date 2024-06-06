@@ -30,21 +30,21 @@ if (!Yii::$app->user->isGuest) {
     <div class="body-content">
 
         <div class="row">
-            <div class="col ch300">
+            <div class="col ch300 mb-3">
                 <a href="https://spb-rtk.ru/%d1%81%d0%b5%d1%82%d0%b5%d0%b2%d0%be%d0%b5-%d0%b8-%d1%81%d0%b8%d1%81%d1%82%d0%b5%d0%bc%d0%bd%d0%be%d0%b5-%d0%b0%d0%b4%d0%bc/" class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image:  url('https://spb-rtk.ru/wp-content/themes/spbrtk_s/images/s4.jpg'); border: 0;  ">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                         <h4 class="pt-5 mt-5 mb-4 lh-1 fw-bold">Сетевое и системное администрирование<br></h4>
                     </div>
                 </a>
             </div>
-            <div class="col ch300">
+            <div class="col ch300 mb-3">
                 <a href="https://spb-rtk.ru/%d0%b8%d1%81-%d0%b8-%d0%bf%d1%80%d0%be%d0%b3%d1%80%d0%b0%d0%bc%d0%bc%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5/" class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('https://spb-rtk.ru/wp-content/themes/spbrtk_s/images/s6.jpg'); border: 0;  ">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
                         <h4 class="pt-5 mt-5 mb-4 lh-1 fw-bold">Информационные системы и программирование<br></h4>
                     </div>
                 </a>
             </div>
-            <div class="col ch300">
+            <div class="col ch300 mb-3">
                 <a href="https://spb-rtk.ru/%d0%bd%d0%b0%d0%bb%d0%b0%d0%b4%d1%87%d0%b8%d0%ba-%d0%b0%d0%bf%d0%bf%d0%b0%d1%80%d0%b0%d1%82%d0%bd%d0%be%d0%b3%d0%be-%d0%b8-%d0%bf%d1%80%d0%be%d0%b3%d1%80%d0%b0%d0%bc%d0%bc%d0%bd%d0%be%d0%b3%d0%be/" class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image:  url('https://spb-rtk.ru/wp-content/themes/spbrtk_s/images/s5.jpg');border: 0;   ">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                         <h4 class="pt-5 mt-5 mb-4 lh-1 fw-bold">Наладчик аппаратного и программного обеспечения<br></h4>

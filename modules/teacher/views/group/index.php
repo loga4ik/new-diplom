@@ -25,10 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Создать группу', ['create'], ['class' => 'btn my-btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin(
+    ); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]);           
     ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -39,16 +39,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute' => 'title',
-                'format' => 'html',
+                'format' => 'raw',
                 // 'filter' => false,
                 'enableSorting' => false,
-                'value' => fn ($model) => Html::a($model->title, ['../teacher/student', 'group_id' => $model->id], ['class' => 'mt-1'])
+                'value' => fn($model) => Html::a($model->title, ['/teacher/student', 'group_id' => $model->id], ['class' => 'mt-1','data'=>['pjax'=>0]])
             ],
             [
                 'label' => '',
                 'enableSorting' => false,
                 'format' => 'html',
-                'value' => fn ($model) => Html::a('Сменить название', ['update', 'id' => $model->id], ['class' => 'btn my-btn-primary'])
+                'value' => fn($model) => Html::a('Сменить название', ['update', 'id' => $model->id], ['class' => 'btn my-btn-primary'])
             ],
         ],
     ]); ?>

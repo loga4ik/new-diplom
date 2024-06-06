@@ -44,9 +44,9 @@
 
 .svg-crown {
   position: absolute;
-  top: -15px;
+  top: -12px;
   transform: rotate(30deg);
-  right: -10px;
-  width: 24px; /* Установите нужный размер для SVG */
-  height: 24px; /* Установите нужный размер для SVG */
+  right: -16px;
+  width: 32px; /* Установите нужный размер для SVG */
+  height: 32px; /* Установите нужный размер для SVG */
 }

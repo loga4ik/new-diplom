@@ -120,13 +120,6 @@ class StudentTest extends \yii\db\ActiveRecord
             ->from('student_test')
             ->where(['user_id' => $user_id])
             ->all();
-        // ->select()
-        // $res = static::find()
-        //     ->where(['user_id' => $user_id])
-        //     ->indexBy('id')
-        //     ->column();
-        // $res = array_unique($res);
-        // return $res;
     }
     public static function getTestResults($test_id)
     {
@@ -146,6 +139,23 @@ class StudentTest extends \yii\db\ActiveRecord
             ->indexBy('id')
             ->column();
     }
+    public static function getStudentsLastResults($user_id, $test_id)
+    {
+        return (new Query())
+            ->select('points')
+            ->from('student_test')
+            ->where(['user_id' => $user_id])
+            ->andWhere(['test_id' => $test_id])
+            ->andWhere([
+                'attempt' => (new Query())
+                    ->select('MAX(attempt)')
+                    ->from('student_test')
+                    ->where(['user_id' => $user_id])
+            ])
+            ->indexBy('id')
+            ->column();
+    }
+
     public static function createStudentTest($test_id, $group_test_id, $attempt, $user_id)
     {
         $modelStudentTest = new StudentTest();
@@ -162,17 +172,6 @@ class StudentTest extends \yii\db\ActiveRecord
 
         $res = false;
         if ($modelStudentTest->save()) {
-            // $deny = Deny::find()->where(['user_id' => Yii::$app->user->identity->id, 'group_test_id' => $group_test_id])->one();
-            // // VarDumper::dump($deny->attributes, 10, true);
-            // // die;
-            // if (Deny::find()->where(['user_id' => Yii::$app->user->identity->id, 'group_test_id' => $group_test_id])->one()) {
-            //     $deny = Deny::find()->where(['user_id' => Yii::$app->user->identity->id, 'group_test_id' => $group_test_id])->one();
-            // }
-            // else {
-            //     $deny = new Deny();
-            //     // $deny
-            // }
-            // $deny->is_true = 0;
             $res = true;
         }
 
@@ -258,5 +257,47 @@ class StudentTest extends \yii\db\ActiveRecord
         if ($current_student_test->save()) {
             return $current_student_test->cheked;
         }
+    }
+    public static function getPlaceInClass($test_id)
+    {
+        $group_id = UserGroup::findOne(['user_id' => Yii::$app->user->id]);
+
+        $getGroupUsers = (new Query())
+            ->select('user_id')
+            ->from('user_group')
+            ->where(['group_id' => $group_id])
+            ->column();
+
+        $getAVGmark = function ($studentTest) {
+            if (!$studentTest) {
+                return 0;
+            }
+            $markSum = 0;
+
+            foreach ($studentTest as $key => $value) {
+                $markSum += $value;
+                // VarDumper::dump($value, 10, true);
+
+            }
+            return $markSum / count($studentTest);
+        };
+
+        $getAllUsersMarks = function ($getGroupUsers, $getAVGmark, $test_id) {
+            $usersAVGresults = [];
+
+            foreach ($getGroupUsers as $value) {
+                array_push($usersAVGresults, $getAVGmark(StudentTest::getStudentsLastResults($value, $test_id)));
+            }
+
+            // VarDumper::dump($usersAVGresults, 10, true);
+            // die;
+            return $usersAVGresults;
+        };
+        $arrOfAllUsersMarks = $getAllUsersMarks($getGroupUsers, $getAVGmark, $test_id);
+        $activeUsersAVGmark = $getAVGmark(StudentTest::getStudentsLastResults(Yii::$app->user->id, $test_id));
+        array_multisort($arrOfAllUsersMarks, SORT_DESC);
+        return array_search($activeUsersAVGmark, $arrOfAllUsersMarks) + 1;
+        // VarDumper::dump(StudentTest::getStudentsLastResults(Yii::$app->user->id, $test_id), 10, true);
+        // die;
     }
 }
