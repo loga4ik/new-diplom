@@ -58,8 +58,8 @@ class GroupTest extends \yii\db\ActiveRecord
             'val_4' => 'Val 4',
             'val_3' => 'Val 3',
             'fails' => 'Fails',
-            'group_id' => 'Group ID',
-            'test_id' => 'Test ID',
+            'group_id'=>'группа',
+            'test_id' => 'тест',
         ];
     }
 

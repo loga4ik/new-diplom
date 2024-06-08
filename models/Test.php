@@ -15,6 +15,7 @@ use yii\helpers\VarDumper;
  * @property int $point_count
  * @property int $subject_id
  * @property int $is_active
+ * @property int|null $duration
  *
  * @property Question[] $questions
  * @property StudentTest[] $studentTests
@@ -38,7 +39,7 @@ class Test extends \yii\db\ActiveRecord
         return [
             [['title', 'question_count', 'subject_id', 'is_active'], 'required'],
             [['title'], 'string'],
-            [['question_count', 'point_count', 'subject_id', 'is_active'], 'integer'],
+            [['question_count', 'point_count', 'subject_id', 'is_active', 'duration'], 'integer'],
             [['subject_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::class, 'targetAttribute' => ['subject_id' => 'id']],
         ];
     }
@@ -55,6 +56,8 @@ class Test extends \yii\db\ActiveRecord
             'point_count' => 'Количество баллов',
             'subject_id' => 'Предмет',
             'is_active' => 'Is Active',
+            'group_id' => 'группа',
+            'duration' => 'длительность теста',
         ];
     }
 
@@ -166,7 +169,7 @@ class Test extends \yii\db\ActiveRecord
             $questions = static::getQuestionsByLevel($test_id, 'Средний');
             $res = true;
             while ($res) {
-                // VarDumper::dump(Test::findOne($questions), 10, true);
+                // VarDumper::dump($questions, 10, true);
                 // die;
                 $rand_question = $questions[array_rand($questions, 1)];
                 $res = array_key_exists($rand_question, $passed_questions);
@@ -261,7 +264,6 @@ class Test extends \yii\db\ActiveRecord
         // die;
         return static::findOne($test_id)->getQuestions()->where(['level_id' => QuestionLevel::getLevelId($level_title)])->column();
     }
-
     public static function getFindActiveTest()
     {
         return GroupTest::findOne(['group_id' => UserGroup::findOne(['user_id' => Yii::$app->user->identity->id])->group_id])->test_id;

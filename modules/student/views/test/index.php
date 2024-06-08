@@ -56,11 +56,12 @@ use yii\helpers\VarDumper;
             <div class="answers-test">
                 <?= $form->field($modelStudentAnswer, 'cheked')->hiddenInput(['value' => 1])->label(false) ?>
                 <?= $form->field($modelStudentAnswer, 'answer_id')->radioList($answers, [
-                    'item' => function ($index, $label, $name, $checked, $value) {
+                    'item' => function ($index, $item, $name, $checked, $value) {
                         $checkedAttribute = $checked ? 'checked' : '';
-                        return "<div class='form-check'>
-                    <input class='form-check-input' type='radio' name='{$name}' value='{$value}' {$checkedAttribute}><label classs='form-check-label', style='font-weight: 400;'>{$label}
-                </label></div>";
+                        return "<div class='form-check d-flex align-items-center'>
+                    <input class='form-check-input' type='radio' name='{$name}' value='{$value}' {$checkedAttribute}>
+                        <label classs='form-check-label', style='font-weight: 400;'>{$item->title}" . ($item->image ? Html::img($item->image, ['style' => 'height:150px']) : '') . "</label>
+                    </div>";
                     }
                 ])->label(false) ?>
             </div>

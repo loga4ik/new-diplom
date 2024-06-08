@@ -17,6 +17,8 @@ use wbraganca\dynamicform\DynamicFormWidget;
         <div class="col-sm-6">
             <?= $form->field($modelTest, 'title')->textInput(['maxlength' => true]) ?>
             <?= $form->field($modelTest, 'subject_id')->dropDownList($subjects, ['prompt' => 'Предмет', 'class' => 'form-control']) ?>
+            <?= $form->field($modelTest, 'duration')->textInput(['maxlength' => true, 'type' => 'number','class'=>'w-25 form-control','placeholder'=>'20мин.']) ?>
+
         </div>
         <div class="status-test-blick col-sm-5">
             <div class="status-item">

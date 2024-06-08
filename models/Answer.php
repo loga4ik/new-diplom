@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "answer".
@@ -18,7 +19,7 @@ use Yii;
 class Answer extends \yii\db\ActiveRecord
 {
     public $imageFile;
-    
+
     const SKIP_ANSWER = 'skip_answer';
 
     /**
@@ -37,7 +38,7 @@ class Answer extends \yii\db\ActiveRecord
         return [
             [['title'], 'required', 'except' => self::SKIP_ANSWER],
             [['title', 'is_true'], 'required'],
-            [['title'], 'string'],
+            [['title', 'image'], 'string'],
             [['is_true', 'question_id'], 'integer'],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Question::class, 'targetAttribute' => ['question_id' => 'id']],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
@@ -85,13 +86,16 @@ class Answer extends \yii\db\ActiveRecord
     {
         return static::find()->where(['question_id' => $question_id])->asArray()->all();
     }
-    
+
     public function upload()
     {
+        
         if ($this->validate()) {
             $fileName = Yii::$app->user->identity->id . '_' . time() . '_' . Yii::$app->security->generateRandomString(10)  . '.' . $this->imageFile->extension;
-            $this->imageFile->saveAs(Yii::getAlias('@app') . '/web/question-img/' . $fileName);
-            $this->image = '/web/question-img/' . $fileName;
+            $this->imageFile->saveAs(Yii::getAlias('@app') . '/web/answer-img/' . $fileName);
+            $this->image = '/web/answer-img/' . $fileName;
+            // VarDumper::dump($this->attributes, 10, true);
+            //                         die;
             return true;
         } else {
             return false;

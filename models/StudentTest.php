@@ -156,7 +156,7 @@ class StudentTest extends \yii\db\ActiveRecord
             ->column();
     }
 
-    public static function createStudentTest($test_id, $group_test_id, $attempt, $user_id)
+    public static function createStudentTest($test_id, $group_test_id, $attempt, $user_id, $isValidTime)
     {
         $modelStudentTest = new StudentTest();
         $modelStudentTest->points = static::getStudentTestPoints($test_id, $group_test_id, $attempt, $user_id);
@@ -164,7 +164,7 @@ class StudentTest extends \yii\db\ActiveRecord
         $modelStudentTest->test_id = $test_id;
         $modelStudentTest->user_id = Yii::$app->user->identity->id;
         $modelStudentTest->group_test_id = $group_test_id->id;
-        $modelStudentTest->cheked = 0;
+        $modelStudentTest->cheked = $isValidTime ? 0 : 1;
         $modelStudentTest->attempt = $attempt;
         $modelStudentTest->date = date('Y-m-d');
 

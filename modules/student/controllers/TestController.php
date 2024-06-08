@@ -9,6 +9,7 @@ use app\models\StudentAnswer;
 use app\models\StudentTest;
 use app\models\Test;
 use app\modules\student\models\TestSeach;
+use DateTime;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -47,32 +48,30 @@ class TestController extends Controller
     {
 
         $group_test_id = GroupTest::getGroupTestId();
-        //  VarDumper::dump($group_test_id, 10, true);
-        // die;
+        $end_time = GroupTest::findOne(['id' => $group_test_id])->end_time;
+        $current_time = date('Y-m-d H:i:s');
+        $isValidTime = strtotime($end_time) > strtotime($current_time);
+
+
         $session = Yii::$app->session;
-        // VarDumper::dump(Test::getFindActiveTest(), 10, true);
+        // VarDumper::dump($isValidTime, 10, true);
         // die;
         $current_question = Yii::$app->request->post('question');
         $current_question = empty($current_question) ? 1 : $current_question;
-        // $test_id = Test::findOne(GroupTest::findOne($group_test_id)->test_id)->id;
         $test_id = $group_test_id->test_id;
         $attempt = 0;
         $attempt = StudentAnswer::getLastAttempt($group_test_id) + 1;
-        // VarDumper::dump($attempt,10,true);die;
 
-        // if (StudentTest::findOne(['test_id' => Test::getFindActiveTest(), 'user_id' => Yii::$app->user->identity->id])) {
-        //     $attempt = StudentTest::findOne(['test_id' => Test::getFindActiveTest(), 'user_id' => Yii::$app->user->identity->id])->attempt;
-        // } else {
-        //     $attempt = 0;
-        // }
-        // VarDumper::dump($attempt, 10, true);
-        // die;
+        if (!$isValidTime) {
+            StudentTest::createStudentTest($test_id, $group_test_id, $attempt, Yii::$app->user->identity->id, $isValidTime);
+
+            Yii::$app->session->setFlash('danger', 'время закончилось');
+            return $this->redirect('/');
+        }
 
         $modelStudentAnswer = new StudentAnswer();
         if ($this->request->isPost) {
             if (isset($_POST['StudentAnswer'])) {
-                // VarDumper::dump($_POST, 10, true);
-                // die;
                 if (is_array($_POST['StudentAnswer']['answer_id'])) {
                     foreach ($_POST['StudentAnswer']['answer_id'] as $answer_id) {
                         $modelStudentAnswer = new StudentAnswer();
@@ -80,10 +79,7 @@ class TestController extends Controller
                         $modelStudentAnswer->question_id = $_POST['StudentAnswer']['question_id'];
                         $modelStudentAnswer->answer_id = $answer_id;
                         $modelStudentAnswer->attempt = $attempt;
-                        $modelStudentAnswer->is_true = Answer::findOne(['id' => $modelStudentAnswer->answer_id])->is_true;
-                        // VarDumper::dump(Question::findOne(['id' => $modelStudentAnswer->question_id]), 10, true);
-                        // VarDumper::dump($modelStudentAnswer->attributes, 10, true);
-                        // die;
+                        $modelStudentAnswer->is_true = $isValidTime ? Answer::findOne(['id' => $modelStudentAnswer->answer_id])->is_true : $isValidTime;
                         $modelStudentAnswer->save();
                     }
                 } else {
@@ -91,18 +87,7 @@ class TestController extends Controller
                     $modelStudentAnswer->user_id = Yii::$app->user->identity->id;
                     $modelStudentAnswer->question_id = $_POST['StudentAnswer']['question_id'];
                     $modelStudentAnswer->load($this->request->post());
-                    $modelStudentAnswer->is_true = Answer::findOne(['id' => $modelStudentAnswer->answer_id])->is_true;
-                    // VarDumper::dump(Answer::findOne(['id' => $modelStudentAnswer->answer_id])->attributes, 10, true);
-                    // VarDumper::dump($modelStudentAnswer->attributes, 10, true);
-                    // die;
-                    // $modelStudentAnswer->validate();
-                    // VarDumper::dump($modelStudentAnswer->errors, 10, true);
-                    // $modelStudentAnswer->question_id = 16;
-                    // if (!$modelStudentAnswer->question_id) {
-                    //     # code...
-                    //     VarDumper::dump($modelStudentAnswer->attributes, 10, true);
-                    //     die;
-                    // }
+                    $modelStudentAnswer->is_true = $isValidTime ? Answer::findOne(['id' => $modelStudentAnswer->answer_id])->is_true : $isValidTime;
                     $modelStudentAnswer->save();
                 }
                 $current_question++;
@@ -122,12 +107,11 @@ class TestController extends Controller
         }
         $session->set('passed_questions', $passed_questions);
 
-        // $test_id = 24;
-
         $question_id = Test::getNextQuestion($session->get('passed_questions'), $test_id);
+        // VarDumper::dump($question_id,10,true);die;
 
         if (!$question_id) {
-            if (StudentTest::createStudentTest($test_id, $group_test_id, $attempt, Yii::$app->user->identity->id)) {
+            if (StudentTest::createStudentTest($test_id, $group_test_id, $attempt, Yii::$app->user->identity->id, $isValidTime)) {
                 if (GroupTest::changeGroupTest($group_test_id)) {
                     StudentTest::getIsChecked(Yii::$app->user->identity->id, $group_test_id, $attempt);
                     return $this->redirect('/student');
@@ -139,10 +123,12 @@ class TestController extends Controller
 
         $question = Question::findOne($question_id);
         $answers = Answer::find()
-            ->select('title')
+            ->select(['title', 'image', 'id'])
             ->where(['question_id' => $question->id])
             ->indexBy('id')
-            ->column();
+            ->all();
+        // VarDumper::dump($answers, 10, true);
+        // die;
 
         $session->set('questions_square',  $questions_square);
 

@@ -139,6 +139,8 @@ class TestController extends Controller
                             }
                         }
                         $valid = $modelAnswer->validate();
+                        // VarDumper::dump($modelAnswer->errors, 10, true);
+                        //                         die;
                     }
                 }
             }
@@ -147,6 +149,12 @@ class TestController extends Controller
 
                 try {
                     $modelTest->question_count = count($modelsQuestion);
+                    // Добавляем минуты, указанные в $testModel->duration
+                    if (!$modelTest->duration) {
+                        $modelTest->duration = 20;
+                    } 
+                    // VarDumper::dump($modelTest->attributes, 10, true);
+                    // die;
                     if ($flag = $modelTest->save(false)) {
 
                         foreach ($modelsQuestion as $indexQuestion => $modelQuestion) {
@@ -176,10 +184,14 @@ class TestController extends Controller
 
                             if (isset($modelsAnswer[$indexQuestion]) && is_array($modelsAnswer[$indexQuestion])) {
                                 foreach ($modelsAnswer[$indexQuestion] as $indexAnswer => $modelAnswer) {
+                                    if ($modelAnswer->imageFile = UploadedFile::getInstance($modelAnswer, "[{$indexQuestion}][{$indexAnswer}]imageFile")) {
+                                        $modelAnswer->upload();
+                                    }
                                     $modelAnswer->question_id = $modelQuestion->id;
                                     if ($modelAnswer->is_true == 1) {
                                         $counter++;
                                     }
+
                                     if (!($flag = $modelAnswer->save(false))) {
                                         break;
                                     }
@@ -205,8 +217,8 @@ class TestController extends Controller
                         $transaction->rollBack();
                     }
                 } catch (ErrorException $e) {
-                    var_dump($e);
-                    die;
+                    // var_dump($e);
+                    // die;
                     $transaction->rollBack();
                 }
             }
@@ -358,12 +370,6 @@ class TestController extends Controller
         $model = new GroupTest();
         $testModel = Test::findOne(['id' => $test_id]);
 
-        function asd()
-        {
-            sleep(23111);
-            VarDumper::dump("success", 10, true);
-            die;
-        }
 
         if (!$testModel->is_active) {
             if ($this->request->isPost) {
@@ -374,7 +380,25 @@ class TestController extends Controller
                     }
                     $testModel->is_active = +!$testModel->is_active;
                     $model->test_id = $test_id;
+
+                    $currentDateTime = new \DateTime();
+
+                    // Добавляем минуты, указанные в $testModel->duration
+                    
+                    $currentDateTime->modify('+' . $testModel->duration . ' minutes');
+
+                    // Форматируем в нужный формат
+                    $formattedDateTime = Yii::$app->formatter->asDatetime($currentDateTime->format('Y-m-d H:i:s'), 'php:Y-m-d H:i:s');
+
+                    // Присваиваем отформатированную дату и время $model->end_time
+                    $model->end_time = $formattedDateTime;
+
+                    // $testModel->duration ; // минуты(int) которые необходимо добавить к end_time  
+                    // $model->end_time = Yii::$app->formatter->asDatetime(strtotime(date('Y-m-d H:i:s')),'php:Y-m-d H:i:s');
+                    $model->validate();
                     if ($model->save() && $testModel->save()) {
+                        // VarDumper::dump($model->attributes, 10, true);
+                        // die;
                         Yii::$app->session->setFlash('success', 'тест открыт');
                         return $this->redirect('../../teacher/test');
                     }
