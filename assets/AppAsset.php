@@ -30,7 +30,6 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         "https://code.jquery.com/jquery-3.7.1.js"
-        // 'https://unpkg.com/vue@3/dist/vue.global.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

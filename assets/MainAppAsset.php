@@ -21,10 +21,8 @@ class MainAppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-
-        "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback",
-        "adminlte/plugins/fontawesome-free/css/all.min.css",
-        "https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css",
+        "css/uicons-regular-rounded.css",
+        "css/ionicons.min.css", "adminlte/plugins/fontawesome-free/css/all.min.css",
         "adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css",
         "adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css",
         "adminlte/dist/css/adminlte.min.css",
@@ -34,8 +32,6 @@ class MainAppAsset extends AssetBundle
         "/css/layout.css",
         'css/student-test-index.css',
         'css/test-view.css',
-        "https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
-
     ];
     public $js = [
         "adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js",
@@ -51,7 +47,6 @@ class MainAppAsset extends AssetBundle
         "adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js",
         "adminlte/dist/js/adminlte.js",
         "adminlte/dist/js/demo.js",
-
     ];
     public $depends = [
         'yii\web\YiiAsset',

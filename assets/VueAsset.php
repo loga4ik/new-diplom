@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -24,10 +25,6 @@ class VueAsset extends AssetBundle
     ];
     public $js = [
         "https://unpkg.com/vue@3/dist/vue.global.js",
-        // "https://cdn.jsdelivr.net/npm/vue@2",
-        // "https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"
-        // "https://cdn.jsdelivr.net/npm/dynamic-form-vue@0.0.9/dist/my-lib-cjs.min.js",
-        
     ];
     public $depends = [
         'yii\web\YiiAsset',
